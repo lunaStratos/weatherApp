@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1091784743311",
+    "project_id": "rainbowtestapp",
+    "storage_bucket": "rainbowtestapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091784743311:android:24d7c74c7763927da153fa",
+        "android_client_info": {
+          "package_name": "com.rainvow.rainvow_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1091784743311-4o8qa866ivf8qengb5ma873urf7jnp6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiSRIVINOQDmSowrQNJNXMCiYa-bZ_L8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1091784743311-4o8qa866ivf8qengb5ma873urf7jnp6g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
