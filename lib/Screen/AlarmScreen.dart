@@ -32,7 +32,7 @@ class AlarmScreen extends StatefulWidget {
 }
 class _AlarmScreenScreen extends State<AlarmScreen> {
 
-  late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+  // late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   late SharedPreferences prefs;
 
@@ -47,109 +47,109 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
     _loadPermission();
     _loadFavoriteLocationData();
 
-    _configureLocalTimeZone();
-
-    /**
-     * ANDROID SETTING
-     * */
-    final AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    /**
-     * IOS SETTING
-     * */
-    final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
-    );
-
-    /**
-     * SETTING INSERT
-     * */
-    final InitializationSettings initializationSettings =
-    InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS,
-        macOS: null);
-
-    /**
-     * ANDROID SETTING
-     * */
-    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification:selectNotification );
-
-  }
-
-  Future<void> _configureLocalTimeZone() async {
-    tz.initializeTimeZones();
-    final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(timeZoneName!));
-  }
-
-
-  Future selectNotification(payload) async {
-    print('payload ${payload}');
-    String xx = await _loadWeather(payload.toString().split(",")[0], payload.toString().split(",")[1]);
-
-    WeatherScreen(x: xx,);
-  }
-
-
-
-  Future<String> _loadWeather(longitude, latitude) async{
-
-    final resultObj = await ApiCall.getNowKmaWeather(longitude, latitude);
-    final getDomain = KmaNowDomain.fromJson(resultObj);
-    print('resultObj Now ${longitude} ${latitude} ${resultObj}  ');
-
-      return getDomain.weather_conditions_keyword;
-  }
-
-
-
-  Future _showNotification(hour, minute, rect_id, longitude, latitude) async{
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'channel_ID', 'channel name', 'channel description',
-        importance: Importance.max,
-        playSound: true,
-        showProgress: true,
-        priority: Priority.high,
-        ticker: 'test ticker');
-
-    var iOSChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
-
-    // 알람
-    await _flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        await _loadWeather(longitude, latitude),
-        'daily scheduled notification body',
-        _nextInstanceOfRepeat(hour, minute),
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-              'daily notification channel id',
-              'daily notification channel name',
-              'daily notification description'),
-        ),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time,
-        payload: "${longitude},${latitude}");
-
-  }
-
-  tz.TZDateTime _nextInstanceOfRepeat(hour, minute) {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
+  //   _configureLocalTimeZone();
+  //
+  //   /**
+  //    * ANDROID SETTING
+  //    * */
+  //   final AndroidInitializationSettings initializationSettingsAndroid =
+  //   AndroidInitializationSettings('@mipmap/ic_launcher');
+  //
+  //   /**
+  //    * IOS SETTING
+  //    * */
+  //   final IOSInitializationSettings initializationSettingsIOS =
+  //   IOSInitializationSettings(
+  //     requestSoundPermission: false,
+  //     requestBadgePermission: false,
+  //     requestAlertPermission: false,
+  //   );
+  //
+  //   /**
+  //    * SETTING INSERT
+  //    * */
+  //   final InitializationSettings initializationSettings =
+  //   InitializationSettings(
+  //       android: initializationSettingsAndroid,
+  //       iOS: initializationSettingsIOS,
+  //       macOS: null);
+  //
+  //   /**
+  //    * ANDROID SETTING
+  //    * */
+  //   _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //   _flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification:selectNotification );
+  //
+  // }
+  //
+  // Future<void> _configureLocalTimeZone() async {
+  //   tz.initializeTimeZones();
+  //   final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  //   tz.setLocalLocation(tz.getLocation(timeZoneName!));
+  // }
+  //
+  //
+  // Future selectNotification(payload) async {
+  //   print('payload ${payload}');
+  //   String xx = await _loadWeather(payload.toString().split(",")[0], payload.toString().split(",")[1]);
+  //
+  //   WeatherScreen(x: xx,);
+  // }
+  //
+  //
+  //
+  // Future<String> _loadWeather(longitude, latitude) async{
+  //
+  //   final resultObj = await ApiCall.getNowKmaWeather(longitude, latitude);
+  //   final getDomain = KmaNowDomain.fromJson(resultObj);
+  //   print('resultObj Now ${longitude} ${latitude} ${resultObj}  ');
+  //
+  //     return getDomain.weather_conditions_keyword;
+  // }
+  //
+  //
+  //
+  // Future _showNotification(hour, minute, rect_id, longitude, latitude) async{
+  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //       'channel_ID', 'channel name', 'channel description',
+  //       importance: Importance.max,
+  //       playSound: true,
+  //       showProgress: true,
+  //       priority: Priority.high,
+  //       ticker: 'test ticker');
+  //
+  //   var iOSChannelSpecifics = IOSNotificationDetails();
+  //   var platformChannelSpecifics = NotificationDetails(
+  //       android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
+  //
+  //   // 알람
+  //   await _flutterLocalNotificationsPlugin.zonedSchedule(
+  //       0,
+  //       await _loadWeather(longitude, latitude),
+  //       'daily scheduled notification body',
+  //       _nextInstanceOfRepeat(hour, minute),
+  //       const NotificationDetails(
+  //         android: AndroidNotificationDetails(
+  //             'daily notification channel id',
+  //             'daily notification channel name',
+  //             'daily notification description'),
+  //       ),
+  //       androidAllowWhileIdle: true,
+  //       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+  //       matchDateTimeComponents: DateTimeComponents.time,
+  //       payload: "${longitude},${latitude}");
+  //
     }
-    return scheduledDate;
-  }
+  //
+  // tz.TZDateTime _nextInstanceOfRepeat(hour, minute) {
+  //   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+  //   tz.TZDateTime scheduledDate =
+  //   tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+  //   if (scheduledDate.isBefore(now)) {
+  //     scheduledDate = scheduledDate.add(const Duration(days: 1));
+  //   }
+  //   return scheduledDate;
+  // }
 
     /**
      * 알람 받기
@@ -227,15 +227,15 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       String latitude = alarmList[index].latitude;
 
 
-      if (toggle){
-        //알람켜짐
-        _showNotification(hour, minute, rect_id, longitude, latitude);
-        ToastWiget("매일 ${hour}시 ${minute}분 날씨알람이 켜졌습니다.");
-
-      }else{
-        //알람꺼짐
-        ToastWiget("매일 ${hour}시 ${minute}분 날씨알람이 꺼졌습니다.");
-      }
+      // if (toggle){
+      //   //알람켜짐
+      //   _showNotification(hour, minute, rect_id, longitude, latitude);
+      //   ToastWiget("매일 ${hour}시 ${minute}분 날씨알람이 켜졌습니다.");
+      //
+      // }else{
+      //   //알람꺼짐
+      //   ToastWiget("매일 ${hour}시 ${minute}분 날씨알람이 꺼졌습니다.");
+      // }
 
 
     }
@@ -278,7 +278,6 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
           CustomSection(
             child: Column(
               children: [
-                ElevatedButton(onPressed: () => _flutterLocalNotificationsPlugin.cancelAll(),child: Text('취소'),),
                 new Container(
                   color: Colors.white60,
                   child: Padding(
@@ -430,45 +429,6 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       return toggleList;
     }
 
-
-
-}
-
-/**
- * 일반 Alert 창
- * */
-class _Al extends StatelessWidget{
-
-  String title = "";
-  String contents  = "";
-  _Al({required this.title, required this.contents});
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildAlert(context, title, contents);
-  }
-
-
-  Widget _buildAlert(BuildContext context, String title, String contents) => new Container(
-      child:  AlertDialog(
-        title: Text(title),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(contents),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('ok'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      )
-  );
 
 
 }

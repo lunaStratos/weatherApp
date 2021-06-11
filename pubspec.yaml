@@ -51,8 +51,9 @@ dependencies:
   flutter_native_timezone: ^1.0.10
   rxdart: ^0.26.0-nullsafety.1
   firebase_messaging: ^10.0.1     # Firebase FCM
-  vibration: ^1.4.0               # 진동
   firebase_core: ^1.2.1           # Firebase Core
+  firebase_analytics: ^8.1.2      # Firebase
+
 
 dev_dependencies:
   flutter_test:

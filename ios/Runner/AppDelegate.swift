@@ -12,6 +12,7 @@ import Flutter
        UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
      }
      //=========================== [알람] ===========================
+
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
 
