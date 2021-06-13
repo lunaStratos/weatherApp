@@ -127,6 +127,9 @@ class _WeekForecastState extends State<WeekForecast>{
 
   }
 
+  /**
+   * for문 날짜 표현
+   * */
   List<DataRow> _DataRowList(BuildContext context){
     List <DataRow> arr = [];
     DateTime date = new DateTime.now();
@@ -135,22 +138,22 @@ class _WeekForecastState extends State<WeekForecast>{
 
       int startindex = i+3; // 3 부터 시작
 
-      double percentageDouble = ( int.parse('${getMidtermList[i]["day${startindex}pm"]}') + int.parse('${getMidtermList[i]["day${startindex}am"]}')  ) /2 ;
+      double percentageDouble = ( int.parse('${getMidtermList[i]["rainfallRateAm"]}') + int.parse('${getMidtermList[i]["rainfallRatePm"]}')  ) /2 ;
       int percentage = (percentageDouble.round());
       var datetemp = date.add(Duration(days: startindex));
       var xScreen = DataRow(cells: [
         DataCell(Text('${datetemp.month}.${datetemp.day} \n ${Util.dayStr(datetemp.weekday)}')),
         DataCell(new Row(
           children: [
-            Image.asset('${Util.weekImageAddress(getMidtermList[i]["day${startindex}WeatherDescAm"])}', width: 30, height: 30 ,),
-            Text('${getMidtermTempList[i]["day${startindex}min"]}°C'),
+            Image.asset('${Util.weekImageAddress(getMidtermList[i]["weatherDescAm"])}', width: 30, height: 30 ,),
+            Text('${getMidtermTempList[i]["temperatureMin"]}°C'),
           ],
         )
         ),
         DataCell(new Row(
           children: [
-            Image.asset('${Util.weekImageAddress(getMidtermList[i]["day${startindex}WeatherDescPm"])}', width: 30, height: 30 ,),
-            Text('${getMidtermTempList[i]["day${startindex}min"]}°C'),
+            Image.asset('${Util.weekImageAddress(getMidtermList[i]["weatherDescPm"])}', width: 30, height: 30 ,),
+            Text('${getMidtermTempList[i]["temperatureMax"]}°C'),
           ],
         ) // 오후
         ),

@@ -7,7 +7,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rainvow_mobile/Domain/DustDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
@@ -16,13 +15,11 @@ import 'package:rainvow_mobile/Screen/AlertWidget/AlertImage.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/LoadingWidget.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/MainWeather.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/RainfallForecast.dart';
-import 'package:rainvow_mobile/Screen/RainfallWidget/RainfallMap.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/ShortForcast.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/SunRiseWidget.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeatherBar.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeekForecast.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
-import 'package:rainvow_mobile/Util/NotificationService.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -171,8 +168,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
   /**
    * 현재 미세먼지 API 불러오기
    * */
-  Future <DustDomain> _getKmaNowDustApi(rect_id, index) async {
-    final resultObj = await ApiCall.getNowDust(rect_id);
+  Future <DustDomain> _getKmaNowDustApi(rect_id, longitude, latitude, index) async {
+    final resultObj = await ApiCall.getNowDust(rect_id, longitude, latitude);
     print('resultObj ${resultObj}');
     final getDomain = DustDomain.fromJson(resultObj);
 
@@ -190,7 +187,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
    *
    * */
   Future _changedCarouSel(index) async{
-    _getKmaNowDustApi(favoriteArray[index].rect_id, index);
+    _getKmaNowDustApi(favoriteArray[index].rect_id, favoriteArray[index].longitude, favoriteArray[index].latitude, index);
     _getKmaNowWeatherApi(favoriteArray[index].longitude, favoriteArray[index].latitude, index);
   }
 
@@ -302,11 +299,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
                                   final body = snapshot1.data as KmaNowDomain;
 
-                                  print('body ${body.temperature}');
-                                  print('body ${body.target_time}');
-
                                   return FutureBuilder(
-                                    future: _getKmaNowDustApi(favoriteArray[i].rect_id, i),
+                                    future: _getKmaNowDustApi(favoriteArray[i].rect_id,favoriteArray[i].longitude, favoriteArray[i].latitude, i),
                                     builder: (context, snapshot2) {
 
                                       if (snapshot2.hasData == false) {
