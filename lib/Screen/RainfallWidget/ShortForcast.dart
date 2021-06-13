@@ -64,7 +64,7 @@ class _ShortForecastState extends State<ShortForecast> {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: new Container(
-          width: 400,
+          width: 420,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(

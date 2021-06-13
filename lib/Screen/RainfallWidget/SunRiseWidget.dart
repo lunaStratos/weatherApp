@@ -85,16 +85,6 @@ class _SunRiseWidget extends State<SunRiseWidget>{
                 ],
               ),
             ),
-
-            Text('일출 : ${sunriseDate.year}년 ${sunriseDate.month}월 ${sunriseDate.day}일 ${sunriseDate.hour}시 ${sunriseDate.minute}분'),
-            Text('일몰 : ${sunsetDate.year}년 ${sunsetDate.month}월 ${sunsetDate.day}일 ${sunsetDate.hour}시 ${sunsetDate.minute}분'),
-            Text('sunNowDegree ${sunNowDegree}'),
-            Text('sunAllDegree ${sunAllDegree}'),
-            Text('sunNow ${sunNow}'),
-            Text('sunriseNum ${sunriseNum}'),
-            Text('sunsetNum ${sunsetNum}'),
-
-
             SizedBox(
               height: 20,
             ),

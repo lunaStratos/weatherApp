@@ -289,7 +289,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                            * */
 
                           Container(
-                            height: 410,
+                            height: 420,
                             child: FutureBuilder(
                               future: _getKmaNowWeatherApi(favoriteArray[i].longitude, favoriteArray[i].latitude,i),
                               builder: (context, snapshot1) {

@@ -98,8 +98,8 @@ class ApiCall {
    * 10일치 날씨 가져옴
    * */
   static Future<dynamic> getKmaMidTermForecast(rect_id) async{
-    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-weather?rect_id=${rect_id}';
-    String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast?rect_id=${rect_id}';
+    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-weather?';
+    String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast?';
     address+= 'rect_id=${rect_id}';
 
     final jsonArray = await Api.callapi(address);
@@ -112,8 +112,8 @@ class ApiCall {
    * 10일치 날씨 가져옴
    * */
   static Future<dynamic> getKmaMidTermForecastTemperate(rect_id) async{
-    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-temperate?rect_id=${rect_id}';
-    String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast-celsius?rect_id=${rect_id}';
+    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-temperate?';
+    String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast-celsius?';
     address+= 'rect_id=${rect_id}';
 
     final jsonArray = await Api.callapi(address);

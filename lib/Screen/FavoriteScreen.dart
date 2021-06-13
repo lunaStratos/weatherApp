@@ -11,6 +11,7 @@ import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteJsonDomain.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertImage.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertNormal.dart';
+import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:rainvow_mobile/Util/color_loader.dart';
@@ -164,6 +165,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
       //저장소 저장
       await prefs.setString("favoriteNowLocation", jsonEncode(fDomain));
 
+
   }
 
   _removeItem(index) async{
@@ -174,6 +176,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
     List<String> strList = favoriteArray.map((item) => jsonEncode(item)).toList();
     await prefs.setStringList('favoriteLocation', strList );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherScreen(x: "")));
   }
 
   @override
@@ -408,65 +411,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           ],
         );
   }
-
-  Widget _buildCard(BuildContext context) => new Container(
-
-    child: new Center(
-      child: new Container(
-        /**
-         * 화면 radious & 배경색 설정
-         * */
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(20.0),
-            topLeft: Radius.circular(20.0),
-            topRight: Radius.circular(20.0),
-            bottomLeft: Radius.circular(20.0),
-          ),
-        ),
-        height: 250.0,
-        width: 300.0,
-        // color: Colors.cyan[50], => decoration.color에 색상 지정시 여기 색상은 사용불가 함
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ColorLoader3(
-                radius: 20.0,
-                dotRadius: 6.0),
-            Text('찾는 중입니다.'),
-            Container(
-              margin: EdgeInsets.all(20),
-              height: 30.0,
-              width: 150.0,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
-                onPressed: () {
-                  //취소하기
-                  Navigator.pop(context,true);
-                },
-                padding: EdgeInsets.all(5.0),
-                color: Color.fromRGBO(0, 160, 227, 1),
-                textColor: Colors.white,
-                child: Text("취소",
-                    style: TextStyle(fontSize: 15)),
-              ),
-            ),
-
-          ],
-        ),
-      ),
-    ),
-  );
-
-
-
-
-
-
 
 
 }
