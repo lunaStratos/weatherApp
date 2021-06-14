@@ -49,12 +49,12 @@ class _WeatherBarState extends State<WeatherBar>{
     print('kmaNowDustObject ${kmaNowDustObject}');
 
     temperature = "${kmaNowWeatherObject.temperature}";
-    rainfall_rate = "${kmaNowWeatherObject.rainfall_rate}";
+    rainfall_rate = "${kmaNowWeatherObject.rainfallRate}";
      humidity = "${kmaNowWeatherObject.humidity}";
-     windStrength = "${kmaNowWeatherObject.wind_strength_code}";
-     windStrengthDesc = "${ kmaNowWeatherObject.wind_strength_code_description}";
-     pm10Desc = "${ kmaNowDustObject.pm10Grade}";
-     pm25Desc = "${ kmaNowDustObject.pm25Grade}";
+     windStrength = "${kmaNowWeatherObject.windStrengthCode}";
+     windStrengthDesc = "${ kmaNowWeatherObject.windStrengthCodeDescription}";
+     pm10Desc = "${ kmaNowDustObject.pm10grade}";
+     pm25Desc = "${ kmaNowDustObject.pm25grade}";
 
     return new Container(
       decoration: BoxDecoration(

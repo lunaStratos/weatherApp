@@ -42,8 +42,8 @@ class _MainWeatherState extends State<MainWeather>{
     print('kmaNowWeatherObject temperature  ${kmaNowWeatherObject.temperature}');
 
     temperature = "${kmaNowWeatherObject.temperature}";
-    rainfall_rate = "${kmaNowWeatherObject.rainfall_rate}";
-    weatherDesc = "${kmaNowWeatherObject.weather_conditions_keyword}";
+    rainfall_rate = "${kmaNowWeatherObject.rainfallRate}";
+    weatherDesc = "${kmaNowWeatherObject.weatherConditionsKeyword}";
 
     return new Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -78,7 +78,7 @@ class _MainWeatherState extends State<MainWeather>{
               SizedBox(
                 height: 100,
                 width: 100,
-                child: Image.asset('${Util.kmaNowImgAddress(kmaNowWeatherObject.weather_conditions)}'),
+                child: Image.asset('${Util.kmaNowImgAddress(kmaNowWeatherObject.weatherConditions)}'),
               ),
               SizedBox(
                 height: 15,

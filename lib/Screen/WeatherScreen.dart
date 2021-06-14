@@ -300,7 +300,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             child: FutureBuilder(
                               future: _getKmaNowWeatherApi(favoriteArray[i].rect_id,i),
                               builder: (context, snapshot1) {
-                                print('snapshot1.data ${snapshot1}');
 
                                 if (snapshot1.hasData == false) {
                                   return LoadingWidget();
@@ -309,7 +308,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   final body = snapshot1.data as KmaNowDomain;
 
                                   return FutureBuilder(
-                                    future: _getKmaNowDustApi(favoriteArray[i].rect_id,favoriteArray[i].longitude, favoriteArray[i].latitude, i),
+                                    future: _getKmaNowDustApi(favoriteArray[i].rect_id, favoriteArray[i].longitude, favoriteArray[i].latitude, i),
                                     builder: (context, snapshot2) {
 
                                       if (snapshot2.hasData == false) {

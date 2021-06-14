@@ -47,7 +47,6 @@ class _ShortForecastState extends State<ShortForecast> {
    * */
   Future <void> _getKmaNowWeatherApi() async {
     final resultArray = await ApiCall.getWeatherUltraForecast(rect_id);
-    print('resultArray ${resultArray}');
     setState(() {
       getdataList = resultArray;
     });
@@ -58,7 +57,7 @@ class _ShortForecastState extends State<ShortForecast> {
   Widget build(BuildContext context) {
 
     buildGraphDangiList();
-    print('getdataList => ${getdataList}');
+    print('getdataList2 => ${getdataList}');
 
     if(getdataList.isNotEmpty){
       return SingleChildScrollView(
@@ -120,8 +119,8 @@ class _ShortForecastState extends State<ShortForecast> {
       var timeAndWeatherCell = DataCell(
           new Column(
               children: [
-                Text('${ (getdataList[k]["target_time"]).toString().substring(0,2) }시'),
-                Image.asset('${Util.kmaForecastImg(getdataList[k]["weather_type"], getdataList[k]["rainfall_type"])}', width: 30, height: 30 ,),
+                Text('${ (getdataList[k]["targetTime"]).toString().substring(0,2) }시'),
+                Image.asset('${Util.kmaForecastImg(getdataList[k]["weatherType"], getdataList[k]["rainfallType"])}', width: 30, height: 30 ,),
               ],
           ) // 오전
 
@@ -137,10 +136,10 @@ class _ShortForecastState extends State<ShortForecast> {
       var windCell = DataCell(
             new Column(
                 children: [
-                    Text('${getdataList[k]["wind_strength"]} m/s'),
+                    Text('${getdataList[k]["windStrength"]} m/s'),
 
                     new RotationTransition(
-                    turns: new AlwaysStoppedAnimation( int.parse(getdataList[k]["wind_direction"]) / 360),
+                    turns: new AlwaysStoppedAnimation( int.parse(getdataList[k]["windDirection"]) / 360),
                     child: Image.asset('assets/images/windforce.png', width: 30, height: 30 ,),
                     )
               ],
@@ -148,7 +147,7 @@ class _ShortForecastState extends State<ShortForecast> {
       );
       windList.add(windCell);
 
-      var temperatureCell = DataCell(Text('${getdataList[k]["temperate"]}도'));
+      var temperatureCell = DataCell(Text('${getdataList[k]["temperature"]}도'));
       temperatureList.add(temperatureCell);
 
     }

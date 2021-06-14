@@ -8,7 +8,7 @@ class Kma3TimeDomain{
   String rainfall_rate;
   String weather_type;
   String rainfall_type_description;
-  String temperate;
+  String temperature;
 
 
   Kma3TimeDomain({
@@ -20,7 +20,7 @@ class Kma3TimeDomain{
     required this.rainfall_rate,
     required this.weather_type,
     required this.rainfall_type_description,
-    required this.temperate,
+    required this.temperature,
   });
 
   factory Kma3TimeDomain.fromJson(Map<String, dynamic> json){
@@ -33,7 +33,7 @@ class Kma3TimeDomain{
       rainfall_rate : json['rainfall_rate'] ?? "",
       weather_type : json['weather_type'] ?? "",
       rainfall_type_description : json['rainfall_type_description'] ?? "",
-      temperate : json['temperate'] ?? "",
+      temperature : json['temperature'] ?? "",
     );
   }
 
@@ -48,7 +48,7 @@ class Kma3TimeDomain{
       'rainfall_rate': this.rainfall_rate,
       'weather_type': this.weather_type,
       'rainfall_type_description': this.rainfall_type_description,
-      'temperate': this.temperate,
+      'temperature': this.temperature,
     };
   }
 

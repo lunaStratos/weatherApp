@@ -54,7 +54,7 @@ class _WeekForecastState extends State<WeekForecast>{
    * 현재날씨 API 불러오기
    * */
   Future<String> _getKmaWeekTempWeatherApi() async {
-    final resultArray = await ApiCall.getKmaMidTermForecastTemperate(rect_id);
+    final resultArray = await ApiCall.getKmaMidTermForecastTemperature(rect_id);
     print('resultObj _getKmaWeekTempWeatherApi ${resultArray}');
     getMidtermTempList = resultArray;
 

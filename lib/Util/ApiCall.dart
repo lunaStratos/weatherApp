@@ -109,8 +109,8 @@ class ApiCall {
    * 주간날씨 온도
    * 10일치 날씨 가져옴
    * */
-  static Future<dynamic> getKmaMidTermForecastTemperate(rect_id) async{
-    String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-temperate?';
+  static Future<dynamic> getKmaMidTermForecastTemperature(rect_id) async{
+    String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-temperature?';
     //String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast-celsius?';
     address+= 'rect_id=${rect_id}';
 

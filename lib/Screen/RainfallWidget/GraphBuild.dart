@@ -10,7 +10,7 @@ class GraphBuild extends StatelessWidget{
   List <dynamic> getRainvowList = [];
   List <Kma3TimeDomain> getKmaWeatherMakeList = [];
 
-  double tempTemperate = 28;
+  double tempTemperature = 28;
 
   GraphBuild({required this.getKmaWeatherList, required this.getRainvowList});
   double maxY = 0;
@@ -22,11 +22,11 @@ class GraphBuild extends StatelessWidget{
     getKmaWeatherList = getKmaWeatherList.sublist(0,4);
 
     for(int i=0 ; i< getRainvowList.length ; i++){
-      tempTemperate > maxY ? maxY = tempTemperate : maxY;
+      tempTemperature > maxY ? maxY = tempTemperature : maxY;
       // int.parse(getRainvowList[i]['rainfall_rate']) > maxY ? maxY = int.parse(getRainvowList[i]['rainfall_rate']): "";
     }
     for(int i=0 ; i< getKmaWeatherList.length ; i++){
-      double.parse(getKmaWeatherList[i].temperate) > maxY ? maxY = double.parse(getKmaWeatherList[i].temperate): "" ;
+      double.parse(getKmaWeatherList[i].temperature) > maxY ? maxY = double.parse(getKmaWeatherList[i].temperature): "" ;
     }
 
     print('maxY ${maxY}');
@@ -247,7 +247,7 @@ class GraphBuild extends StatelessWidget{
       double rainfall_amount = getRainvowList[i]['rainfall_amount'];
 
       double idx = (i == 0 ? 0.0 : i+0.0);
-      lineRainvowList.add(FlSpot(idx, tempTemperate-i));
+      lineRainvowList.add(FlSpot(idx, tempTemperature - i));
 
       bool isReal = false;
       // addOn
@@ -271,16 +271,16 @@ class GraphBuild extends StatelessWidget{
     }
 
     for(int i = 0 ; i< getKmaWeatherTempList.length ; i++){
-      print('getKmaWeatherTempList ${getKmaWeatherTempList[i].target_time} ${getKmaWeatherTempList[i].temperate} ${i}');
+      print('getKmaWeatherTempList ${getKmaWeatherTempList[i].target_time} ${getKmaWeatherTempList[i].temperature} ${i}');
 
       String target_time = getKmaWeatherTempList[i].target_time; //HHmm
       String rainfall_amount = getKmaWeatherTempList[i].rainfall_mm;
       String rainfall_rate = getKmaWeatherTempList[i].rainfall_rate;
-      String temperate = getKmaWeatherTempList[i].temperate;
+      String temperature = getKmaWeatherTempList[i].temperature;
 
       double idx = (i == 0 ? 0.0 : i+0.0);
 
-      lineKmaWeatherList.add(FlSpot(idx, double.parse(temperate)));
+      lineKmaWeatherList.add(FlSpot(idx, double.parse(temperature)));
     }
 
 
