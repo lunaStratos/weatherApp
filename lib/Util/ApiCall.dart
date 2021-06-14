@@ -63,7 +63,6 @@ class ApiCall {
     String address = 'http://rainvow.net/api/service/appapi/kma-weather-3hour?rect_id=${rect_id}';
     //String address = 'http://rainvow.net/api/service/weather/weather-kma-forecast?rect_id=${rect_id}';
     final jsonArray = await Api.callapi(address);
-    http://rainvow.net/api/service/appapi/kma-weather-dust
     return jsonArray;
   }
 
