@@ -13,8 +13,8 @@ class ApiCall {
    * 관심지역 찾기시 사용
    * */
   static Future<List> getFavoriteSearchList(searchLocationText) async{
-      // String address = 'http://rainvow.net/api/service/api/address-search-app?address='+searchLocationText;
-      String address = 'http://rainvow.net/api/service/weather/weather-address-search-app?address='+searchLocationText;
+      String address = 'http://rainvow.net/api/service/appapi/address-search-app?address='+searchLocationText;
+      //String address = 'http://rainvow.net/api/service/weather/weather-address-search-app?address='+searchLocationText;
       final jsonArray = await Api.callapi(address);
       return jsonArray;
   }
@@ -24,8 +24,8 @@ class ApiCall {
    * 현위치 검색시 rect_id 사용
    * */
   static Future<dynamic> getMylocationInfo(longitude, latitude) async{
-    // String address = 'http://rainvow.net/api/service/api/mylocation-rectid-search?longitude=${longitude}&latitude=${latitude}';
-    String address = 'http://rainvow.net/api/service/weather/weather-mylocation-search?longitude=${longitude}&latitude=${latitude}';
+    String address = 'http://rainvow.net/api/service/appapi/rainvow-rectid-search?longitude=${longitude}&latitude=${latitude}';
+    //String address = 'http://rainvow.net/api/service/weather/weather-mylocation-search?longitude=${longitude}&latitude=${latitude}';
     final jsonObj = await Api.callapiObject(address);
     return jsonObj;
   }
@@ -36,9 +36,10 @@ class ApiCall {
    * 기상청 초단기 - 현재날씨
    * 현재날씨
    * */
-  static Future<dynamic> getNowKmaWeather(longitude, latitude) async{
-    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-now?rect_id=${rectid}';
-    String address = 'http://rainvow.net/api/service/weather/weather-kma-now-longlat?longitude=${longitude}&latitude=${latitude}';
+  static Future<dynamic> getNowKmaWeather(rectid) async{
+    print('rectid ${rectid}');
+    String address = 'http://rainvow.net/api/service/appapi/kma-weather-now?rect_id=${rectid}';
+    //String address = 'http://rainvow.net/api/service/weather/weather-kma-now-longlat?longitude=${longitude}&latitude=${latitude}';
     final jsonObject = await Api.callapiObject(address);
     return jsonObject;
   }
@@ -48,8 +49,8 @@ class ApiCall {
    * 날씨바 사용
    * */
   static Future<dynamic> getNowDust(rect_id, longitude, latitude) async{
-    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-dust?rect_id=${rect_id}&longitude=${longitude}&latitude=${latitude}';
-    String address = 'http://rainvow.net/api/service/weather/weather-airkorea-dust?rect_id=${rect_id}';
+    String address = 'http://rainvow.net/api/service/appapi/kma-weather-dust?rect_id=${rect_id}&longitude=${longitude}&latitude=${latitude}';
+    //String address = 'http://rainvow.net/api/service/weather/weather-airkorea-dust?rect_id=${rect_id}';
     final jsonArray = await Api.callapiObject(address);
     return jsonArray;
   }
@@ -57,24 +58,22 @@ class ApiCall {
   /**
    * 3시간 단위 예보 - rect_id
    * 강수예보 그래프 사용
-   * http://rainvow.net/api/service/weather/weather-kma-forecast?rect_id=4102000004265
    * */
   static Future<List> getWeatherForecast(rect_id) async{
-    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-3hour?rect_id=${rect_id}';
-    String address = 'http://rainvow.net/api/service/weather/weather-kma-forecast?rect_id=${rect_id}';
+    String address = 'http://rainvow.net/api/service/appapi/kma-weather-3hour?rect_id=${rect_id}';
+    //String address = 'http://rainvow.net/api/service/weather/weather-kma-forecast?rect_id=${rect_id}';
     final jsonArray = await Api.callapi(address);
-
+    http://rainvow.net/api/service/appapi/kma-weather-dust
     return jsonArray;
   }
 
   /**
    * 레인보우 예보 - rect_id, nowtime
    * 강수예보 그래프 사용
-   * http://rainvow.net/api/service/weather/weather-rainvow-forecast?rect_id=4102000004265
    * */
   static Future<List> getRainvowInfoForecast(rect_id) async{
-    //String address = 'http://rainvow.net/api/service/appapi/rainvow-weather-1hour?rect_id=${rect_id}&nowtime=${Util.dateNowStr()}';
-    String address = 'http://rainvow.net/api/service/weather/weather-rainvow-forecast?rect_id=${rect_id}&nowtime=${Util.dateNowStr()}';
+    String address = 'http://rainvow.net/api/service/appapi/rainvow-weather-1hour?rect_id=${rect_id}&nowtime=${Util.dateNowStr()}';
+    //String address = 'http://rainvow.net/api/service/weather/weather-rainvow-forecast?rect_id=${rect_id}&nowtime=${Util.dateNowStr()}';
     final jsonArray = await Api.callapi(address);
     return jsonArray;
   }
@@ -85,8 +84,8 @@ class ApiCall {
    * 단기예보 표시
    * */
   static Future<List> getWeatherUltraForecast(rect_id) async{
-    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-1hour?rect_id=${rect_id}';
-    String address = 'http://rainvow.net/api/service/weather/weather-kma-ultra-forecast-rectid?rect_id=${rect_id}';
+    String address = 'http://rainvow.net/api/service/appapi/kma-weather-1hour?rect_id=${rect_id}';
+    //String address = 'http://rainvow.net/api/service/weather/weather-kma-ultra-forecast-rectid?rect_id=${rect_id}';
     final jsonArray = await Api.callapi(address);
     return jsonArray;
   }
@@ -98,8 +97,8 @@ class ApiCall {
    * 10일치 날씨 가져옴
    * */
   static Future<dynamic> getKmaMidTermForecast(rect_id) async{
-    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-weather?';
-    String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast?';
+    String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-weather?';
+    //String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast?';
     address+= 'rect_id=${rect_id}';
 
     final jsonArray = await Api.callapi(address);
@@ -112,8 +111,8 @@ class ApiCall {
    * 10일치 날씨 가져옴
    * */
   static Future<dynamic> getKmaMidTermForecastTemperate(rect_id) async{
-    //String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-temperate?';
-    String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast-celsius?';
+    String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-temperate?';
+    //String address = 'http://rainvow.net/api/service/weather/weather-midterm-forecast-celsius?';
     address+= 'rect_id=${rect_id}';
 
     final jsonArray = await Api.callapi(address);

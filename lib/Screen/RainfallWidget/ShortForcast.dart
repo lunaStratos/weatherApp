@@ -47,7 +47,7 @@ class _ShortForecastState extends State<ShortForecast> {
    * */
   Future <void> _getKmaNowWeatherApi() async {
     final resultArray = await ApiCall.getWeatherUltraForecast(rect_id);
-
+    print('resultArray ${resultArray}');
     setState(() {
       getdataList = resultArray;
     });

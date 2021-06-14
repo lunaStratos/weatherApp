@@ -42,8 +42,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String x = "";
   _WeatherScreenState({required this.x});
 
-
-  Widget _loading = CircularProgressIndicator();  // Default Body
   bool flag = false;
   List<bool> allFlag = [false, false];
 
@@ -136,8 +134,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
     String kmaX  = result2['kmaX'];
     String kmaY = result2['kmaY'];
 
+    //이름 현위치 고정
     favoriteArray.add(
-        FavoriteDomain(address: "", dongName: "", longitude: longitude,
+        FavoriteDomain(address: "현위치", dongName: "", longitude: longitude,
             latitude: latitude, kmaX: kmaX, kmaY: kmaY, rect_id: rect_id,
             kma_point_id: kma_point_id, weatherDescription: "", weatherConditions: "",
             rainfallRate: "", celsius: "20", imgSrc: "", alarmTime: "0800", use: true)
@@ -152,10 +151,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
   /**
    * 현재날씨 API 불러오기
    * */
-  Future <KmaNowDomain> _getKmaNowWeatherApi(longitude, latitude, index) async {
-    final resultObj = await ApiCall.getNowKmaWeather(longitude, latitude);
+  Future <KmaNowDomain> _getKmaNowWeatherApi(rect_id, index) async {
+    final resultObj = await ApiCall.getNowKmaWeather(rect_id);
     final getDomain = KmaNowDomain.fromJson(resultObj);
-    print('resultObj Now ${longitude} ${latitude} ${resultObj}  ');
+    print('resultObj Now ${rect_id} ${resultObj}  ');
 
     if(getKmaNowWeatherList.asMap()[index] == null ){
       getKmaNowWeatherList.add(getDomain);
@@ -188,7 +187,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
    * */
   Future _changedCarouSel(index) async{
     _getKmaNowDustApi(favoriteArray[index].rect_id, favoriteArray[index].longitude, favoriteArray[index].latitude, index);
-    _getKmaNowWeatherApi(favoriteArray[index].longitude, favoriteArray[index].latitude, index);
+    _getKmaNowWeatherApi(favoriteArray[index].latitude, index);
   }
 
 
@@ -236,6 +235,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   }
 
+  /**
+   * 점 찍기
+   * */
   List<Widget> _buildDots(BuildContext context){
 
     List<Widget> arr = [];
@@ -268,6 +270,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return arr;
   }
 
+
+
+  /**
+   * 메인화면 구성.
+   * */
   List<Widget> _buildScreen(BuildContext context){
     List<Widget> screenList = [];
 
@@ -291,8 +298,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           Container(
                             height: 420,
                             child: FutureBuilder(
-                              future: _getKmaNowWeatherApi(favoriteArray[i].longitude, favoriteArray[i].latitude,i),
+                              future: _getKmaNowWeatherApi(favoriteArray[i].rect_id,i),
                               builder: (context, snapshot1) {
+                                print('snapshot1.data ${snapshot1}');
+
                                 if (snapshot1.hasData == false) {
                                   return LoadingWidget();
                                 }else{

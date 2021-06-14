@@ -14,7 +14,6 @@ import 'package:rainvow_mobile/Screen/AlertWidget/AlertNormal.dart';
 import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
-import 'package:rainvow_mobile/Util/color_loader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -120,7 +119,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   _refresh() async{
 
     var result = favoriteArray.map((item) async{
-      final getItem = await ApiCall.getNowKmaWeather(item.longitude, item.latitude);
+      final getItem = await ApiCall.getNowKmaWeather(item.rect_id);
       print(getItem);
       item.celsius = getItem['temperature'];
       item.weatherConditions = getItem['weather_conditions'];

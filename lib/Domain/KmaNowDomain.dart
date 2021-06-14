@@ -11,9 +11,9 @@ class KmaNowDomain{
   String wind_strength;
   String wind_strength_code;
   String wind_strength_code_description;
-  int humidity;
-  String kmaX;
-  String kmaY;
+  String humidity;
+  int kmaX;
+  int kmaY;
 
   KmaNowDomain({
     required this.kma_point_id,
@@ -45,9 +45,9 @@ class KmaNowDomain{
       wind_strength: json['wind_strength']?? "",
       wind_strength_code: json['wind_strength_code']?? "",
       wind_strength_code_description : json['wind_strength_code_description']?? "",
-      humidity: json['humidity']?? 0,
-      kmaX: json['kmaX']?? "",
-      kmaY: json['kmaY']?? "",
+      humidity: json['humidity']?? "54",
+      kmaX: json['kmaX']?? 60,
+      kmaY: json['kmaY']?? 127,
 
     );
   }
