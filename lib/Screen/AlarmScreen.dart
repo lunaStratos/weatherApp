@@ -3,16 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
-import 'package:rainvow_mobile/Domain/KmaNowDomain.dart';
 import 'package:rainvow_mobile/Screen/AlarmModifyScreen.dart';
-import 'package:rainvow_mobile/Screen/AlertWidget/AlertNormal.dart';
-import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
-import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
