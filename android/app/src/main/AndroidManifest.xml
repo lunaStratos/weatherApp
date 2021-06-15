@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:label="rainvow_mobile"
+        android:label="레인보우"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
 

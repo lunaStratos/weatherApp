@@ -10,8 +10,6 @@ import 'package:rainvow_mobile/Util/Dependencys.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await NotificationService().init();
-
     runApp(
     new MyApp()
     );
@@ -40,7 +38,7 @@ class MyAppState extends State<MyApp> {
       // theme: new ThemeData(
       //   primarySwatch: Colors.deepOrange,
       // ),
-      home: new HomePage(),
+      home: new HomePage(index: -100,),
     );
   }
 }

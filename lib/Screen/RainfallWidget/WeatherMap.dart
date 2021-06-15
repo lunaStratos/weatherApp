@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -7,23 +9,23 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
  * desc: 모바일 웹 강우지도 표시
  * 웹뷰 - 위경도를 파라메터로 날린후 사용.
  * */
-class RainfallMap extends StatefulWidget {
+class WeatherMap extends StatefulWidget {
 
   @override
-  RainfallMapState createState() => RainfallMapState(longitude: longitude, latitude: latitude);
+  WeatherMapState createState() => WeatherMapState(longitude: longitude, latitude: latitude);
 
   String longitude = "";
   String latitude = "";
 
-  RainfallMap({required this.longitude, required this.latitude});
+  WeatherMap({required this.longitude, required this.latitude});
 
 }
 
-class RainfallMapState extends State<RainfallMap>{
+class WeatherMapState extends State<WeatherMap>{
 
   String longitude = "";
   String latitude = "";
-  RainfallMapState({required this.longitude, required this.latitude});
+  WeatherMapState({required this.longitude, required this.latitude});
 
 
   @override
@@ -51,10 +53,12 @@ class RainfallMapState extends State<RainfallMap>{
       //   useWideViewPort: true,
       //   withOverviewMode: true,
       // ),
-      child: InAppWebView(
-          initialUrlRequest: URLRequest(url: Uri.parse("http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}")),
 
-      ),
+        child: InAppWebView(
+          initialUrlRequest: URLRequest(url: Uri.parse("http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}")),
+          gestureRecognizers: Set()..add(Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer())),
+        ),
+
 
 
     );

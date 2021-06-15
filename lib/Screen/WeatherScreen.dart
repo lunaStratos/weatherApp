@@ -18,6 +18,7 @@ import 'package:rainvow_mobile/Screen/RainfallWidget/RainfallForecast.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/ShortForcast.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/SunRiseWidget.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeatherBar.dart';
+import 'package:rainvow_mobile/Screen/RainfallWidget/WeatherMap.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeekForecast.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
@@ -30,17 +31,17 @@ import 'package:shared_preferences/shared_preferences.dart';
  * */
 class WeatherScreen extends StatefulWidget {
 
-  String x = "";
-  WeatherScreen({required this.x});
+  int idx = 0;
+  WeatherScreen({required this.idx});
 
   @override
-  _WeatherScreenState createState() => _WeatherScreenState(x: x);
+  _WeatherScreenState createState() => _WeatherScreenState(idx: idx);
 
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  String x = "";
-  _WeatherScreenState({required this.x});
+  int idx = 0;
+  _WeatherScreenState({required this.idx});
 
   bool flag = false;
   List<bool> allFlag = [false, false];
@@ -74,13 +75,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   initState(){
     super.initState();
-    _loadFavoriteLocationData().then((value)async{
+    _loadFavoriteLocationData().then((value) async{
       print('value ${value}');
           }).then((value) => {
       print('value ${value}')
     });
+    if(idx < 0 ){
+      setState(() {
+        _current = 0;
+      });
+    }else{
+      setState(() {
+        _current = idx;
+      });
+    }
+    print("_current ${_current} ${idx}");
 
-    print('x ${x}');
+
   }
 
   /**
@@ -93,13 +104,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     var getList = await prefs.getStringList('favoriteLocation') ?? [];
     print('_loadFavoriteLocationData ${getList} ${getList.isNotEmpty} ${getLocationPermission}');
 
-    if( getList.isNotEmpty) {
-      setState(() {
-        favoriteArray = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
-      });
-      return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
-    }else{
-      //위치권한
+
+    if(idx < 0){
       if(getLocationPermission){
         favoriteArray = await _getPosition();
         setState(() {
@@ -110,10 +116,40 @@ class _WeatherScreenState extends State<WeatherScreen> {
         showDialog(context: context, builder:
             (BuildContext context) {
           return AlertImage(title: "권한이 없습니다.", contents: "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
-          }
+        }
         );
         return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
       }
+
+    }else{
+
+      if( getList.isNotEmpty) {
+        setState(() {
+          favoriteArray = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+        });
+        return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+
+      }else{
+
+        if(getLocationPermission){
+          favoriteArray = await _getPosition();
+          setState(() {
+            favoriteArray;
+          });
+          return favoriteArray;
+        }else{
+          showDialog(context: context, builder:
+              (BuildContext context) {
+            return AlertImage(title: "권한이 없습니다.", contents: "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
+          }
+          );
+          return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+        }
+
+
+      }
+
+
     }
 
   }
@@ -122,10 +158,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
   /**
    * 현위치 클릭
    * */
-  Future<List<FavoriteDomain>> _getPosition () async{
+  Future<List<FavoriteDomain>> _getPosition() async{
     var result = await Util().determinePosition() as Position;
     String latitude = result.latitude.toString();
-    String longitude = "127";
+    String longitude = "127"; //result.longitude.toString();
     var resultMylocaion = await ApiCall.getMylocationInfo(longitude, latitude);
 
     var result2 = resultMylocaion;
@@ -187,68 +223,115 @@ class _WeatherScreenState extends State<WeatherScreen> {
    * */
   Future _changedCarouSel(index) async{
     _getKmaNowDustApi(favoriteArray[index].rect_id, favoriteArray[index].longitude, favoriteArray[index].latitude, index);
-    _getKmaNowWeatherApi(favoriteArray[index].latitude, index);
+    _getKmaNowWeatherApi(favoriteArray[index].rect_id, index);
   }
 
 
 
   @override
   Widget build(BuildContext context) {
+    print('idx => ${idx}');
     print('init start ${flag}');
     print('favoriteArray.length ==?> ${favoriteArray.length} ');
     print('getKmaNowWeatherList ==?> ${getKmaNowWeatherList.length} ');
     print('getKmaNowDustList ==?> ${getKmaNowDustList.length} ');
 
 
-    return new Stack(
-      children: [
-        CarouselSlider(
-        items: _buildScreen(context)
-            /**
-             * 아이템 for문 들어감
-             * */
-        ,
-        options: CarouselOptions(
-          autoPlay: false,
-          height: MediaQuery.of(context).size.height, // 풀사이즈
-          viewportFraction: 1,                        // 풀사이즈(양옆이 안보이게 함)
-          enableInfiniteScroll: false,                // 무한스크롤 없엠
-          /**
-           * 페이지 변경시 index 저장
-           * */
-          onPageChanged: (index, reason) {
-            _changedCarouSel(index);
-            setState(() {
-              _current = index;
-            });
-          },
-        ),
-      ),
+    /**
+     * DESC : [idx]
+     * -1 현위치
+     * -2 현위치 버튼 (새창)
+     * */
+    if(idx == -1){
+      return Scaffold(
+          body: _buildStack(context)
+      );
+    }else if(idx == -2){
+      return Scaffold(
+          appBar: AppBar(
+            title: Text('현위치'),
+            centerTitle: true,
+          ),
+          body: _buildStack(context)
+      );
+    }else{
+      return Scaffold(
+          body: _buildStack(context)
+      );
+    }
 
-       new Center(
-         child:  new Column(
-           children: _buildDots(context)
-         ),
-       )
-      ]
-    );
 
   }
 
+  Stack _buildStack(BuildContext context){
+
+
+    return new Stack(
+        children: [
+          CarouselSlider(
+            items: _buildScreen(context)
+            /**
+             * 아이템 for문 들어감
+             * */
+            ,
+            options: CarouselOptions(
+              autoPlay: false,
+              height: MediaQuery.of(context).size.height, // 풀사이즈
+              viewportFraction: 1,                        // 풀사이즈(양옆이 안보이게 함)
+              enableInfiniteScroll: false,                // 무한스크롤 없엠
+              /**
+               * 페이지 변경시 index 저장
+               * */
+              onPageChanged: (index, reason) {
+                print('index ${index}');
+                _changedCarouSel(index);
+                setState(() {
+                  _current = index;
+                });
+              },
+              initialPage: _current+1
+            ),
+          ),
+
+          new Center(
+            child:  new Container(
+                child: _buildDots(context)
+            ),
+          )
+        ]
+    );
+  }
   /**
    * 점 찍기
    * */
-  List<Widget> _buildDots(BuildContext context){
-
-    List<Widget> arr = [];
+  Widget _buildDots(BuildContext context){
+    var xScreen;
+    
     if(favoriteArray.length == 0 ){
-      var xScreen = Container(
-        child: Text('NONE!'),
+      xScreen = Container(
+        constraints: BoxConstraints(
+            maxHeight: 400.0,
+            maxWidth: 300.0,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/no_permission_test.jpg'),
+            Container(
+              child: Text(
+                '관심지역 → 도로명을 검색하여 위치를 추가해 주십시오',
+                style: TextStyle(fontSize: 20, ),
+              ),
+
+
+            ),
+
+          ],
+        ),
       );
-      arr.add(xScreen);
     }else{
 
-        var xScreen = DotsIndicator(
+        xScreen = DotsIndicator(
             dotsCount: favoriteArray.length,
             position: _current.toDouble(),
             decorator: DotsDecorator(
@@ -257,17 +340,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
               activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
             onTap: (position) {
+              print('position ${position}');
               setState(() =>
               _current = position.toInt()
               );
             }
         );
 
-        arr.add(xScreen);
-
     }
 
-    return arr;
+    return xScreen;
   }
 
 
@@ -286,124 +368,130 @@ class _WeatherScreenState extends State<WeatherScreen> {
           child: SingleChildScrollView(
             child: new Container(
                 color: Colors.blueGrey[100],
-                child: new Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // horizontal : 왼쪽 오른쪽띄우기, vertical: 위아래 띄우기
-                    child: new Container(
-                      child: new Column(
-                        children: [
-                          /**
-                           * =======================[1. 메인날씨 ]=====================
-                           * */
+                child: new Column(
+                  children: [
+                    new Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // horizontal : 왼쪽 오른쪽띄우기, vertical: 위아래 띄우기
+                        child: new Container(
+                          child: new Column(
+                            children: [
+                              /**
+                               * =======================[1. 메인날씨 ]=====================
+                               * */
 
-                          Container(
-                            height: 420,
-                            child: FutureBuilder(
-                              future: _getKmaNowWeatherApi(favoriteArray[i].rect_id,i),
-                              builder: (context, snapshot1) {
+                              Container(
+                                height: 440,
+                                child: FutureBuilder(
+                                  future: _getKmaNowWeatherApi(favoriteArray[i].rect_id,i),
+                                  builder: (context, snapshot1) {
 
-                                if (snapshot1.hasData == false) {
-                                  return LoadingWidget();
-                                }else{
+                                    if (snapshot1.hasData == false) {
+                                      return LoadingWidget();
+                                    }else{
 
-                                  final body = snapshot1.data as KmaNowDomain;
+                                      final body = snapshot1.data as KmaNowDomain;
 
-                                  return FutureBuilder(
-                                    future: _getKmaNowDustApi(favoriteArray[i].rect_id, favoriteArray[i].longitude, favoriteArray[i].latitude, i),
-                                    builder: (context, snapshot2) {
+                                      return FutureBuilder(
+                                        future: _getKmaNowDustApi(favoriteArray[i].rect_id, favoriteArray[i].longitude, favoriteArray[i].latitude, i),
+                                        builder: (context, snapshot2) {
 
-                                      if (snapshot2.hasData == false) {
-                                        return LoadingWidget();
-                                      }else{
+                                          if (snapshot2.hasData == false) {
+                                            return LoadingWidget();
+                                          }else{
 
-                                        final dustBody = (getKmaNowDustList.asMap()[i] == null) ? snapshot2.data as DustDomain: getKmaNowDustList[i];
+                                            final dustBody = (getKmaNowDustList.asMap()[i] == null) ? snapshot2.data as DustDomain: getKmaNowDustList[i];
 
-                                        return new Column(
-                                          children: [
-
-                                            MainWeather(
-                                                rect_id : favoriteArray[i].rect_id,
+                                            return new Column(
+                                              children: [
+                                                Text('${favoriteArray[i].address}'),
+                                                MainWeather(
+                                                    rect_id : favoriteArray[i].rect_id,
                                                     kmaNowWeatherObject: body
-                                            ),
-                                            /**
-                                             * =======================[2.날씨바]=====================
-                                             * */
-                                            WeatherBar(
-                                              rect_id: favoriteArray[i].rect_id,
-                                              kmaNowWeatherObject: getKmaNowWeatherList[i],
-                                              kmaNowDustObject: dustBody
-                                            )
-                                          ],
-                                        );
-                                      }
+                                                ),
+                                                /**
+                                                 * =======================[2.날씨바]=====================
+                                                 * */
+                                                WeatherBar(
+                                                    rect_id: favoriteArray[i].rect_id,
+                                                    kmaNowWeatherObject: getKmaNowWeatherList[i],
+                                                    kmaNowDustObject: dustBody
+                                                )
+                                              ],
+                                            );
+                                          }
 
-                                    },
-                                  );
-                                }
-                              },
+                                        },
+                                      );
+                                    }
+                                  },
 
-                            ),
+                                ),
+                              ),
+
+
+
+
+                              SizedBox(
+                                height: 15,
+                                width: 1,
+                              ),
+                              /**
+                               * =======================[3. 단기예보]=====================
+                               * */
+                              ShortForecast(rect_id:favoriteArray[i].rect_id),
+                              SizedBox(
+                                height: 15,
+                                width: 1,
+                              ),
+                              /**
+                               * =======================[4.강수예보 그래 ]=====================
+                               * */
+                              RainfallForecast(rect_id: favoriteArray[i].rect_id),
+
+                              /**
+                               * =======================[5. 주간예보]=====================
+                               * */
+                              SizedBox(
+                                height: 15,
+                                width: 1,
+                              ),
+                              WeekForecast(rect_id: favoriteArray[i].rect_id),
+
+                              /**
+                               * =======================[6. 강우지도 : 웹뷰]=====================
+                               * */
+                              SizedBox(
+                                height: 15,
+                                width: 1,
+                              ),
+                              WeatherMap(longitude: favoriteArray[i].longitude, latitude:favoriteArray[i].latitude),
+
+                              SizedBox(
+                                height: 15,
+                                width: 1,
+                              ),
+                              /**
+                               * =======================[7. 일몰일출]=====================
+                               * */
+                              SizedBox(
+                                height: 15,
+                                width: 1,
+                              ),
+
+                              SunRiseWidget(longitude: favoriteArray[i].longitude, latitude:  favoriteArray[i].latitude),
+
+                              SizedBox(
+                                height: 15,
+                                width: 1,
+                              ),
+                              Text('자료 기상청, 레인보우')
+                            ],
                           ),
+                        )
 
+                    ),
 
-
-
-                          SizedBox(
-                            height: 15,
-                            width: 1,
-                          ),
-                          /**
-                           * =======================[3. 단기예보]=====================
-                           * */
-                          ShortForecast(rect_id:favoriteArray[i].rect_id),
-                          SizedBox(
-                            height: 15,
-                            width: 1,
-                          ),
-                          /**
-                           * =======================[4.강수예보 그래 ]=====================
-                           * */
-                          RainfallForecast(rect_id: favoriteArray[i].rect_id),
-
-                          /**
-                           * =======================[5. 주간예보]=====================
-                           * */
-                          SizedBox(
-                            height: 15,
-                            width: 1,
-                          ),
-                          WeekForecast(rect_id: favoriteArray[i].rect_id),
-
-                          /**
-                           * =======================[6. 강우지도 : 웹뷰]=====================
-                           * */
-                          SizedBox(
-                            height: 15,
-                            width: 1,
-                          ),
-                          //RainfallMap(longitude: favoriteArray[i].longitude, latitude:favoriteArray[i].latitude),
-                          SizedBox(
-                            height: 15,
-                            width: 1,
-                          ),
-                          /**
-                           * =======================[7. 일몰일출]=====================
-                           * */
-                         SizedBox(
-                            height: 15,
-                            width: 1,
-                          ),
-
-                          SunRiseWidget(longitude: favoriteArray[i].longitude, latitude:  favoriteArray[i].latitude),
-
-                          SizedBox(
-                            height: 15,
-                            width: 1,
-                          ),
-                          Text('자료 기상청, 레인보우')
-                        ],
-                      ),
-                    )
-
+                  ],
                 )
             ),
           ),

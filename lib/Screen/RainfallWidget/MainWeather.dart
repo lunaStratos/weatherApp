@@ -23,6 +23,7 @@ class _MainWeatherState extends State<MainWeather>{
   String rect_id = "4102000004265";
   KmaNowDomain kmaNowWeatherObject;
 
+  String address = "";
   String temperature = "";
   String rainfall_rate = "";
   String weatherDesc = "";

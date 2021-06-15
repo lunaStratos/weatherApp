@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 
 import 'package:rainvow_mobile/Screen/FavoriteScreen.dart';
 import 'package:rainvow_mobile/Screen/MapScreen.dart';
 import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
 import 'package:rainvow_mobile/Screen/SettingScreen.dart';
-import 'package:share/share.dart'; // 공유기능
+import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // 공유기능
 
 class DrawerItem {
   String title;
@@ -16,6 +20,11 @@ class DrawerItem {
  * 스크린 타이틀 설정
  * */
 class HomePage extends StatefulWidget {
+
+  int index = 0;
+
+  HomePage({required this.index});
+
   final drawerItems = [
     new DrawerItem("강우지도", Icons.umbrella),
     new DrawerItem("관심지역", Icons.star),
@@ -25,7 +34,7 @@ class HomePage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return new HomePageState();
+    return new HomePageState(index: index);
   }
 }
 
@@ -33,12 +42,41 @@ class HomePage extends StatefulWidget {
  * 스크린 설정 
  * */
 class HomePageState extends State<HomePage> {
+
+  int index = 0;
   int _selectedDrawerIndex = 0;
+  late SharedPreferences prefs;
+  List <FavoriteDomain> favoriteArray = [];
+
+  HomePageState({required this.index});
+
+  @override
+  initState(){
+    super.initState();
+    _loadFavoriteLocationData();
+
+  }
+
+
+  Future<List<FavoriteDomain>> _loadFavoriteLocationData() async{
+    prefs = await SharedPreferences.getInstance();
+    final getLocationPermission = prefs.getBool('locationPermission') ?? false;
+    var getList = await prefs.getStringList('favoriteLocation') ?? [];
+
+    if( getList.isNotEmpty) {
+      setState(() {
+        favoriteArray = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+      });
+      return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+    }else
+      return [];
+  }
+
 
   _getDrawerFragment(int pos) {
     switch (pos) {
       case 0: // 강우지도
-        return new WeatherScreen(x: "",);
+        return new WeatherScreen(idx: index,);
       case 1: // 관심지역
         return new FavoriteScreen();
       case 2: // 설정
@@ -58,8 +96,10 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    print('index=>>> ${index}');
     List<Widget> drawerOptions = [];
-    //Let's create drawer list items. Each will have an icon and text
+
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
       drawerOptions.add(
@@ -71,6 +111,7 @@ class HomePageState extends State<HomePage> {
           )
       );
     }
+
     drawerOptions.add(
         new ListTile(
           leading: new Icon(Icons.share),
@@ -81,11 +122,18 @@ class HomePageState extends State<HomePage> {
           },
         )
     );
-    //Let's scaffold our homepage
+
+    String setTitleStr = widget.drawerItems[_selectedDrawerIndex].title;
+    // if (_selectedDrawerIndex == 0){
+    //   if(favoriteArray.length != 0){
+    //     setTitleStr = favoriteArray[index].address;
+    //   }
+    // }
+
     return new Scaffold(
       appBar: new AppBar(
         // We will dynamically display title of selected page
-        title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
+        title: new Text(setTitleStr),
         centerTitle: true, // 타이틀 중앙 정렬
 
       ),

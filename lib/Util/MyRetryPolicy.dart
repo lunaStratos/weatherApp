@@ -8,7 +8,7 @@ import 'package:rainvow_mobile/Util/Dependencys.dart';
 class MyRetryPolicy extends RetryPolicy {
 
     @override
-    int maxRetryAttempts = DepenDencys.httpRetry;
+    int maxRetryAttempts = Dependencys.httpRetry;
 
     @override
     Future<bool> shouldAttemptRetryOnResponse(ResponseData response) async {

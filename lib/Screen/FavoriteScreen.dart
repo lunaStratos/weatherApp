@@ -5,12 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteJsonDomain.dart';
+import 'package:rainvow_mobile/Screen/AlarmModifyScreen.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertImage.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertNormal.dart';
+import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
+import 'package:rainvow_mobile/SideBar/Home.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,7 +94,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     prefs = await SharedPreferences.getInstance();
 
     final getItem = await ApiCall.getNowKmaWeather(item.rect_id);
-
+    print('_saveFavoriteLocationData ${item.rect_id}');
     favoriteArray.add(
         FavoriteDomain(
             address:"${item.address}",
@@ -289,7 +293,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                   print("현위치 클릭");
                     if(locationPermission){
                       _getPosition();
-
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext
+                      context) => WeatherScreen(idx: -2)));
                     }else{
                       showDialog(context: context, builder:
                           (BuildContext context) {
@@ -368,7 +373,14 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                   /**
                    * 아이템 삭제
                    * */
-                  IconButton(onPressed: () => setState( () => _removeItem(index) )
+                  IconButton(onPressed:() async{
+                    Fluttertoast.showToast(
+                        msg: "삭제되었습니다.",
+                        gravity: ToastGravity.BOTTOM,
+                        toastLength: Toast.LENGTH_SHORT
+                    );
+                    setState( () => _removeItem(index) );
+                  }
                       , icon: Icon(Icons.close))
                 ],
               ),
@@ -401,6 +413,10 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                */
               onTap: () {
                 print('press ${index}');
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext
+                context) => HomePage(index: index,)
+                ));
+
 
               },
 
