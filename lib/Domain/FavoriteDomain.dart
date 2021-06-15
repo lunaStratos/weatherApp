@@ -10,7 +10,7 @@ class FavoriteDomain{
   final String kma_point_id;
   String weatherDescription;
   String weatherConditions;
-  String rainfallRate;
+  String rainfallAmount;
   String celsius;
   String imgSrc;
   String alarmTime;
@@ -27,7 +27,7 @@ class FavoriteDomain{
     required this.kma_point_id,
     required this.weatherDescription,
     required this.weatherConditions,
-    required this.rainfallRate,
+    required this.rainfallAmount,
     required this.celsius,
     required this.imgSrc,
     required this.alarmTime,
@@ -47,7 +47,7 @@ class FavoriteDomain{
         kma_point_id : json['kma_point_id'] ?? "",
         weatherDescription : json['weatherDescription']?? "",
         weatherConditions : json['weatherConditions']?? "",
-        rainfallRate : json['rainfallRate']?? "",
+        rainfallAmount : json['rainfallAmount']?? "",
         celsius : json['celsius']?? "",
         imgSrc : json['imgSrc']?? "",
         alarmTime : json['alarmTime'] ?? "",
@@ -68,7 +68,7 @@ class FavoriteDomain{
       'kma_point_id': this.kma_point_id,
       'weatherDescription': this.weatherDescription,
       'weatherConditions': this.weatherConditions,
-      'rainfallRate': this.rainfallRate,
+      'rainfallAmount': this.rainfallAmount,
       'celsius': this.celsius,
       'imgSrc': this.imgSrc,
       'alarmTime' : this.alarmTime,

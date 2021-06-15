@@ -11,11 +11,9 @@ import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteJsonDomain.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertImage.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertNormal.dart';
-import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 /**
  * 관심지역 화면
@@ -44,7 +42,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   void initState() {
     super.initState();
     _loadFavoriteLocationData();
-    _refresh();
+
   }
 
   /**
@@ -62,11 +60,24 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     final getList = prefs.getStringList('favoriteLocation') ?? [];
     final getLocationPermission = prefs.getBool('locationPermission') ?? false;
 
+    favoriteArray = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+
+    for(int i = 0 ; i < favoriteArray.length ; i++){
+      final getItem = await ApiCall.getNowKmaWeather(favoriteArray[i].rect_id);
+      print('getItem ${getItem}');
+      favoriteArray[i].celsius = getItem['temperature'];
+      favoriteArray[i].weatherConditions = getItem['weatherConditions'];
+      favoriteArray[i].weatherDescription = getItem['weatherConditionsKeyword'];
+      favoriteArray[i].rainfallAmount = getItem['rainfallAmount'].toString();
+      print("${favoriteArray[i].celsius} ${getItem['temperature']}");
+    }
 
     setState(() {
-      favoriteArray = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+      favoriteArray = favoriteArray;
       locationPermission = getLocationPermission;
     });
+
+
   }
 
   /**
@@ -78,6 +89,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     var item = itemInput as FavoriteJsonDomain;
     prefs = await SharedPreferences.getInstance();
 
+    final getItem = await ApiCall.getNowKmaWeather(item.rect_id);
+
     favoriteArray.add(
         FavoriteDomain(
             address:"${item.address}",
@@ -88,10 +101,10 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             kmaY: "${item.kmaY}",
             kma_point_id: "${item.kma_point_id}",
             rect_id: "${item.rect_id}",
-            weatherDescription: "맑음",//temp
-            weatherConditions: "0",
-            rainfallRate: "100",            //temp
-            celsius: "2",                   //temp
+            weatherDescription: getItem['weatherConditionsKeyword'],//temp
+            weatherConditions: getItem['weatherConditions'],
+            rainfallAmount: getItem['rainfallAmount'],            //temp
+            celsius: getItem['temperature'],                   //temp
             imgSrc:"",
             alarmTime: "08:00",
             use: false)
@@ -113,25 +126,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     ));
 
     setState( () => favoriteArray);
-  }
-
-  //리스트 날씨 데이터 업데이트
-  _refresh() async{
-
-    var result = favoriteArray.map((item) async{
-      final getItem = await ApiCall.getNowKmaWeather(item.rect_id);
-      print(getItem);
-      item.celsius = getItem['temperature'];
-      item.weatherConditions = getItem['weather_conditions'];
-      item.weatherDescription = getItem['weather_conditions_keyword'];
-      item.rainfallRate = getItem['rainfall_rate'].toString();
-      print("${item.celsius} ${getItem['temperature']}");
-    }).toList();
-
-    setState(() {
-      favoriteArray;
-    });
-
   }
 
   /**
@@ -175,12 +169,12 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
     List<String> strList = favoriteArray.map((item) => jsonEncode(item)).toList();
     await prefs.setStringList('favoriteLocation', strList );
-    Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherScreen(x: "")));
+
   }
 
   @override
   Widget build(BuildContext context) {
-    _refresh();
+
 
     return Scaffold(
      body: new Column(
@@ -338,6 +332,9 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   }
 
   Widget _getItemUI(BuildContext context, int index) {
+
+    print('favoriteArray[index].weatherConditions ${favoriteArray[index].weatherConditions}');
+
     return new Column(
           children: <Widget>[
             new ListTile(
@@ -389,10 +386,10 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text(favoriteArray[index].weatherDescription,
+                    new Text('${favoriteArray[index].weatherDescription}',
                         style: new TextStyle(
                             fontSize: 13.0, fontWeight: FontWeight.normal)),
-                    new Text('비올확률: ${favoriteArray[index].rainfallRate}',
+                    new Text('비 오는양: ${favoriteArray[index].rainfallAmount}',
                         style: new TextStyle(
                             fontSize: 11.0, fontWeight: FontWeight.normal)),
 
@@ -404,6 +401,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                */
               onTap: () {
                 print('press ${index}');
+
               },
 
             )

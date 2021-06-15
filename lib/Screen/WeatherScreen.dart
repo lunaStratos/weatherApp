@@ -139,7 +139,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         FavoriteDomain(address: "현위치", dongName: "", longitude: longitude,
             latitude: latitude, kmaX: kmaX, kmaY: kmaY, rect_id: rect_id,
             kma_point_id: kma_point_id, weatherDescription: "", weatherConditions: "",
-            rainfallRate: "", celsius: "20", imgSrc: "", alarmTime: "0800", use: true)
+            rainfallAmount: "", celsius: "20", imgSrc: "", alarmTime: "0800", use: true)
     );
 
     print('fDomain : ${favoriteArray[0].kma_point_id}');
