@@ -20,53 +20,59 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenScreen extends State<SettingScreen>{
 
   bool locationFlag = false;
-
+  late SharedPreferences prefs;
   @override
   void initState() {
     super.initState();
     _loadPermission();
   }
 
-  /**
-   * 위치권한 토글시
-   * */
-  void _callPermission() async{
-    await Permission.location.request();
-    _loadPermission();
-  }
 
   /**
    * 권한설정 읽기
    * */
   void _loadPermission() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
 
-    var status = await Permission.location.status;
-    if (status.isDenied) {
-      print('oh my underAttack!');
+    bool getPermissionBool = await prefs.getBool("locationPermission") ?? false;
+    var statusPsermission = await Permission.location.status;
+
+    if(getPermissionBool){
+      if (statusPsermission.isDenied) {
+        print('oh my underAttack!');
+        setState(() {
+          locationFlag = false;
+          prefs.setBool("locationPermission", false);
+        });
+      }
+      if(statusPsermission.isGranted){
+        print('oh my isGranted!');
+        setState(() {
+          locationFlag = true;
+          prefs.setBool("locationPermission", true);
+        });
+      }
+    }else{
       setState(() {
         locationFlag = false;
         prefs.setBool("locationPermission", false);
       });
     }
-    if(status.isGranted){
-      print('oh my isGranted!');
-      setState(() {
-        locationFlag = true;
-        prefs.setBool("locationPermission", true);
-      });
-    }
+
   }
   
   /**
    * 위치권한 취소 토글
    * */
-  void _cancelPermission() async{
+  void _togglePermission(insertFlag) async{
+    if(insertFlag){
+      await Permission.location.request();
+    }
     setState(() {
-      locationFlag = false;
+      locationFlag = insertFlag;
     });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("locationPermission", false);
+    prefs = await SharedPreferences.getInstance();
+    prefs.setBool("locationPermission", insertFlag);
   }
 
 
@@ -131,11 +137,8 @@ class _SettingScreenScreen extends State<SettingScreen>{
                * 위치권한 활성화 TOGGLE
                * */
               onToggle: (bool flag) {
-                if(flag){ // 성공
-                  _callPermission();
-                }else{ //취소
-                  _cancelPermission();
-                }
+                print('onToggle ${flag}');
+                _togglePermission(flag);
 
               },
             ),

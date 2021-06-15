@@ -290,7 +290,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                      * 3. lat lng 주소 가져옴
                      * 4. 팝업 리스트 띄움
                      * */
-                  print("현위치 클릭");
+                  print("현위치 클릭 ${locationPermission}");
                     if(locationPermission){
                       _getPosition();
                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext
