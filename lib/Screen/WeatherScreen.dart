@@ -20,6 +20,7 @@ import 'package:rainvow_mobile/Screen/RainfallWidget/SunRiseWidget.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeatherBar.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeatherMap.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeekForecast.dart';
+import 'package:rainvow_mobile/Screen/SettingScreen.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,19 +33,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 class WeatherScreen extends StatefulWidget {
 
   int idx = 0;
-  WeatherScreen({required this.idx});
+  String action = "real"; //clickMylocation, clickFavorite, real
+
+  WeatherScreen({required this.idx, required this.action});
 
   @override
-  _WeatherScreenState createState() => _WeatherScreenState(idx: idx);
+  _WeatherScreenState createState() => _WeatherScreenState(idx: idx, action: action);
 
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+
   int idx = 0;
-  _WeatherScreenState({required this.idx});
+  String action = "real"; //clickMylocation, clickFavorite, real
+
+  _WeatherScreenState({required this.idx, required this.action});
 
   bool flag = false;
-  List<bool> allFlag = [false, false];
+  bool mylocationFlag = false;
+  bool locationPermission = false;
 
   late SharedPreferences prefs;
 
@@ -77,17 +84,27 @@ class _WeatherScreenState extends State<WeatherScreen> {
     super.initState();
     _loadFavoriteLocationData().then((value) async{
       print('value ${value}');
-          }).then((value) => {
-      print('value ${value}')
-    });
+      setState(() {
+        flag = true;
+      });
+      });
+
     if(idx < 0 ){
       setState(() {
         _current = 0;
       });
     }else{
-      setState(() {
-        _current = idx;
-      });
+      print('action == "clickFavorite" ${action == "clickFavorite"} ${idx}');
+      if(action == "clickFavorite"){
+        setState(() {
+          _current = idx;
+        });
+      }else{
+        setState(() {
+          _current = 0;
+        });
+      }
+
     }
     print("_current ${_current} ${idx}");
 
@@ -104,25 +121,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
     var getList = await prefs.getStringList('favoriteLocation') ?? [];
     print('_loadFavoriteLocationData ${getList} ${getList.isNotEmpty} ${getLocationPermission}');
 
-
-    if(idx < 0){
-      if(getLocationPermission){
-        favoriteArray = await _getPosition();
-        setState(() {
-          favoriteArray;
-        });
-        return favoriteArray;
-      }else{
-        showDialog(context: context, builder:
-            (BuildContext context) {
-          return AlertImage(title: "권한이 없습니다.", contents: "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
-        }
-        );
-        return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
-      }
+    print('go!!!!! ${idx}');
+    if(idx == -2){
+      favoriteArray = await _getPosition();
+      setState(() {
+        favoriteArray;
+        locationPermission = true;
+      });
+      return favoriteArray;
 
     }else{
-
+      // 리스트가 있을 경우 리스트로 띄워줌
       if( getList.isNotEmpty) {
         setState(() {
           favoriteArray = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
@@ -130,19 +139,21 @@ class _WeatherScreenState extends State<WeatherScreen> {
         return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
 
       }else{
-
+        //리스트가 없을 경우 현위치 띄어줌
         if(getLocationPermission){
           favoriteArray = await _getPosition();
           setState(() {
             favoriteArray;
+            mylocationFlag = true;
+            locationPermission = true;
           });
           return favoriteArray;
         }else{
           showDialog(context: context, builder:
               (BuildContext context) {
             return AlertImage(title: "권한이 없습니다.", contents: "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
-          }
-          );
+          });
+
           return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
         }
 
@@ -231,22 +242,18 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     print('idx => ${idx}');
-    print('init start ${flag}');
+    print('init start flag ${flag}');
     print('favoriteArray.length ==?> ${favoriteArray.length} ');
     print('getKmaNowWeatherList ==?> ${getKmaNowWeatherList.length} ');
     print('getKmaNowDustList ==?> ${getKmaNowDustList.length} ');
+    print("last _current  ${_current} ${favoriteArray.length} ${mylocationFlag} ${locationPermission}");
 
 
     /**
      * DESC : [idx]
-     * -1 현위치
      * -2 현위치 버튼 (새창)
      * */
-    if(idx == -1){
-      return Scaffold(
-          body: _buildStack(context)
-      );
-    }else if(idx == -2){
+    if(idx == -2){
       return Scaffold(
           appBar: AppBar(
             title: Text('현위치'),
@@ -255,9 +262,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
           body: _buildStack(context)
       );
     }else{
-      return Scaffold(
-          body: _buildStack(context)
-      );
+
+      if(flag){
+        return Scaffold(
+            body: _buildStack(context)
+        );
+      }else{
+        return new Container(
+
+        );
+      }
+
     }
 
 
@@ -289,15 +304,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   _current = index;
                 });
               },
-              initialPage: _current+1
+              initialPage: _current
             ),
           ),
 
-          new Center(
-            child:  new Container(
+          new Container(
                 child: _buildDots(context)
-            ),
-          )
+          ),
+
         ]
     );
   }
@@ -305,49 +319,79 @@ class _WeatherScreenState extends State<WeatherScreen> {
    * 점 찍기
    * */
   Widget _buildDots(BuildContext context){
+
     var xScreen;
-    
-    if(favoriteArray.length == 0 ){
-      xScreen = Container(
-        constraints: BoxConstraints(
-            maxHeight: 400.0,
-            maxWidth: 300.0,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/no_permission_test.jpg'),
-            Container(
-              child: Text(
-                '관심지역 → 도로명을 검색하여 위치를 추가해 주십시오',
-                style: TextStyle(fontSize: 20, ),
-              ),
+
+    if(flag){
+      if(favoriteArray.length == 0 ){
+
+        xScreen = new Center(
+          child: new Container(
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: 400.0,
+                  maxWidth: 300.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/no_permission_test.jpg'),
+                    Container(
+                      child: Text(
+                        '관심지역 → 도로명을 검색하여 위치를 추가해 주십시오',
+                        style: TextStyle(fontSize: 20, ),
+                      ),
 
 
-            ),
+                    ),
 
-          ],
-        ),
-      );
-    }else{
-
-        xScreen = DotsIndicator(
-            dotsCount: favoriteArray.length,
-            position: _current.toDouble(),
-            decorator: DotsDecorator(
-              size: const Size.square(9.0),
-              activeSize: const Size(18.0, 9.0),
-              activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-            ),
-            onTap: (position) {
-              print('position ${position}');
-              setState(() =>
-              _current = position.toInt()
-              );
-            }
+                  ],
+                ),
+              )
+          ),
         );
 
+      }else{
+
+        double getPosition = 0.0;
+        if(mylocationFlag){
+          getPosition = 0.0;
+        }else{
+          getPosition = _current.toDouble();
+        }
+
+        xScreen = new Center(
+          child:  new Column(
+              children: [
+                new Column(
+                  children: [
+                    DotsIndicator(
+                        dotsCount: favoriteArray.length,
+                        position:  getPosition,
+                        decorator: DotsDecorator(
+                          size: const Size.square(9.0),
+                          activeSize: const Size(18.0, 9.0),
+                          activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                        ),
+                        onTap: (position) {
+                          print('position ${position}');
+                          setState(() =>
+                          _current = position.toInt()
+                          );
+                        }
+                    )
+                  ],
+                )
+              ]
+          ),
+        );
+
+      }
+    }else{
+      xScreen = Container();
     }
+
+
 
     return xScreen;
   }
@@ -413,7 +457,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                                  * */
                                                 WeatherBar(
                                                     rect_id: favoriteArray[i].rect_id,
-                                                    kmaNowWeatherObject: getKmaNowWeatherList[i],
+                                                    kmaNowWeatherObject: body,
                                                     kmaNowDustObject: dustBody
                                                 )
                                               ],

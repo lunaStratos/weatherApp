@@ -15,7 +15,6 @@ class AlertImage extends StatelessWidget{
 
   AlertImage({required this.title, required this.contents, required this.switchStr});
 
-
   @override
   Widget build(BuildContext context) {
     return _buildAlertImage(context, title, contents, switchStr);

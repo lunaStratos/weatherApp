@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
 
 /**
  * 강우지도 - 6. 강우지도
@@ -42,11 +41,11 @@ class WeatherMapState extends State<WeatherMap>{
         ),
       ),
 
-      // child: WebView(
-      //   initialUrl: 'http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}',
-      //   javascriptMode: JavascriptMode.unrestricted,
-      //   gestureNavigationEnabled: true,
-      // ),
+      child: new WebView(
+        initialUrl: 'http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}',
+        javascriptMode: JavascriptMode.unrestricted,
+        gestureNavigationEnabled: true,
+      ),
 
       // child: WebviewScaffold(
       //   url: 'https://www.google.com/',
@@ -54,10 +53,10 @@ class WeatherMapState extends State<WeatherMap>{
       //   withOverviewMode: true,
       // ),
 
-        child: InAppWebView(
-          initialUrlRequest: URLRequest(url: Uri.parse("http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}")),
-          gestureRecognizers: Set()..add(Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer())),
-        ),
+        // child: InAppWebView(
+        //   initialUrlRequest: URLRequest(url: Uri.parse("http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}")),
+        //   gestureRecognizers: Set()..add(Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer())),
+        // ),
 
 
 

@@ -294,7 +294,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                     if(locationPermission){
                       _getPosition();
                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext
-                      context) => WeatherScreen(idx: -2)));
+                      context) => WeatherScreen(idx: -2, action: "click")));
                     }else{
                       showDialog(context: context, builder:
                           (BuildContext context) {
@@ -414,7 +414,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
               onTap: () {
                 print('press ${index}');
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext
-                context) => HomePage(index: index,)
+                context) => HomePage(index: index,action:"clickFavorite")
                 ));
 
 

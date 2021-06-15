@@ -22,8 +22,9 @@ class DrawerItem {
 class HomePage extends StatefulWidget {
 
   int index = 0;
+  String action = "real";
 
-  HomePage({required this.index});
+  HomePage({required this.index, required this.action});
 
   final drawerItems = [
     new DrawerItem("강우지도", Icons.umbrella),
@@ -34,7 +35,7 @@ class HomePage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return new HomePageState(index: index);
+    return new HomePageState(index: index, action: action);
   }
 }
 
@@ -43,12 +44,14 @@ class HomePage extends StatefulWidget {
  * */
 class HomePageState extends State<HomePage> {
 
+  String action = "real";
   int index = 0;
+
   int _selectedDrawerIndex = 0;
   late SharedPreferences prefs;
   List <FavoriteDomain> favoriteArray = [];
 
-  HomePageState({required this.index});
+  HomePageState({required this.index, required this.action});
 
   @override
   initState(){
@@ -76,7 +79,7 @@ class HomePageState extends State<HomePage> {
   _getDrawerFragment(int pos) {
     switch (pos) {
       case 0: // 강우지도
-        return new WeatherScreen(idx: index,);
+        return new WeatherScreen(idx: index, action: action);
       case 1: // 관심지역
         return new FavoriteScreen();
       case 2: // 설정
