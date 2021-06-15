@@ -189,7 +189,11 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool("alarmPermission", flag);
 
-      ToastWiget("알람이 켜졌습니다.");
+      if(flag){
+        ToastWiget("알람이 켜졌습니다.");
+      }else{
+        ToastWiget("알람이 꺼졌습니다.");
+      }
 
     }
     /**
@@ -201,7 +205,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.blue,
       textColor: Colors.white,
       fontSize: 16.0
       );

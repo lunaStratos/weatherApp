@@ -47,19 +47,6 @@ class WeatherMapState extends State<WeatherMap>{
         gestureNavigationEnabled: true,
       ),
 
-      // child: WebviewScaffold(
-      //   url: 'https://www.google.com/',
-      //   useWideViewPort: true,
-      //   withOverviewMode: true,
-      // ),
-
-        // child: InAppWebView(
-        //   initialUrlRequest: URLRequest(url: Uri.parse("http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}")),
-        //   gestureRecognizers: Set()..add(Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer())),
-        // ),
-
-
-
     );
   }
 
