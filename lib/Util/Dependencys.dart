@@ -1,10 +1,10 @@
 library my_prj.globals;
 
-
+/** 의존성 파일
+ * desc: static한 내용 넣기
+ * */
 class Dependencys {
-  /** [http Retry 횟수]
-   * desc: retry할 횟수를 정의
-   * */
+
   static const int httpRetry = 10;
   static const String test = "2";
 

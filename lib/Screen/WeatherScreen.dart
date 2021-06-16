@@ -119,9 +119,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     prefs = await SharedPreferences.getInstance();
     final getLocationPermission = prefs.getBool('locationPermission') ?? false;
     var getList = await prefs.getStringList('favoriteLocation') ?? [];
-    print('_loadFavoriteLocationData ${getList} ${getList.isNotEmpty} ${getLocationPermission}');
+    debugPrint('_loadFavoriteLocationData ${getList} ${getList.isNotEmpty} ${getLocationPermission}');
 
-    print('go!!!!! ${idx}');
     if(idx == -2){
       favoriteArray = await _getPosition();
       setState(() {
@@ -269,7 +268,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         );
       }else{
         return new Container(
-
+            child: LoadingWidget(),
         );
       }
 
