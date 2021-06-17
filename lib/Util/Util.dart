@@ -301,4 +301,16 @@ class Util {
       return  str;
   }
 
+  /**
+   * 시분을 utc 시각으로 변경하기
+   * 형태 : HH:mm
+   * */
+  static String utcTime(hour, minute){
+
+    DateTime date = new DateTime(2020, 1, 13, hour, minute).subtract(Duration(minutes: DateTime.now().timeZoneOffset.inMinutes.toInt()));
+    String utcResult = "${date.hour.toString().length ==1 ? '0${date.hour}' : date.hour}:${date.minute.toString().length ==1 ? '0${date.minute}' : date.minute}";
+
+    return utcResult;
+  }
+
 }

@@ -111,6 +111,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             celsius: getItem['temperature'],                   //temp
             imgSrc:"",
             alarmTime: "08:00",
+            utcAlarmTime: "23:00",
             use: false)
     );
 

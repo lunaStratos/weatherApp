@@ -10,6 +10,7 @@ import 'package:rainvow_mobile/Domain/AppAlarmDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Screen/AlarmModifyScreen.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
+import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -201,6 +202,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
      * FCM토큰과 알람 보내기
      * */
     Future <void> sendFcm() async{
+      String timezone = DateTime.now().timeZoneName;
 
       await ApiCall.sendDeleteFcmToken(jsonEncode(
           {
@@ -212,13 +214,20 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
             "kmaY": "",
             "address": "",
             "fcmToken": fcmToken,
-            "time": "",
+            "localAlarmTime": "",
+            "timezone": timezone,
+            "utcAlarmTime" : "",
+            "useYn": "N"
           }
       ));
 
       for(int i = 0 ; i < alarmList.length ; i++){
 
         if(alarmList[i].use){
+
+          var alarmtime = alarmList[i].alarmTime.toString().split(":");
+          String utcTime = Util.utcTime(int.parse(alarmtime[0]),int.parse(alarmtime[1]));
+
           var param = jsonEncode(
               {
                 "rectId": alarmList[i].rect_id,
@@ -229,10 +238,13 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                 "kmaY": alarmList[i].kmaY,
                 "address": alarmList[i].dongName,
                 "fcmToken": fcmToken,
-                "time": alarmList[i].alarmTime,
+                "localAlarmTime": alarmList[i].alarmTime,
+                "timezone": timezone,
+                "utcAlarmTime" : utcTime,
+                "useYn": "Y"
               }
           );
-
+          print(param.toString());
           await ApiCall.sendFCMToken(param);
         }
 
@@ -322,6 +334,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
     List<String> strList = alarmList.map((item) => jsonEncode(item)).toList();
     await prefs.setStringList('favoriteLocation', strList );
+    sendFcm();
   }
 
 
@@ -450,18 +463,20 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                          * 취소시 동작 없ㅇ음.
                          * */
                         DatePicker.showTimePicker(context,
-                        showTitleActions: true,
-                        onChanged: (date) {},
+                          showTitleActions: true,
+                          showSecondsColumn: false,
+                          onChanged: (date) {},
 
-                        onConfirm: (date) {
-                          final hour = ((date.hour).toString().length == 1) ? '${"0"}${date.hour}' : '${date.hour}' ;
-                          final minute =  ((date.minute).toString().length == 1) ? '${"0"}${date.minute}' : '${date.minute}' ;
-                          print( ' ${index} ===> ${hour}  ${minute}');
-                          _setAlarmTime(hour, minute,index);
+                          onConfirm: (date) {
+                            final hour = ((date.hour).toString().length == 1) ? '${"0"}${date.hour}' : '${date.hour}' ;
+                            final minute =  ((date.minute).toString().length == 1) ? '${"0"}${date.minute}' : '${date.minute}' ;
+                            print( ' ${index} ===> ${hour}  ${minute}');
+                            _setAlarmTime(hour, minute, index);
 
-                        },
-                        currentTime: DateTime.now(), locale: LocaleType.ko    // 한국어
-                    )
+                          },
+                          currentTime: DateTime.now(), locale: LocaleType.ko    // 한국어
+                        )
+
 
                     //     showDialog(context: context, builder:
                     //     (BuildContext context) {

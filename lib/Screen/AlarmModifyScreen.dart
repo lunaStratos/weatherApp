@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
+import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,13 +73,20 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
           "kmaY": "",
           "address": "",
           "fcmToken": fcmToken,
-          "time": "",
+          "localAlarmTime": "",
+          "timezone": "",
+          "utcAlarmTime" : "",
+          "useYn": "Y",
         }
     ));
 
     for(int i = 0 ; i < alarmList.length ; i++){
 
+      var timezone = DateTime.now().timeZoneName;
+
       if(alarmList[i].use){
+        String alarmtime = alarmList[i].alarmTime..toString().split(":");
+        String utcTime = Util.utcTime(int.parse(alarmtime[0]),int.parse(alarmtime[1]));
         var param = jsonEncode(
             {
               "rectId": alarmList[i].rect_id,
@@ -89,7 +97,11 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
               "kmaY": alarmList[i].kmaY,
               "address": alarmList[i].dongName,
               "fcmToken": fcmToken,
-              "time": alarmList[i].alarmTime,
+              "localAlarmTime": alarmList[i].alarmTime,
+              "timezone": timezone,
+              "utcAlarmTime" : utcTime,
+              "useYn": "Y",
+
             }
         );
 

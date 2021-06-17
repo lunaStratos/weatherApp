@@ -14,6 +14,7 @@ class FavoriteDomain{
   String celsius;
   String imgSrc;
   String alarmTime;
+  String utcAlarmTime;
   bool use;
 
   FavoriteDomain({
@@ -31,6 +32,7 @@ class FavoriteDomain{
     required this.celsius,
     required this.imgSrc,
     required this.alarmTime,
+    required this.utcAlarmTime,
     required this.use,
 
   });
@@ -51,6 +53,7 @@ class FavoriteDomain{
         celsius : json['celsius']?? "",
         imgSrc : json['imgSrc']?? "",
         alarmTime : json['alarmTime'] ?? "",
+        utcAlarmTime : json['utcAlarmTime'] ?? "",
         use : json['use'] ?? false,
     );
   }
@@ -72,6 +75,7 @@ class FavoriteDomain{
       'celsius': this.celsius,
       'imgSrc': this.imgSrc,
       'alarmTime' : this.alarmTime,
+      'utcAlarmTime' :this.utcAlarmTime,
       'use' : this.use,
     };
   }

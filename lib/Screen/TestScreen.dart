@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:rainvow_mobile/Domain/PushNotification.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/NotificationBadge.dart';
@@ -50,13 +51,18 @@ class _HomePageState extends State<TestScreen2> {
 
   @override
   Widget build(BuildContext context) {
+
+    DateTime date = new DateTime(2020, 1, 13, 8, 0).subtract(Duration(hours: DateTime.now().timeZoneOffset.inHours.toInt(), minutes: DateTime.now().timeZoneOffset.inMinutes.toInt()));
+    String utcResult = "${date.hour.toString().length ==1 ? '0${date.hour}' : date.hour}:${date.minute.toString().length ==1 ? '0${date.minute}' : date.minute}";
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Notify'),
         brightness: Brightness.dark,
       ),
       body: Container(
-
+          child: Text('result : ${date} / ${utcResult} '),
       ),
     );
   }
