@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rainvow_mobile/Domain/AppAlarmDomain.dart';
 
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Screen/AlarmModifyScreen.dart';
+import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,7 +36,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
     bool locationPermission = false;
     bool alarmFlag = false;
     List<FavoriteDomain> alarmList = [];
-
+    String fcmToken = "";
 
     @override
   void initState() {
@@ -164,10 +166,11 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
       final getList = prefs.getStringList('favoriteLocation') ?? [];
       final getLocationPermission = prefs.getBool('locationPermission') ?? false;
-
+      final getFcmToken = prefs.getString("fcmToken")??"";
       setState(() {
         alarmList = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
         locationPermission = getLocationPermission;
+        fcmToken = getFcmToken;
       });
 
     }
@@ -186,11 +189,76 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
       if(flag){
         ToastWiget("알람이 켜졌습니다.");
+        await sendFcm();
       }else{
         ToastWiget("알람이 꺼졌습니다.");
+        await sendAllDeleteFcm();
       }
 
     }
+
+    /**
+     * FCM토큰과 알람 보내기
+     * */
+    Future <void> sendFcm() async{
+
+      await ApiCall.sendDeleteFcmToken(jsonEncode(
+          {
+            "rectId": "",
+            "kmaPointId":"",
+            "longitude": "",
+            "latitude":"",
+            "kmaX": "",
+            "kmaY": "",
+            "address": "",
+            "fcmToken": fcmToken,
+            "time": "",
+          }
+      ));
+
+      for(int i = 0 ; i < alarmList.length ; i++){
+
+        if(alarmList[i].use){
+          var param = jsonEncode(
+              {
+                "rectId": alarmList[i].rect_id,
+                "kmaPointId": alarmList[i].kma_point_id,
+                "longitude": alarmList[i].longitude,
+                "latitude": alarmList[i].latitude,
+                "kmaX": alarmList[i].kmaX,
+                "kmaY": alarmList[i].kmaY,
+                "address": alarmList[i].dongName,
+                "fcmToken": fcmToken,
+                "time": alarmList[i].alarmTime,
+              }
+          );
+
+          await ApiCall.sendFCMToken(param);
+        }
+
+      }
+    }
+
+  /**
+   * 알람정지시 사용
+   * */
+  Future <void> sendAllDeleteFcm() async{
+
+    await ApiCall.sendDeleteFcmToken(jsonEncode(
+        {
+          "rectId": "",
+          "kmaPointId":"",
+          "longitude": "",
+          "latitude":"",
+          "kmaX": "",
+          "kmaY": "",
+          "address": "",
+          "fcmToken": fcmToken,
+          "time": "",
+        }
+    ));
+
+  }
     /**
      * 토스트 위젯
      * */
@@ -224,6 +292,8 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       String rect_id = alarmList[index].rect_id;
       String longitude = alarmList[index].longitude;
       String latitude = alarmList[index].latitude;
+
+      await sendFcm();
 
 
       // if (toggle){

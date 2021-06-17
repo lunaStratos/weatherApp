@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:rainvow_mobile/Util/Api.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 
@@ -140,5 +142,22 @@ class ApiCall {
 
   }
 
-  //
+  /**
+   * Token 보내기 - token만 보내는 부분
+   * 토큰과 알람 지역, 알람시각만 보냄. yn은 미리체크
+   * */
+  static Future sendDeleteFcmToken(param) async{
+    String address = 'http://rainvow.net/api/service/appapi/app-fcm-alarm-delete';
+    await Api.sendPost(address, param);
+  }
+
+  /**
+   * Token 보내기 - token만 보내는 부분
+   * 토큰과 알람 지역, 알람시각만 보냄. yn은 미리체크
+   * */
+  static Future sendFCMToken(param) async{
+    String address = 'http://rainvow.net/api/service/appapi/app-fcm-alarm';
+    await Api.sendPost(address, param);
+  }
+
 }

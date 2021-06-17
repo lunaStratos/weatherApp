@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "1091784743311",
-    "project_id": "rainbowtestapp",
-    "storage_bucket": "rainbowtestapp.appspot.com"
+    "project_number": "791618262956",
+    "project_id": "studioxrainvow",
+    "storage_bucket": "studioxrainvow.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1091784743311:android:24d7c74c7763927da153fa",
+        "mobilesdk_app_id": "1:791618262956:android:25d355802f41bd89470c09",
         "android_client_info": {
           "package_name": "com.rainvow.rainvow_mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1091784743311-4o8qa866ivf8qengb5ma873urf7jnp6g.apps.googleusercontent.com",
+          "client_id": "791618262956-fdjctnksci53d17q5p0dcikqc00t8sil.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDiSRIVINOQDmSowrQNJNXMCiYa-bZ_L8M"
+          "current_key": "AIzaSyC0KonuONiQ2euBNjzghYuNI-2Y8_rYUgY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1091784743311-4o8qa866ivf8qengb5ma873urf7jnp6g.apps.googleusercontent.com",
+              "client_id": "791618262956-fdjctnksci53d17q5p0dcikqc00t8sil.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "791618262956-7dc6un875m4p53b781tp661uah9q75su.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rainvow.rainvowMobile"
+              }
             }
           ]
         }

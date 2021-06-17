@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
+import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +23,7 @@ class AlarmModifyScreen extends StatefulWidget {
 class _AlarmModifyScreen extends State<AlarmModifyScreen> {
   late SharedPreferences prefs;
   List <FavoriteDomain> alarmList = [];
+  String fcmToken = "";
 
   @override
   void initState() {
@@ -33,10 +35,12 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
 
     prefs = await SharedPreferences.getInstance();
     final getList = prefs.getStringList('favoriteLocation') ?? [];
+    final getFcmToken = prefs.getString("fcmToken") ?? "";
     print(getList[0]);
 
     setState(() {
       alarmList = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+      fcmToken = getFcmToken;
     });
   }
 
@@ -47,8 +51,52 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
     });
 
     List<String> strList = alarmList.map((item) => jsonEncode(item)).toList();
+    await sendFcm();
     await prefs.setStringList('favoriteLocation', strList );
 
+
+  }
+
+  /**
+   * FCM토큰과 알람 보내기
+   * */
+  Future <void> sendFcm() async{
+
+    await ApiCall.sendDeleteFcmToken(jsonEncode(
+        {
+          "rectId": "",
+          "kmaPointId":"",
+          "longitude": "",
+          "latitude":"",
+          "kmaX": "",
+          "kmaY": "",
+          "address": "",
+          "fcmToken": fcmToken,
+          "time": "",
+        }
+    ));
+
+    for(int i = 0 ; i < alarmList.length ; i++){
+
+      if(alarmList[i].use){
+        var param = jsonEncode(
+            {
+              "rectId": alarmList[i].rect_id,
+              "kmaPointId": alarmList[i].kma_point_id,
+              "longitude": alarmList[i].longitude,
+              "latitude": alarmList[i].latitude,
+              "kmaX": alarmList[i].kmaX,
+              "kmaY": alarmList[i].kmaY,
+              "address": alarmList[i].dongName,
+              "fcmToken": fcmToken,
+              "time": alarmList[i].alarmTime,
+            }
+        );
+
+        await ApiCall.sendFCMToken(param);
+      }
+
+    }
   }
 
     @override

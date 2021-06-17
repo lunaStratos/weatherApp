@@ -67,5 +67,22 @@ class Api {
     return json.decode(data1);
   }
 
+  /**
+   * POST api call
+   * */
+  static Future<dynamic> sendPost(String address, jsonObject) async {
+    var x = await http.post(
+      Uri.parse(address),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonObject
+      ,
+    );
+
+    print("post result : ${x.body}");
+    return x;
+  }
+
 
 }

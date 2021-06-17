@@ -18,14 +18,20 @@ class GraphBuild extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    //자르기
-    getKmaWeatherList = getKmaWeatherList.sublist(0,4);
+    print('getRainvowList=> ${getRainvowList}');
+    print('getKmaWeatherList=> ${getKmaWeatherList}');
 
-    for(int i=0 ; i< getRainvowList.length ; i++){
+
+    //자르기
+    getKmaWeatherList = (getKmaWeatherList.length != 0 ? getKmaWeatherList.sublist(0,4) : getKmaWeatherList);
+
+
+
+    for(int i = 0 ; i < getRainvowList.length ; i++){
       tempTemperature > maxY ? maxY = tempTemperature : maxY;
       // int.parse(getRainvowList[i]['rainfall_rate']) > maxY ? maxY = int.parse(getRainvowList[i]['rainfall_rate']): "";
     }
-    for(int i=0 ; i< getKmaWeatherList.length ; i++){
+    for(int i = 0 ; i < getKmaWeatherList.length ; i++){
       double.parse(getKmaWeatherList[i].temperature) > maxY ? maxY = double.parse(getKmaWeatherList[i].temperature): "" ;
     }
 

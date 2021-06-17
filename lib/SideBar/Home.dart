@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 
 import 'package:rainvow_mobile/Screen/FavoriteScreen.dart';
+import 'package:rainvow_mobile/Screen/TestScreen.dart';
 import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
 import 'package:rainvow_mobile/Screen/SettingScreen.dart';
 import 'package:share/share.dart';
@@ -29,6 +30,7 @@ class HomePage extends StatefulWidget {
     new DrawerItem("강우지도", Icons.umbrella),
     new DrawerItem("관심지역", Icons.star),
     new DrawerItem("설정", Icons.settings),
+    new DrawerItem("테스트", Icons.star),
   ];
 
   @override
@@ -82,6 +84,8 @@ class HomePageState extends State<HomePage> {
         return new FavoriteScreen();
       case 2: // 설정
         return new SettingScreen();
+      case 3: // 테스트
+        return new TestScreen();
       default:
         return new Text("Error");
     }
