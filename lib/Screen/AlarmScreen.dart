@@ -3,10 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:rainvow_mobile/Domain/AppAlarmDomain.dart';
-
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Screen/AlarmModifyScreen.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
@@ -552,7 +549,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                           onConfirm: (date) {
 
                             final hour = Util.trans2Digit(date.hour);
-                            final minute = Util.trans2Digit(date.minute)
+                            final minute = Util.trans2Digit(date.minute);
                             print( ' ${index} ===> ${hour}  ${minute}');
                             _setAlarmTime(hour, minute, index);
 

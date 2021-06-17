@@ -21,26 +21,10 @@ class Api {
    * GET api call
    * */
   static Future<List<dynamic>> callapi(String address) async {
-    bool loadRemoteDatatSucceed = false;
 
     var data1;
     try {
-      //response = await http.get(Uri.parse(address));//필요 api 호출
       final response = await client.get(Uri.parse(address));
-      // final response = await retry(
-      //       () => http.get(Uri.parse(address)).timeout(Duration(seconds: 5)),
-      //   maxAttempts: 8,
-      //   maxDelay: Duration(seconds: 3),
-      //   retryIf: (e) => e is TimeoutException,
-      // );
-
-
-      if (response.statusCode == 200) {
-        loadRemoteDatatSucceed = true;
-      }
-
-      // print('response ${response.statusCode} ${loadRemoteDatatSucceed}');
-      // print('response ${address} ${response.body} ');
 
       data1 = utf8.decode(response.bodyBytes);
 
@@ -71,7 +55,7 @@ class Api {
    * POST api call
    * */
   static Future<dynamic> sendPost(String address, jsonObject) async {
-    var x = await http.post(
+    var result = await http.post(
       Uri.parse(address),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -79,9 +63,7 @@ class Api {
       body: jsonObject
       ,
     );
-
-    print("post result : ${x.body}");
-    return x;
+    return result;
   }
 
 

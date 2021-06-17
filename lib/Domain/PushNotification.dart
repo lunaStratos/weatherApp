@@ -1,3 +1,7 @@
+
+/**
+ * 푸시 알림.
+ * */
 class PushNotification {
   PushNotification({
     this.title,

@@ -1,4 +1,7 @@
 
+/**
+ * 동네예보(3시간 예보)
+ * */
 class Kma3TimeDomain{
   String target_date;
   String target_time;

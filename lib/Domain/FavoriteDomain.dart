@@ -1,4 +1,7 @@
 
+/**
+ * 관심지역 리스트 - 다양한 곳에서 사용.
+ * */
 class FavoriteDomain{
   final String address;
   final String dongName;

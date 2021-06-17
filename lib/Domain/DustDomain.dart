@@ -1,4 +1,7 @@
 
+/**
+ * 미세먼지
+ * */
 class DustDomain{
   String pm25;
   String pm10;

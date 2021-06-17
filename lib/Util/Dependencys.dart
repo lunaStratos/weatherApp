@@ -5,7 +5,10 @@ library my_prj.globals;
  * */
 class Dependencys {
 
-  static const int httpRetry = 10;
+  static const int httpRetry = 10; // retry 횟수
+  static const String appapiAddress = "http://rainvow.net/api/service/appapi"; //API address
+
   static const String test = "2";
+
 
 }

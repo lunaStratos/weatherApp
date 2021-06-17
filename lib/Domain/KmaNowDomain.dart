@@ -1,4 +1,7 @@
 
+/**
+ * 기상청 현재날씨 (실황)
+ * */
 class KmaNowDomain{
   String kma_point_id;
   String rect_id;

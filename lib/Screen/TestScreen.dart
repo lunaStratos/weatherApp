@@ -52,17 +52,13 @@ class _HomePageState extends State<TestScreen2> {
   @override
   Widget build(BuildContext context) {
 
-    DateTime date = new DateTime(2020, 1, 13, 8, 0).subtract(Duration(hours: DateTime.now().timeZoneOffset.inHours.toInt(), minutes: DateTime.now().timeZoneOffset.inMinutes.toInt()));
-    String utcResult = "${date.hour.toString().length ==1 ? '0${date.hour}' : date.hour}:${date.minute.toString().length ==1 ? '0${date.minute}' : date.minute}";
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Notify'),
         brightness: Brightness.dark,
       ),
       body: Container(
-          child: Text('result : ${date} / ${utcResult} '),
+          child: Text('result '),
       ),
     );
   }

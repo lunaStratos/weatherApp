@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Domain/PushNotification.dart';
@@ -13,10 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('=====================');
   print("Handling a background message: ${message.messageId}");
 }
-
 
 
 Future<void> main() async {

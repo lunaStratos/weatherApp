@@ -1,4 +1,6 @@
-
+/**
+ * 관심지역 추가시 사용
+ * */
 class FavoriteJsonDomain{
   final String address;
   final String dongName;

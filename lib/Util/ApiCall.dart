@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:rainvow_mobile/Util/Api.dart';
+import 'package:rainvow_mobile/Util/Dependencys.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 
 /**
@@ -8,6 +9,8 @@ import 'package:rainvow_mobile/Util/Util.dart';
  * 여기서 Api 추가해서 사용
  * */
 class ApiCall {
+  
+  static String appapiAddress = Dependencys.appapiAddress;
 
   /**
    * 주소지 찾기 기능
@@ -15,7 +18,7 @@ class ApiCall {
    * 관심지역 찾기시 사용
    * */
   static Future<List> getFavoriteSearchList(searchLocationText) async{
-      String address = 'http://rainvow.net/api/service/appapi/address-search-app?address='+searchLocationText;
+      String address = '${appapiAddress}/address-search-app?address='+searchLocationText;
       final jsonArray = await Api.callapi(address);
       return jsonArray;
   }
@@ -25,7 +28,7 @@ class ApiCall {
    * 현위치 검색시 rect_id 사용
    * */
   static Future<dynamic> getMylocationInfo(longitude, latitude) async{
-    String address = 'http://rainvow.net/api/service/appapi/rainvow-rectid-search?longitude=${longitude}&latitude=${latitude}';
+    String address = '${appapiAddress}/rainvow-rectid-search?longitude=${longitude}&latitude=${latitude}';
     final jsonObj = await Api.callapiObject(address);
     return jsonObj;
   }
@@ -38,7 +41,7 @@ class ApiCall {
    * */
   static Future<dynamic> getNowKmaWeather(rectid) async{
     print('rectid ${rectid}');
-    String address = 'http://rainvow.net/api/service/appapi/kma-weather-now?rect_id=${rectid}';
+    String address = '${appapiAddress}/kma-weather-now?rect_id=${rectid}';
     final jsonObject = await Api.callapiObject(address);
     return jsonObject;
   }
@@ -48,7 +51,7 @@ class ApiCall {
    * 날씨바 사용
    * */
   static Future<dynamic> getNowDust(rect_id, longitude, latitude) async{
-    String address = 'http://rainvow.net/api/service/appapi/kma-weather-dust?rect_id=${rect_id}&longitude=${longitude}&latitude=${latitude}';
+    String address = '${appapiAddress}/kma-weather-dust?rect_id=${rect_id}&longitude=${longitude}&latitude=${latitude}';
     final jsonArray = await Api.callapiObject(address);
     return jsonArray;
   }
@@ -58,7 +61,7 @@ class ApiCall {
    * 강수예보 그래프 사용
    * */
   static Future<List> getWeatherForecast(rect_id) async{
-    String address = 'http://rainvow.net/api/service/appapi/kma-weather-3hour?rect_id=${rect_id}';
+    String address = '${appapiAddress}/kma-weather-3hour?rect_id=${rect_id}';
     final jsonArray = await Api.callapi(address);
     return jsonArray;
   }
@@ -68,7 +71,7 @@ class ApiCall {
    * 강수예보 그래프 사용
    * */
   static Future<List> getRainvowInfoForecast(rect_id) async{
-    String address = 'http://rainvow.net/api/service/appapi/rainvow-weather-1hour?rect_id=${rect_id}&nowtime=${Util.dateNowStr()}';
+    String address = '${appapiAddress}/rainvow-weather-1hour?rect_id=${rect_id}&nowtime=${Util.dateNowStr()}';
     final jsonArray = await Api.callapi(address);
     return jsonArray;
   }
@@ -79,7 +82,7 @@ class ApiCall {
    * 단기예보 표시
    * */
   static Future<List> getWeatherUltraForecast(rect_id) async{
-    String address = 'http://rainvow.net/api/service/appapi/kma-weather-1hour?rect_id=${rect_id}';
+    String address = '${appapiAddress}/kma-weather-1hour?rect_id=${rect_id}';
     final jsonArray = await Api.callapi(address);
     return jsonArray;
   }
@@ -91,7 +94,7 @@ class ApiCall {
    * 10일치 날씨 가져옴
    * */
   static Future<dynamic> getKmaMidTermForecast(rect_id) async{
-    String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-weather?';
+    String address = '${appapiAddress}/kma-weather-midterm-weather?';
     address+= 'rect_id=${rect_id}';
 
     final jsonArray = await Api.callapi(address);
@@ -104,7 +107,7 @@ class ApiCall {
    * 10일치 날씨 가져옴
    * */
   static Future<dynamic> getKmaMidTermForecastTemperature(rect_id) async{
-    String address = 'http://rainvow.net/api/service/appapi/kma-weather-midterm-temperature?';
+    String address = '${appapiAddress}/kma-weather-midterm-temperature?';
     address+= 'rect_id=${rect_id}';
 
     final jsonArray = await Api.callapi(address);
@@ -147,7 +150,7 @@ class ApiCall {
    * 토큰과 알람 지역, 알람시각만 보냄. yn은 미리체크
    * */
   static Future sendDeleteFcmToken(param) async{
-    String address = 'http://rainvow.net/api/service/appapi/app-fcm-alarm-delete';
+    String address = '${appapiAddress}/app-fcm-alarm-delete';
     await Api.sendPost(address, param);
   }
 
@@ -156,7 +159,7 @@ class ApiCall {
    * 토큰과 알람 지역, 알람시각만 보냄. yn은 미리체크
    * */
   static Future sendFCMToken(param) async{
-    String address = 'http://rainvow.net/api/service/appapi/app-fcm-alarm';
+    String address = '${appapiAddress}/app-fcm-alarm';
     await Api.sendPost(address, param);
   }
 
