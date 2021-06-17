@@ -498,8 +498,8 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                   onChanged: (value) {
                     _alarmToggle(value);
                   },
-                  activeTrackColor: Colors.lightGreenAccent,
-                  activeColor: Colors.green,
+                  activeTrackColor: Colors.lightBlueAccent,
+                  activeColor: Colors.blue,
                 ),
               ],
 
@@ -605,10 +605,10 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
               trailing: Switch(
                 value: use,
                 onChanged: (value) {
-                  _alarmToggle(value);
+                  _alarmToggleItem(value, index);
                 },
-                activeTrackColor: Colors.lightGreenAccent,
-                activeColor: Colors.green,
+                activeTrackColor: Colors.lightBlueAccent,
+                activeColor: Colors.blue,
               ),
               onTap: () =>
               /**
