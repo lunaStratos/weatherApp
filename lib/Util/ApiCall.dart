@@ -118,8 +118,8 @@ class ApiCall {
    * */
   static Future<Map<String, dynamic>> getNowSunSet(longitude, latitude) async{
     DateTime now = new DateTime.now();
-    String month = now.month.toString().length == 1 ? '0${now.month.toString()}' : now.month.toString();
-    String day = now.day.toString().length == 1 ? '0${now.day.toString()}' : now.day.toString();
+    String month = Util.trans2Digit(now.month);
+    String day = Util.trans2Digit(now.day);
     String nowDate = '${now.year}-${month}-${day}';
     String address = 'http://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&date=${nowDate}&formatted=0';
     final jsonArray = await Api.callapiObject(address);

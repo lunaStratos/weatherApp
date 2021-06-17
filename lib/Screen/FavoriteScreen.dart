@@ -35,7 +35,7 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen>{
 
-   late SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   String searchLocationText = "";                   // 검색어
   bool locationPermission = false;                  // 현위치 권한
@@ -45,7 +45,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   @override
   void initState() {
     super.initState();
-    _loadFavoriteLocationData();
+    _loadFavoriteLocationData(); //최초 로드
 
   }
 
@@ -156,16 +156,17 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           rect_id: rect_id,
           kmaX: kmaX,
           kmaY: kmaY
-
       );
 
       print('fDomain : ${fDomain.kmaX}');
       //저장소 저장
       await prefs.setString("favoriteNowLocation", jsonEncode(fDomain));
 
-
   }
 
+  /**
+   * 아이템 제거
+   * */
   _removeItem(index) async{
     prefs = await SharedPreferences.getInstance();
     setState(() {

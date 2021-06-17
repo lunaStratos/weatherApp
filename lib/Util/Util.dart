@@ -292,9 +292,9 @@ class Util {
       String str = "";
       DateTime date = new DateTime.now();
 
-      String month = (date.month).toString().length == 1 ? "0${date.month}" : date.month.toString();
-      String day = (date.day).toString().length == 1 ? "0${date.day}" : date.day.toString();
-      String hour = (date.hour).toString().length == 1 ? "0${date.hour}" : date.hour.toString();
+      String month = Util.trans2Digit(date.month);
+      String day = Util.trans2Digit(date.day);
+      String hour = Util.trans2Digit(date.hour);
 
       str = '${date.year}${month}${day}${hour}0000';
 
@@ -308,9 +308,19 @@ class Util {
   static String utcTime(hour, minute){
 
     DateTime date = new DateTime(2020, 1, 13, hour, minute).subtract(Duration(minutes: DateTime.now().timeZoneOffset.inMinutes.toInt()));
-    String utcResult = "${date.hour.toString().length ==1 ? '0${date.hour}' : date.hour}:${date.minute.toString().length ==1 ? '0${date.minute}' : date.minute}";
+    String utcResult = "${trans2Digit(date.hour)}:${trans2Digit(date.minute)}";
 
     return utcResult;
+  }
+
+  /**
+   * 시 분의 1자리를 2자리로 바꾸는 기능
+   * */
+  static String trans2Digit(int hm){
+
+    String str = hm.toString().length == 1? "0${hm}" : hm.toString();
+
+    return str;
   }
 
 }

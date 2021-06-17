@@ -443,26 +443,42 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       return new Column(
         children: [
           new Container(
-            child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-                  Text(
-                    '일일 알람 설정',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 20,),
+            child: Padding(
+                padding: const EdgeInsets.only(bottom: 4, top: 4, left: 9, right: 9),
+                child: InkWell(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Container(
+                        child: Text(
+                          '일일 알람 설정',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontSize: 20,),
+                        ),
+                      ),
+                      new Container(
+
+                      ),
+
+                      new Container(
+                        child: Image.asset(
+                          'assets/images/gear_menu.png',
+                          height: 50,
+                          width: 50,
+                          alignment: Alignment.centerRight,
+                        ),
+                      ),
+                    ],
                   ),
-                  new Container(
-                  ),
-                  new Container(
-                    child: Image.asset(
-                      'assets/images/gear_menu.png',
-                      height: 50,
-                      width: 50,
-                      alignment: Alignment.centerRight,
-                    ),
-                  ),
-              ],
-            ),
+                  onTap: () =>{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AlarmModifyScreen()),
+                    )
+                  },
+                )
+            )
           ),
           Container(
             child: Row(
@@ -534,8 +550,9 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                           onChanged: (date) {},
 
                           onConfirm: (date) {
-                            final hour = ((date.hour).toString().length == 1) ? '${"0"}${date.hour}' : '${date.hour}' ;
-                            final minute =  ((date.minute).toString().length == 1) ? '${"0"}${date.minute}' : '${date.minute}' ;
+
+                            final hour = Util.trans2Digit(date.hour);
+                            final minute = Util.trans2Digit(date.minute)
                             print( ' ${index} ===> ${hour}  ${minute}');
                             _setAlarmTime(hour, minute, index);
 
