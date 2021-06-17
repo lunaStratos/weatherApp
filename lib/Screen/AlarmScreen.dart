@@ -354,86 +354,152 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
     Widget buildSettingsList(context) {
 
-      return SettingsList(
+      // return new SettingsList(
+      //
+      //   sections: [
+      //     CustomSection(
+      //       child: Column(
+      //         children: [
+      //           new Container(
+      //             color: Colors.white60,
+      //             child: Padding(
+      //                 padding: const EdgeInsets.only(bottom: 4, top: 4, left: 9, right: 9),
+      //                 child: InkWell(
+      //                   child: new Row(
+      //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                     children: <Widget>[
+      //                       new Container(
+      //                         child: Text(
+      //                           '일일 알람 설정',
+      //                           textAlign: TextAlign.left,
+      //                           style: TextStyle(fontSize: 20,),
+      //                         ),
+      //                       ),
+      //                       new Container(
+      //
+      //                       ),
+      //
+      //                       new Container(
+      //                         child: Image.asset(
+      //                           'assets/images/gear_menu.png',
+      //                           height: 50,
+      //                           width: 50,
+      //                           alignment: Alignment.centerRight,
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                   onTap: () =>{
+      //                     Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                           builder: (context) => AlarmModifyScreen()),
+      //                     )
+      //                   },
+      //                 )
+      //
+      //             ),
+      //           )
+      //         ],
+      //       ),
+      //     ),
+      //     SettingsSection(
+      //
+      //       tiles: [
+      //         SettingsTile.switchTile(
+      //           title: '알림 받기',
+      //           titleTextStyle: TextStyle(fontSize: 18),
+      //           subtitle: '매일 지정한 시각에 선택한 위치의 기상정보를 받아볼 수 있습니다.',
+      //           subtitleMaxLines: 2,
+      //           switchValue: alarmFlag,
+      //           //스위치
+      //           onToggle: (bool value) {
+      //             _alarmToggle(value);
+      //           },
+      //         ),
+      //       ],
+      //     ),
+      //     CustomSection(
+      //       child: Column(
+      //         children: [
+      //
+      //         ],
+      //       ),
+      //     ),
+      //
+      //
+      //     // SettingsSection(
+      //     //   title: '알람설정',
+      //     //   titleTextStyle: TextStyle(fontSize: 19),
+      //     //   titlePadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      //     //   tiles: generateAlarmToggleList()
+      //     //   ,
+      //     // ),
+      //
+      //   ],
+      // );
 
-        sections: [
-          CustomSection(
-            child: Column(
-              children: [
-                new Container(
-                  color: Colors.white60,
-                  child: Padding(
-                      padding: const EdgeInsets.only(bottom: 4, top: 4, left: 9, right: 9),
-                      child: InkWell(
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            new Container(
-                              child: Text(
-                                '일일 알람 설정',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 20,),
-                              ),
-                            ),
-                            new Container(
 
-                            ),
-
-                            new Container(
-                              child: Image.asset(
-                                'assets/images/gear_menu.png',
-                                height: 50,
-                                width: 50,
-                                alignment: Alignment.centerRight,
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () =>{
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                              builder: (context) => AlarmModifyScreen()),
-                            )
-                        },
-                      )
-
+      return new Column(
+        children: [
+          new Container(
+            child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+                  Text(
+                    '일일 알람 설정',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 20,),
                   ),
-                )
+                  new Container(
+                  ),
+                  new Container(
+                    child: Image.asset(
+                      'assets/images/gear_menu.png',
+                      height: 50,
+                      width: 50,
+                      alignment: Alignment.centerRight,
+                    ),
+                  ),
               ],
             ),
           ),
-          SettingsSection(
-
-            tiles: [
-              SettingsTile.switchTile(
-                title: '알림 받기',
-                titleTextStyle: TextStyle(fontSize: 18),
-                subtitle: '매일 지정한 시각에 선택한 위치의 기상정보를 받아볼 수 있습니다.',
-                subtitleMaxLines: 2,
-                switchValue: alarmFlag,
-                //스위치
-                onToggle: (bool value) {
-                  _alarmToggle(value);
-                },
-              ),
-            ],
-          ),
-          CustomSection(
-            child: Column(
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-
+                Container(
+                  width: 300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('알림 받기', style: TextStyle(fontSize: 18),),
+                      Text('매일 지정한 시각에 선택한 위치의 기상정보를 받아볼 수 있습니다.', maxLines: 2,
+                        overflow: TextOverflow.ellipsis,)
+                    ],
+                  ),
+                ),
+                Switch(
+                  value: alarmFlag,
+                  onChanged: (value) {
+                    _alarmToggle(value);
+                  },
+                  activeTrackColor: Colors.lightGreenAccent,
+                  activeColor: Colors.green,
+                ),
               ],
+
             ),
           ),
-          SettingsSection(
-            title: '알람설정',
-            titleTextStyle: TextStyle(fontSize: 19),
-            titlePadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            tiles: generateAlarmToggleList()
-            ,
-          ),
-
+          Expanded(
+            child:ListView.separated(
+              padding: const EdgeInsets.all(8),
+              itemCount: alarmList.length,
+              itemBuilder: _getItemUI,
+              separatorBuilder: (BuildContext context, int index) => const Divider(),
+            ),
+          )
         ],
       );
     }
@@ -476,13 +542,6 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                           },
                           currentTime: DateTime.now(), locale: LocaleType.ko    // 한국어
                         )
-
-
-                    //     showDialog(context: context, builder:
-                    //     (BuildContext context) {
-                    //   return _buildAlert(context);
-                    // }
-                    // )
                     ,
                   )
                 ],
@@ -513,6 +572,56 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       return toggleList;
     }
 
+
+  /**
+   * 알람설정 리스트 만드는 기능
+   * */
+  Widget _getItemUI(BuildContext context, int index)  {
+
+    final address = alarmList[index].address;
+    final alarmTime = alarmList[index].alarmTime;
+    var use = alarmList[index].use;
+
+    return new Container(
+      child: new Column(
+          children: [
+            new ListTile(
+              title: Text("${address}"),
+              subtitle: Text('${alarmTime}'),
+              trailing: Switch(
+                value: use,
+                onChanged: (value) {
+                  _alarmToggle(value);
+                },
+                activeTrackColor: Colors.lightGreenAccent,
+                activeColor: Colors.green,
+              ),
+              onTap: () =>
+              /**
+               * 알람 시간 설정
+               * 취소시 동작 없ㅇ음.
+               * */
+              DatePicker.showTimePicker(context,
+                  showTitleActions: true,
+                  showSecondsColumn: false,
+                  onChanged: (date) {},
+
+                  onConfirm: (date) {
+                    final hour = ((date.hour).toString().length == 1) ? '${"0"}${date.hour}' : '${date.hour}' ;
+                    final minute =  ((date.minute).toString().length == 1) ? '${"0"}${date.minute}' : '${date.minute}' ;
+                    print( ' ${index} ===> ${hour}  ${minute}');
+                    _setAlarmTime(hour, minute, index);
+
+                  },
+                  currentTime: DateTime.now(), locale: LocaleType.ko    // 한국어
+              ),
+
+            ),
+
+          ]
+      ),
+    );
+  }
 
 
 }
