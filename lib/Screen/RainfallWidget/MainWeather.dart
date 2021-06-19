@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/KmaNowDomain.dart';
 import 'package:rainvow_mobile/Screen/DecorationWidget/AnimatedImage.dart';
+import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 
 /**
@@ -32,6 +33,15 @@ class _MainWeatherState extends State<MainWeather>{
 
   _MainWeatherState(this.rect_id, this.kmaNowWeatherObject);
 
+  Future _callWeather3Hour()async{
+    final resultArray = await ApiCall.getWeatherForecast(rect_id);
+
+    if(resultArray.isNotEmpty){
+      weatherPredictDesc = resultArray[0]['weatherTypeDescription'];
+    }
+    print('resultArray  => ${resultArray}' );
+    print('resultArray  => ${weatherPredictDesc}' );
+  }
 
   @override
   void initState() {
@@ -39,12 +49,14 @@ class _MainWeatherState extends State<MainWeather>{
     setState(() {
       effectDouble = 1.0;
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
+    _callWeather3Hour();
+    kmaNowWeatherObject = widget.kmaNowWeatherObject;
     print('kmaNowWeatherObject temperature  ${kmaNowWeatherObject.temperature}');
-
     temperature = "${kmaNowWeatherObject.temperature}";
     rainfall_rate = "${kmaNowWeatherObject.rainfallRate}";
     weatherDesc = "${kmaNowWeatherObject.weatherConditionsKeyword}";
@@ -88,7 +100,7 @@ class _MainWeatherState extends State<MainWeather>{
                 height: 15,
                 width: 1,
               ),
-              Text('30분 후 ${weatherPredictDesc} 예정', style: TextStyle(fontSize: 25) ),
+              Text('약 3시간 후 ${weatherPredictDesc} 예정', style: TextStyle(fontSize: 25) ),
               SizedBox(
                 height: 30,
                 width: 1,

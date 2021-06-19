@@ -52,6 +52,7 @@ dependencies:
   overlay_support: ^1.2.1
   flutter_native_splash: ^1.2.0   # 스플래시
 
+
 # FCM의 경우 버전 주의
 # 동기화 버전 :  firebase_messaging: ^10.0.0 === firebase_core: ^1.2.0
 

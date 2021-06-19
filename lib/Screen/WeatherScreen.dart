@@ -83,10 +83,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
   initState(){
     super.initState();
     _loadFavoriteLocationData().then((value) async{
-      print('value ${value}');
-      setState(() {
-        flag = true;
-      });
+      print('value= ${value}');
+      flag = true;
       });
 
     if(idx < 0 ){
@@ -115,7 +113,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
    * 읽기
    * desc: 관심지역과 현위치 권한을 앱저장소로 부터 읽는다.
    * */
-  Future<List<FavoriteDomain>>  _loadFavoriteLocationData() async{
+  Future<List<FavoriteDomain>> _loadFavoriteLocationData() async{
     prefs = await SharedPreferences.getInstance();
     final getLocationPermission = prefs.getBool('locationPermission') ?? false;
     var getList = await prefs.getStringList('favoriteLocation') ?? [];
@@ -164,6 +162,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   }
 
+  Future <void> _refresh() async{
+    for(int i = 0 ; i < favoriteArray.length ; i++){
+      await _getKmaNowWeatherApi(favoriteArray[i].rect_id,i);
+      await _getKmaNowDustApi(favoriteArray[i].rect_id, favoriteArray[i].longitude, favoriteArray[i].latitude, i);
+    }
+  }
+
 
   /**
    * 현위치 클릭
@@ -201,12 +206,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final resultObj = await ApiCall.getNowKmaWeather(rect_id);
     final getDomain = KmaNowDomain.fromJson(resultObj);
     print('resultObj Now ${rect_id} ${resultObj}  ');
+    var temp = getKmaNowWeatherList;
 
-    if(getKmaNowWeatherList.asMap()[index] == null ){
+    if(temp.asMap()[index] == null ){
       getKmaNowWeatherList.add(getDomain);
     }else{
       getKmaNowWeatherList[index] = getDomain;
     }
+
     return getDomain;
   }
 
@@ -236,7 +243,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
     _getKmaNowWeatherApi(favoriteArray[index].rect_id, index);
   }
 
-
+  //async wait 을 쓰기 위해서는 Future 타입을 이용함
+  Future<Null> refreshList() async {
+    _loadFavoriteLocationData().then((value) async{
+      // print('value ${value}');
+      // _refresh().then((value) => setState(() {
+      //   flag = true;
+      // }));
+    });
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -403,10 +419,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
   List<Widget> _buildScreen(BuildContext context){
     List<Widget> screenList = [];
 
-
       for(int i = 0 ; i< favoriteArray.length; i++){
-
-        var screenX = new Container(
+        var screenX = RefreshIndicator(child: new Container(
 
           child: SingleChildScrollView(
             child: new Container(
@@ -421,6 +435,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               /**
                                * =======================[1. 메인날씨 ]=====================
                                * */
+
+                              // Container(
+                              //   height: 440,
+                              //   child: MainWeather(rect_id: favoriteArray[i].rect_id, kmaNowWeatherObject: getKmaNowWeatherList[i],)
+                              //
+                              // ),
+                              // Container(
+                              //     height: 100,
+                              //     child: WeatherBar(rect_id: favoriteArray[i].rect_id, kmaNowWeatherObject: getKmaNowWeatherList[i], kmaNowDustObject: getKmaNowDustList[i],)
+                              //
+                              // ),
 
                               Container(
                                 height: 440,
@@ -538,6 +563,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 )
             ),
           ),
+        )
+          , onRefresh: refreshList,
         );
 
         screenList.add(screenX);

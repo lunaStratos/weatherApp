@@ -44,7 +44,7 @@ class _WeatherBarState extends State<WeatherBar>{
 
   @override
   Widget build(BuildContext context) {
-
+    kmaNowWeatherObject = widget.kmaNowWeatherObject;
     print('kmaNowWeatherObject ${kmaNowWeatherObject}');
     print('kmaNowDustObject ${kmaNowDustObject}');
 
