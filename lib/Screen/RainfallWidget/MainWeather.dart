@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/KmaNowDomain.dart';
+import 'package:rainvow_mobile/Screen/DecorationWidget/AnimatedImage.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 
 /**
@@ -22,7 +23,7 @@ class _MainWeatherState extends State<MainWeather>{
 
   String rect_id = "4102000004265";
   KmaNowDomain kmaNowWeatherObject;
-
+  double effectDouble = 0.0;
   String address = "";
   String temperature = "";
   String rainfall_rate = "";
@@ -35,7 +36,9 @@ class _MainWeatherState extends State<MainWeather>{
   @override
   void initState() {
     super.initState();
-
+    setState(() {
+      effectDouble = 1.0;
+    });
   }
 
   @override
@@ -79,7 +82,7 @@ class _MainWeatherState extends State<MainWeather>{
               SizedBox(
                 height: 100,
                 width: 100,
-                child: Image.asset('${Util.kmaNowImgAddress(kmaNowWeatherObject.weatherConditions)}'),
+                child: AnimatedImage(weatherConditions: kmaNowWeatherObject.weatherConditions),
               ),
               SizedBox(
                 height: 15,

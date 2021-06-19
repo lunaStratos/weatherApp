@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:rainvow_mobile/Domain/PushNotification.dart';
+import 'package:rainvow_mobile/Screen/DecorationWidget/AnimatedImage.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/NotificationBadge.dart';
 import 'package:vibration/vibration.dart';
 
@@ -54,12 +55,10 @@ class _HomePageState extends State<TestScreen2> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notify'),
-        brightness: Brightness.dark,
+        title: Text('test'),
+        brightness: Brightness.light,
       ),
-      body: Container(
-          child: Text('result '),
-      ),
+      body: Container(),
     );
   }
 }

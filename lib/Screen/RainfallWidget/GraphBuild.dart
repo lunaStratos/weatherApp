@@ -257,21 +257,24 @@ class GraphBuild extends StatelessWidget{
 
       bool isReal = false;
       // addOn
-      for(int j = 0 ; j< getKmaWeatherList.length ; j++){
-        print("count : ${target_time }  ${getKmaWeatherList[j].target_time } ${ target_time  == getKmaWeatherList[j].target_time }" );
+      if(getKmaWeatherList.isNotEmpty){
+        for(int j = 0 ; j< getKmaWeatherList.length ; j++){
+          print("count : ${target_time }  ${getKmaWeatherList[j].target_time } ${ target_time  == getKmaWeatherList[j].target_time }" );
 
-        if(target_time.toString() == getKmaWeatherList[j].target_time.toString()){
-          isReal = true;
-          break;
+          if(target_time.toString() == getKmaWeatherList[j].target_time.toString()){
+            isReal = true;
+            break;
+          }
+
+        }
+        print('isreal ${isReal} ${beforeIndex}');
+        if(isReal){
+          getKmaWeatherTempList.add(getKmaWeatherList[beforeIndex]);
+          beforeIndex++;
+        }else{
+          getKmaWeatherTempList.add(getKmaWeatherList[beforeIndex]);
         }
 
-      }
-      print('isreal ${isReal} ${beforeIndex}');
-      if(isReal){
-        getKmaWeatherTempList.add(getKmaWeatherList[beforeIndex]);
-        beforeIndex++;
-      }else{
-        getKmaWeatherTempList.add(getKmaWeatherList[beforeIndex]);
       }
 
     }
