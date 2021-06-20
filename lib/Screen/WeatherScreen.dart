@@ -44,6 +44,8 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
 
+  int count = 0;
+
   int idx = 0;
   String action = "real"; //clickMylocation, clickFavorite, real
 
@@ -162,12 +164,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   }
 
-  Future <void> _refresh() async{
-    for(int i = 0 ; i < favoriteArray.length ; i++){
-      await _getKmaNowWeatherApi(favoriteArray[i].rect_id,i);
-      await _getKmaNowDustApi(favoriteArray[i].rect_id, favoriteArray[i].longitude, favoriteArray[i].latitude, i);
-    }
-  }
+  // Future <void> _refresh() async{
+  //   for(int i = 0 ; i < favoriteArray.length ; i++){
+  //     await _getKmaNowWeatherApi(favoriteArray[i].rect_id,i);
+  //     await _getKmaNowDustApi(favoriteArray[i].rect_id, favoriteArray[i].longitude, favoriteArray[i].latitude, i);
+  //   }
+  // }
 
 
   /**
@@ -245,12 +247,18 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   //async wait 을 쓰기 위해서는 Future 타입을 이용함
   Future<Null> refreshList() async {
+    count++;
     _loadFavoriteLocationData().then((value) async{
       // print('value ${value}');
       // _refresh().then((value) => setState(() {
       //   flag = true;
       // }));
+
+      setState(() {
+        count = count;
+      });
     });
+
     return null;
   }
 
@@ -523,7 +531,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 height: 15,
                                 width: 1,
                               ),
-                              WeekForecast(rect_id: favoriteArray[i].rect_id),
+                              WeekForecast(rect_id: favoriteArray[i].rect_id,),
 
                               /**
                                * =======================[6. 강우지도 : 웹뷰]=====================

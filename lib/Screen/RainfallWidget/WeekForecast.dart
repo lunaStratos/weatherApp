@@ -21,19 +21,19 @@ class WeekForecast extends StatefulWidget{
 class _WeekForecastState extends State<WeekForecast>{
   String rect_id = "4102000004265";
   bool flag = false;
-  _WeekForecastState(this.rect_id);
 
   List<dynamic> getMidtermList = [];
   List<dynamic> getMidtermTempList = [];
 
+  _WeekForecastState(this.rect_id);
+
+
   @override
   void initState() {
     super.initState();
-    _getKmaWeekWeatherApi().then((value){
-      _getKmaWeekTempWeatherApi().then((value2){
-        setState(() {
-          flag = true;
-        });
+    _getKmaWeekWeatherApi().then((value1){
+      setState(() {
+        flag = true;
       });
     });
 
@@ -44,22 +44,16 @@ class _WeekForecastState extends State<WeekForecast>{
    * */
   Future<String> _getKmaWeekWeatherApi() async {
     final resultArray = await ApiCall.getKmaMidTermForecast(rect_id);
-    print('resultObj ${resultArray}');
-    getMidtermList = resultArray;
-
-    return "ok";
-  }
-
-  /**
-   * 현재날씨 API 불러오기
-   * */
-  Future<String> _getKmaWeekTempWeatherApi() async {
-    final resultArray = await ApiCall.getKmaMidTermForecastTemperature(rect_id);
+    print('resultObj _getKmaWeekWeatherApi ${resultArray}');
+    final resultArray2 = await ApiCall.getKmaMidTermForecastTemperature(rect_id);
     print('resultObj _getKmaWeekTempWeatherApi ${resultArray}');
-    getMidtermTempList = resultArray;
+
+      getMidtermTempList = resultArray2;
+      getMidtermList = resultArray;
 
     return "ok";
   }
+
 
   @override
   Widget build(BuildContext context) {
