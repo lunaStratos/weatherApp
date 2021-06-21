@@ -44,13 +44,14 @@ dependencies:
   webview_flutter: ^0.3.19+9      # 웹뷰 - 공식
   flutter_launcher_icons: ^0.9.0  # 아이콘
   intl: ^0.17.0                   # 날짜변환
-  http_interceptor: ^0.4.1        # 500 Error 처리용 Retry Intercepter
+  http_interceptor: ^0.4.1        # 500 Error 처리용 Retry Intercepter젯
   firebase_messaging: ^10.0.1     # Firebase FCM
   firebase_core: ^1.2.1           # Firebase Core
   firebase_analytics: ^8.1.2      # Firebase
   vibration: ^1.4.0               # 진동
   overlay_support: ^1.2.1
   flutter_native_splash: ^1.2.0   # 스플래시
+
 
 
 # FCM의 경우 버전 주의

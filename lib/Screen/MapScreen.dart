@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeatherMap.dart';
 /**
- * 맵 모듈
+ * 맵 모듈 -
  * */
 class MapScreen extends StatefulWidget{
 
@@ -23,7 +23,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WeatherMap(longitude: "127", latitude:"38");
+    return WeatherMap(latitude: "37.5665",longitude: "126.9780");
   }
 
 }

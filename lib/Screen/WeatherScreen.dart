@@ -533,21 +533,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               ),
                               WeekForecast(rect_id: favoriteArray[i].rect_id,),
 
-                              /**
-                               * =======================[6. 강우지도 : 웹뷰]=====================
-                               * */
-                              SizedBox(
-                                height: 15,
-                                width: 1,
-                              ),
-                              WeatherMap(longitude: favoriteArray[i].longitude, latitude:favoriteArray[i].latitude),
 
                               SizedBox(
                                 height: 15,
                                 width: 1,
                               ),
                               /**
-                               * =======================[7. 일몰일출]=====================
+                               * =======================[6. 일몰일출]=====================
                                * */
                               SizedBox(
                                 height: 15,

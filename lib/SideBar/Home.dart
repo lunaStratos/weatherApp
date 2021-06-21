@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
-
 import 'package:rainvow_mobile/Screen/FavoriteScreen.dart';
+import 'package:rainvow_mobile/Screen/MapScreen.dart';
 import 'package:rainvow_mobile/Screen/TestScreen.dart';
 import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
 import 'package:rainvow_mobile/Screen/SettingScreen.dart';
@@ -27,6 +27,7 @@ class HomePage extends StatefulWidget {
   HomePage({required this.index, required this.action});
 
   final drawerItems = [
+    new DrawerItem("날씨", Icons.wb_sunny),
     new DrawerItem("강우지도", Icons.umbrella),
     new DrawerItem("관심지역", Icons.star),
     new DrawerItem("설정", Icons.settings),
@@ -78,13 +79,15 @@ class HomePageState extends State<HomePage> {
 
   _getDrawerFragment(int pos) {
     switch (pos) {
-      case 0: // 강우지도
+      case 0: // 날
         return new WeatherScreen(idx: index, action: action);
-      case 1: // 관심지역
+      case 1: // 강우지도
+        return new MapScreen();
+      case 2: // 관심지역
         return new FavoriteScreen();
-      case 2: // 설정
+      case 3: // 설정
         return new SettingScreen();
-      case 3: // 테스트
+      case 4: // 테스트
         return new TestScreen();
       default:
         return new Text("Error");

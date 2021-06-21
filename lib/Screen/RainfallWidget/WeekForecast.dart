@@ -19,8 +19,15 @@ class WeekForecast extends StatefulWidget{
 }
 
 class _WeekForecastState extends State<WeekForecast>{
+
   String rect_id = "4102000004265";
   bool flag = false;
+
+  double heightResized = 250.0;
+  var iconArrow = Icons.arrow_downward;
+  bool openFlag = false;
+  int arrayLength = 0;
+
 
   List<dynamic> getMidtermList = [];
   List<dynamic> getMidtermTempList = [];
@@ -67,6 +74,7 @@ class _WeekForecastState extends State<WeekForecast>{
     if(flag){
       if(getMidtermTempList.isNotEmpty && getMidtermList.isNotEmpty){
         return new Container(
+          height: heightResized,
           // height: weekForecastHeightSize,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -95,9 +103,7 @@ class _WeekForecastState extends State<WeekForecast>{
 
               Material(
                   child: InkWell(
-                    onTap: () {
-                      print('adjust');
-                    },
+                    onTap: () => _onOpenClose(context),
                     child: Container(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
@@ -109,6 +115,8 @@ class _WeekForecastState extends State<WeekForecast>{
             ],
           ),
         );
+
+
       }else{
         return LoadingWidget();
       }
@@ -128,7 +136,10 @@ class _WeekForecastState extends State<WeekForecast>{
     List <DataRow> arr = [];
     DateTime date = new DateTime.now();
 
-    for(int i = 0 ; i< getMidtermTempList.length; i++){
+    openFlag ? arrayLength = getMidtermTempList.length : arrayLength = 3;
+
+
+    for(int i = 0 ; i < arrayLength; i++){
       print(getMidtermList[i]["rainfallRateAm"]);
 
       int startindex = i+3; // 3 부터 시작
@@ -159,6 +170,24 @@ class _WeekForecastState extends State<WeekForecast>{
       arr.add(xScreen);
     }
     return arr;
+  }
+
+  _onOpenClose(BuildContext context) {
+    var x = context.widget;
+    if(openFlag){
+      setState(() {
+        heightResized = 250.0;
+        iconArrow = Icons.arrow_downward;
+        openFlag = false;
+      });
+    }else{
+      setState(() {
+        heightResized = 560.0;
+        iconArrow = Icons.arrow_upward;
+        openFlag = true;
+      });
+    }
+
   }
   
 }

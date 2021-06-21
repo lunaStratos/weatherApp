@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,16 +50,66 @@ class TestScreen2 extends StatefulWidget {
 
 class _HomePageState extends State<TestScreen2> {
 
+  double height = 200.0; // starting height value
+  var iconArrow = Icons.arrow_downward;
+  bool openFlag = false;
+
 
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('test'),
-        brightness: Brightness.light,
-      ),
-      body: Container(),
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('test'),
+          brightness: Brightness.light,
+        ),
+          body: Container(
+
+            child:
+
+            Container(
+                height: height,
+                decoration: BoxDecoration(
+                    border:
+                    Border(top: BorderSide(color: Theme.of(context).dividerColor))),
+                child: Row(children: [
+                  Expanded(
+                      child:  Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Text('Some text here!'),
+                      )
+                  ),
+                  Expanded(
+                    child: IconButton(
+                        icon: Icon(iconArrow),
+                        // color: themeData.primaryColor,
+                        onPressed: () => _onPressed(context)
+                    ),
+                  ),
+                ]))
+
+
+
+
+        ),
     );
+  }
+
+  _onPressed(BuildContext context) {
+    var x = context.widget;
+    if(openFlag){
+      setState(() {
+        height = 200.0; // new height value
+        iconArrow = Icons.arrow_downward;
+        openFlag = false;
+      });
+    }else{
+      setState(() {
+        height = 400.0; // new height value
+        iconArrow = Icons.arrow_upward;
+        openFlag = true;
+      });
+    }
+
   }
 }
