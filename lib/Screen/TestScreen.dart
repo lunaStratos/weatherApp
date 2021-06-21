@@ -1,17 +1,10 @@
 import 'dart:convert';
 
-import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:rainvow_mobile/Domain/PushNotification.dart';
-import 'package:rainvow_mobile/Screen/DecorationWidget/AnimatedImage.dart';
-import 'package:rainvow_mobile/Screen/RainfallWidget/NotificationBadge.dart';
-import 'package:vibration/vibration.dart';
 
 
 /**

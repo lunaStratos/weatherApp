@@ -24,8 +24,8 @@ class _WeekForecastState extends State<WeekForecast>{
   bool flag = false;
 
   double heightResized = 250.0;
-  var iconArrow = Icons.arrow_downward;
-  bool openFlag = false;
+  var iconArrow = Icons.arrow_circle_down;
+  bool openFlag = false;    // 열기 true, 닫기 false
   int arrayLength = 0;
 
 
@@ -107,7 +107,7 @@ class _WeekForecastState extends State<WeekForecast>{
                     child: Container(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
-                        child:Icon(Icons.adjust),
+                        child:Icon(iconArrow),
                       ),),
                   )
               )
@@ -172,18 +172,23 @@ class _WeekForecastState extends State<WeekForecast>{
     return arr;
   }
 
+  /**
+   * 컨테이너 확장 축소 모델
+   * */
   _onOpenClose(BuildContext context) {
-    var x = context.widget;
+
     if(openFlag){
+      //닫기 눌렀을때
       setState(() {
         heightResized = 250.0;
-        iconArrow = Icons.arrow_downward;
+        iconArrow = Icons.arrow_circle_down;
         openFlag = false;
       });
     }else{
+      //열기 눌렀을 때
       setState(() {
-        heightResized = 560.0;
-        iconArrow = Icons.arrow_upward;
+        heightResized = 580.0;
+        iconArrow = Icons.arrow_circle_up;
         openFlag = true;
       });
     }
