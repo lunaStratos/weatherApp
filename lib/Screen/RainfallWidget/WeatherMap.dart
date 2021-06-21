@@ -29,24 +29,33 @@ class WeatherMapState extends State<WeatherMap>{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 700,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(10.0),
-          topLeft: Radius.circular(10.0),
-          topRight: Radius.circular(10.0),
-          bottomLeft: Radius.circular(10.0),
-        ),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(child:
+        Container(
 
-      child: new WebView(
-        initialUrl: 'http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}',
-        javascriptMode: JavascriptMode.unrestricted,
-        gestureNavigationEnabled: true,
-      ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(10.0),
+              topLeft: Radius.circular(10.0),
+              topRight: Radius.circular(10.0),
+              bottomLeft: Radius.circular(10.0),
+            ),
+          ),
 
+          child: new WebView(
+            initialUrl: 'http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}',
+            javascriptMode: JavascriptMode.unrestricted,
+            gestureNavigationEnabled: true,
+          ),
+
+        ),),
+        SizedBox(
+          height: 20,
+        )
+      ],
     );
   }
 
