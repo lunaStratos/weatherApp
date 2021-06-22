@@ -7,7 +7,7 @@ import 'package:rainvow_mobile/Util/Util.dart';
 
 /**
  * image animated
- * for mainWeather
+ * for mainWeather image (위 아래로 움직이는)
  * */
 class AnimatedImage extends StatefulWidget {
 

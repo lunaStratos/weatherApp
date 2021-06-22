@@ -57,17 +57,17 @@ class ApiCall {
   }
 
   /**
-   * 3시간 단위 예보 - rect_id
+   * 3시간 단위 예보 - rect_id, targetdate, targettime
    * 강수예보 그래프 사용
    * */
   static Future<List> getWeatherForecast(rect_id) async{
-    String address = '${appapiAddress}/kma-weather-3hour?rect_id=${rect_id}';
+    String address = '${appapiAddress}/kma-weather-3hour?rect_id=${rect_id}&targetdate=${Util.dateNowyyyyMMddStr()}&targettime=${Util.dateNowHHmmSSStr()}';
     final jsonArray = await Api.callapi(address);
     return jsonArray;
   }
 
   /**
-   * 레인보우 예보 - rect_id, nowtime
+   * 레인보우 예보 - rect_id, nowtime(yyyyMMddHHmmSS)
    * 강수예보 그래프 사용
    * */
   static Future<List> getRainvowInfoForecast(rect_id) async{
@@ -75,6 +75,17 @@ class ApiCall {
     final jsonArray = await Api.callapi(address);
     return jsonArray;
   }
+
+  /**
+   * 레인보우 Kma 동시 예보 - rect_id, targetdate, targettime, nowtime(yyyyMMddHHmmSS)
+   * 강수예보 그래프 사용
+   * */
+  static Future<List> getRainvowKmaInfoForecast(rect_id) async{
+    String address = '${appapiAddress}/kma-rainvow-weather-1hour?rect_id=${rect_id}&targetdate=${Util.dateNowyyyyMMddStr()}&targettime=${Util.dateNowHHmmSSStr()}&nowtime=${Util.dateNowStr()}';
+    final jsonArray = await Api.callapi(address);
+    return jsonArray;
+  }
+
 
 
   /**

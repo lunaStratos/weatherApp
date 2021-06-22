@@ -1,9 +1,12 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:rainvow_mobile/Domain/Kma3TimeDomain.dart';
 
+/**
+ * 레인보우 - 기상청 그래프 빌드
+ * 건드릴려면 메인 개발자에게 말하고 건드릴것
+ * */
 class GraphBuild extends StatelessWidget{
 
   List <Kma3TimeDomain> getKmaWeatherList = [];
@@ -11,9 +14,10 @@ class GraphBuild extends StatelessWidget{
   List <Kma3TimeDomain> getKmaWeatherMakeList = [];
 
   double tempTemperature = 28;
+  double maxY = 0;
 
   GraphBuild({required this.getKmaWeatherList, required this.getRainvowList});
-  double maxY = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class GraphBuild extends StatelessWidget{
 
 
     for(int i = 0 ; i < getRainvowList.length ; i++){
-      tempTemperature > maxY ? maxY = tempTemperature : maxY;
+      tempTemperature > maxY ? maxY = tempTemperature : maxY; //임시
       // int.parse(getRainvowList[i]['rainfall_rate']) > maxY ? maxY = int.parse(getRainvowList[i]['rainfall_rate']): "";
     }
     for(int i = 0 ; i < getKmaWeatherList.length ; i++){
@@ -98,6 +102,7 @@ class GraphBuild extends StatelessWidget{
               return touchedBarSpots.map((barSpot) {
                 idx++;
                 String desc = "레인보우: ";
+
                 switch(idx){
                   case 0:
                     desc = "레인보우: ";
@@ -106,15 +111,17 @@ class GraphBuild extends StatelessWidget{
                     desc = "기상청: ";
                     break;
                 }
-                print('barSpot ${barSpot}');
-                return LineTooltipItem(
 
+                print('barSpot ${barSpot}');
+
+                return LineTooltipItem(
                   '${desc} ${barSpot.x} 시: ${barSpot.y}',
                   TextStyle(
                       fontSize: 15,
                       color: (idx == 1) ? Colors.blueGrey : Colors.amber
                   ),
                 );
+
               }).toList();
             }
 
@@ -141,8 +148,7 @@ class GraphBuild extends StatelessWidget{
           ),
           margin: 10,
           getTitles: (value) {
-            // print('leftTitles ${value.toInt()}');
-            // print('getRainvowList ${getRainvowList}');
+
             if(getRainvowList.isNotEmpty){
               return getRainvowList[value.toInt()]['forecast_target_time'].substring(8, 10) + "시";
             }else{

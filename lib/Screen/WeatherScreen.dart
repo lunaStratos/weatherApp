@@ -552,7 +552,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 height: 15,
                                 width: 1,
                               ),
-                              Text('자료 기상청, 레인보우')
+                              Text('자료 기상청, 레인보우'),
+                              Text('미세먼지 자료 출처: 환경부/한국환경공단'),
+                              Text('데이터 오류 가능성: 데이터는 실시간 관측된 자료이며 측정소 현지 사정이나 데이터의 수신상태에 따라 미수신 될 수 있음')
                             ],
                           ),
                         )

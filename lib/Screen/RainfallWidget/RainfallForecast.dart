@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/Kma3TimeDomain.dart';
+import 'package:rainvow_mobile/Domain/RainvowKma1TimeDomain.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/LoadingWidget.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/GraphBuild.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
@@ -49,16 +50,15 @@ class _RainfallState extends State<RainfallForecast>{
   List <Kma3TimeDomain> getKmaWeatherList = [];
   List <dynamic> getRainvowList = [];
   List <Kma3TimeDomain> getKmaWeatherMakeList = [];
+  List <RainvowKma1TimeDomain> getRainvowKmaList = [];
 
 
   /**
-   * KMA 기상청 API
+   * KMA 기상청 API - 동네예보(3시간)
    * */
   Future <void>  _getKmaWeather3TimeApi() async {
     final resultArray = await ApiCall.getWeatherForecast(rect_id);
-    print('resultArray  => ${resultArray}' );
     getKmaWeatherList = resultArray.map((item){
-      print('item rainfall_type ${item['rainfall_type'].runtimeType}');
 
       return Kma3TimeDomain.fromJson(item);
     }).toList();
@@ -71,6 +71,16 @@ class _RainfallState extends State<RainfallForecast>{
   Future <void>  _getRainvowInfoForecast() async {
     final resultArray = await ApiCall.getRainvowInfoForecast(rect_id);
     getRainvowList = resultArray;
+  }
+
+  /**
+   * 레인보우 API
+   * */
+  Future <void>  _getRainvowKmaInfoForecast() async {
+    final resultArray = await ApiCall.getRainvowKmaInfoForecast(rect_id);
+    getRainvowKmaList = resultArray.map((item){
+      return RainvowKma1TimeDomain.fromJson(item);
+    }).toList();
   }
 
   @override

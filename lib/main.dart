@@ -115,7 +115,6 @@ class MyAppState extends State<MyApp> {
           title: message.notification?.title,
           body: message.notification?.body,
         );
-        print('+++++++++++++++ ${notification.title}');
         setState(() {
           _notificationInfo = notification;
           _totalNotifications++;

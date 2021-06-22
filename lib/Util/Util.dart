@@ -302,6 +302,40 @@ class Util {
   }
 
   /**
+   * 현재시각 불러오기
+   * 형태 : yyyyMMdd
+   * */
+  static String dateNowyyyyMMddStr(){
+    String str = "";
+    DateTime date = new DateTime.now();
+
+    String month = Util.trans2Digit(date.month);
+    String day = Util.trans2Digit(date.day);
+    String hour = Util.trans2Digit(date.hour);
+
+    str = '${date.year}${month}${day}';
+
+    return  str;
+  }
+
+  /**
+   * 현재시각 불러오기
+   * 형태 : HHmmSS
+   * */
+  static String dateNowHHmmSSStr(){
+    String str = "";
+    DateTime date = new DateTime.now();
+
+    String month = Util.trans2Digit(date.month);
+    String day = Util.trans2Digit(date.day);
+    String hour = Util.trans2Digit(date.hour);
+
+    str = '${hour}00';
+
+    return  str;
+  }
+
+  /**
    * 시분을 utc 시각으로 변경하기
    * 형태 : HH:mm
    * */
