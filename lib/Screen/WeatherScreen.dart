@@ -548,13 +548,40 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
                               SunRiseWidget(longitude: favoriteArray[i].longitude, latitude:  favoriteArray[i].latitude),
 
+
+                              new Container(
+                                  margin: const EdgeInsets.only(left: 5.0, right: 5.0),
+                                  child: Divider(
+                                    color: Colors.black,
+                                    height: 36,)
+                              ),
                               SizedBox(
-                                height: 15,
+                                height: 10,
                                 width: 1,
                               ),
                               Text('자료 기상청, 레인보우'),
-                              Text('미세먼지 자료 출처: 환경부/한국환경공단'),
-                              Text('데이터 오류 가능성: 데이터는 실시간 관측된 자료이며 측정소 현지 사정이나 데이터의 수신상태에 따라 미수신 될 수 있음')
+                              Center(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        '미세먼지 자료 출처: 환경부/한국환경공단, \n 데이터 오류 가능성: 데이터는 실시간 관측된 자료이며 측정소 현지 사정이나 데이터의 수신상태에 따라 미수신 될 수 있음',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                      ),
+                                      width: 300.0,
+                                      height: 100.0,
+                                    ),
+                                  ],
+                                )
+                              ),
+
+
                             ],
                           ),
                         )
