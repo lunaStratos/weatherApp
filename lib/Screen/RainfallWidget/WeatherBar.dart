@@ -45,8 +45,6 @@ class _WeatherBarState extends State<WeatherBar>{
   @override
   Widget build(BuildContext context) {
     kmaNowWeatherObject = widget.kmaNowWeatherObject;
-    print('kmaNowWeatherObject ${kmaNowWeatherObject}');
-    print('kmaNowDustObject ${kmaNowDustObject}');
 
     temperature = "${kmaNowWeatherObject.temperature}";
     rainfall_rate = "${kmaNowWeatherObject.rainfallRate}";
@@ -69,6 +67,9 @@ class _WeatherBarState extends State<WeatherBar>{
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          /**
+           * 비올확률 
+           * */
           new Padding(
             padding: EdgeInsets.all(2),
             child: new Column(
@@ -79,7 +80,9 @@ class _WeatherBarState extends State<WeatherBar>{
               ],
             ),
           ),
-
+          /**
+           * 습도 
+           * */
           new Padding(
             padding: EdgeInsets.all(2),
             child: new Column(
@@ -91,6 +94,9 @@ class _WeatherBarState extends State<WeatherBar>{
               ],
             ),
           ),
+          /**
+           * 바람세기
+           * */
           new Padding(
             padding: EdgeInsets.all(2),
             child: new Column(
@@ -102,6 +108,9 @@ class _WeatherBarState extends State<WeatherBar>{
               ],
             ),
           ),
+          /**
+           * 미세먼지 그림
+           * */
           new Padding(
             padding: EdgeInsets.all(2),
             child: new Column(
@@ -113,6 +122,9 @@ class _WeatherBarState extends State<WeatherBar>{
               ],
             ),
           ),
+          /**
+           * 초미세먼지 그림
+           * */
           new Padding(
             padding: EdgeInsets.all(2),
             child: new Column(

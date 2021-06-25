@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/Kma3TimeDomain.dart';
@@ -83,10 +82,7 @@ class _RainfallState extends State<RainfallForecast>{
    * */
   Future <void>  _getRainvowKmaInfoForecast() async {
     final resultArray = await ApiCall.getRainvowKmaInfoForecast(rect_id);
-    print('getRainvowKmaList?? ${resultArray}');
-
     getRainvowKmaList = resultArray.map((item) {
-      print('_getRainvowKmaInfoForecast ${item}');
       return RainvowKma1TimeDomain.fromJson((item));
     }).toList();
 
@@ -95,9 +91,6 @@ class _RainfallState extends State<RainfallForecast>{
 
   @override
   Widget build(BuildContext context) {
-    print('getKmaWeatherList ${getKmaWeatherList}');
-    print('getRainvowList ${getRainvowList}');
-    print('getRainvowKmaList ${getRainvowKmaList}');
 
     if(flag){
       return new Container(

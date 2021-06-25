@@ -42,8 +42,6 @@ class _MainWeatherState extends State<MainWeather>{
     if(resultArray.isNotEmpty){
       weatherPredictDesc = resultArray[0]['weatherTypeDescription'];
     }
-    print('resultArray  => ${resultArray}' );
-    print('resultArray  => ${weatherPredictDesc}' );
   }
 
   @override
@@ -55,6 +53,7 @@ class _MainWeatherState extends State<MainWeather>{
 
   }
 
+
   @override
   Widget build(BuildContext context) {
     _callWeather3Hour();
@@ -64,6 +63,7 @@ class _MainWeatherState extends State<MainWeather>{
     weatherDesc = "${kmaNowWeatherObject.weatherConditionsKeyword}";
     String windStrengthCodeDescription = "${kmaNowWeatherObject.windStrengthCodeDescription}";
     String rainfallRate = "${kmaNowWeatherObject.rainfallRate}";
+    String rainfallAmount = kmaNowWeatherObject.rainfallRate != 0 ? "/ 현재 강우량: ${kmaNowWeatherObject.rainfallAmount}mm" : "";
 
     return new Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -72,9 +72,13 @@ class _MainWeatherState extends State<MainWeather>{
 
           new Column(
             children: [
-              Text('${dongName}', style: TextStyle(fontSize: 20),),
               /**
-               * 14도, 구름많음
+               * 동이름
+               * */
+              Text('${dongName}', style: TextStyle(fontSize: 20),),
+
+              /**
+               * 온도, 날씨, 바람강도, 비올확률
                * */
               new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +91,7 @@ class _MainWeatherState extends State<MainWeather>{
                     children: [
                       Text('${weatherDesc}', style: TextStyle(fontSize: 20) ),
                       Text('바람강도: ${windStrengthCodeDescription}', style: TextStyle(fontSize: 12)),
-                      Text('비올확률 ${rainfallRate}%', style: TextStyle(fontSize: 12)),
+                      Text('비올확률 ${rainfallRate} ${rainfallAmount}%', style: TextStyle(fontSize: 12)),
                     ],
                   )
                 ],
@@ -96,6 +100,9 @@ class _MainWeatherState extends State<MainWeather>{
                 height: 15,
                 width: 1,
               ),
+              /**
+               * 날씨 이미지 표시 부분
+               * */
               SizedBox(
                 height: 150,
                 width: 150,
@@ -105,6 +112,9 @@ class _MainWeatherState extends State<MainWeather>{
                 height: 15,
                 width: 1,
               ),
+              /**
+               * 3시간 후 예정
+               * */
               Text('약 3시간 후 ${weatherPredictDesc} 예정', style: TextStyle(fontSize: 25) ),
               SizedBox(
                 height: 30,

@@ -10,7 +10,6 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteJsonDomain.dart';
-import 'package:rainvow_mobile/Screen/AlarmModifyScreen.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertImage.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertNormal.dart';
 import 'package:rainvow_mobile/Screen/WeatherScreen.dart';

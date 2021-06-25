@@ -93,6 +93,9 @@ class _SunRiseWidget extends State<SunRiseWidget>{
             new Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                /**
+                 * 동적 시간 표시
+                 * */
                 Text('${sunriseDate.month}월 ${sunriseDate.day}일', style: TextStyle(fontSize: 16),textAlign: TextAlign.left,),
                 new Column(
                   children: [
@@ -101,15 +104,29 @@ class _SunRiseWidget extends State<SunRiseWidget>{
                       child: new Column(
 
                         children: [
+
+                          /**
+                           * 배경 사진 위에 태양이 올라가야 하기 때문에 Stack으로 표시
+                           * */
                           new Stack(
 
                             children: [
+                              /**
+                               * 180도 이미지 표시
+                               * */
                               Image.asset("assets/images/sun_back.png"),
+
+                              /**
+                               * 태양 표시
+                               * */
                               Positioned(
                                 top: -10,
                                 right: 0,
                                 width: 250,
                                 child: sunNowDegree != 0 ? (new RotationTransition(
+                                    /**
+                                     * 태양 각도 === sunNowDegree
+                                     * */
                                     turns: new AlwaysStoppedAnimation(sunNowDegree/ 360),
                                     child: Image.asset('assets/images/sun_degree.png', height: 280)
                                 )

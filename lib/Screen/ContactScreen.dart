@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+/**
+ * 고객접촉
+ * */
 class ContactScreen extends StatefulWidget {
 
   @override
@@ -23,7 +26,9 @@ class ContactScreenState extends State<ContactScreen>{
           bottomLeft: Radius.circular(10.0),
         ),
       ),
-
+      /**
+       * 웹뷰
+       * */
       child: new WebView(
         initialUrl: 'http://rainvow.net/communication/contactUs',
         javascriptMode: JavascriptMode.unrestricted,

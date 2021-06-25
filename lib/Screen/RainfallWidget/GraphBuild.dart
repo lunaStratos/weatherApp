@@ -124,8 +124,6 @@ class GraphBuild extends StatelessWidget{
                     break;
                 }
 
-                print('barSpot ${barSpot}');
-
                 return LineTooltipItem(
                   '${desc} ${barSpot.x} 시: ${barSpot.y}',
                   TextStyle(
@@ -342,8 +340,6 @@ class GraphBuild extends StatelessWidget{
       lineRainvowList.add(FlSpot(idx+0.0, (getRainvowKmaList[i].rainfallAmountRainvow)));
       lineKmaWeatherList.add(FlSpot(idx+0.0, ( getRainvowKmaList[i].rainfallAmountKma)));
     }
-    print("graph result == > ${getRainvowKmaList.length} ");
-    print("graph result == > ${lineRainvowList.length} ${lineKmaWeatherList.length}");
 
     return [
       LineChartBarData(

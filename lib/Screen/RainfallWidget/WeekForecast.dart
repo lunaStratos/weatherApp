@@ -97,10 +97,16 @@ class _WeekForecastState extends State<WeekForecast>{
                     DataColumn(label: Text('오후')),
                     DataColumn(label: Text('눈/비\n확률')),
                   ],
+                  /**
+                   * 데이터 부분 
+                   * */
                   rows: _DataRowList(context)
 
               ),
 
+              /**
+               * 접기 펼치기 버튼
+               * */
               Material(
                   child: InkWell(
                     onTap: () => _onOpenClose(context),
@@ -131,16 +137,15 @@ class _WeekForecastState extends State<WeekForecast>{
 
   /**
    * for문 날짜 표현
+   * 접으면 3개, 펼치면 10개
    * */
   List<DataRow> _DataRowList(BuildContext context){
     List <DataRow> arr = [];
     DateTime date = new DateTime.now();
 
     openFlag ? arrayLength = getMidtermTempList.length : arrayLength = 3;
-
-
+    
     for(int i = 0 ; i < arrayLength; i++){
-      print(getMidtermList[i]["rainfallRateAm"]);
 
       int startindex = i+3; // 3 부터 시작
 
@@ -174,6 +179,7 @@ class _WeekForecastState extends State<WeekForecast>{
 
   /**
    * 컨테이너 확장 축소 모델
+   * 접기 펼치기 대응
    * */
   _onOpenClose(BuildContext context) {
 

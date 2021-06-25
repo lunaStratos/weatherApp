@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,7 +7,6 @@ import 'package:http/http.dart' as http;
  * */
 class Util {
 
-
   /**
    * 위치정보 가져오기
    * */
@@ -16,12 +14,8 @@ class Util {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       return Future.error('Location services are disabled.');
     }
 
@@ -29,11 +23,6 @@ class Util {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('Location permissions are denied');
       }
     }
@@ -351,9 +340,7 @@ class Util {
    * 시 분의 1자리를 2자리로 바꾸는 기능
    * */
   static String trans2Digit(int hm){
-
     String str = hm.toString().length == 1? "0${hm}" : hm.toString();
-
     return str;
   }
 

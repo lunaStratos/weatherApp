@@ -86,7 +86,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
   initState(){
     super.initState();
     _loadFavoriteLocationData().then((value) async{
-      print('value= ${value}');
       flag = true;
       });
 
@@ -95,7 +94,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         _current = 0;
       });
     }else{
-      print('action == "clickFavorite" ${action == "clickFavorite"} ${idx}');
+
       if(action == "clickFavorite"){
         setState(() {
           _current = idx;
@@ -107,7 +106,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
       }
 
     }
-    print("_current ${_current} ${idx}");
 
 
   }
@@ -120,7 +118,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
     prefs = await SharedPreferences.getInstance();
     final getLocationPermission = prefs.getBool('locationPermission') ?? false;
     var getList = await prefs.getStringList('favoriteLocation') ?? [];
-    debugPrint('_loadFavoriteLocationData ${getList} ${getList.isNotEmpty} ${getLocationPermission}');
 
     if(idx == -2){
       favoriteArray = await _getPosition();
@@ -196,7 +193,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
             rainfallAmount: "", celsius: "20", imgSrc: "", alarmTime: "0800",utcAlarmTime: "2300", use: true)
     );
 
-    print('fDomain : ${favoriteArray[0].kma_point_id}');
 
     return favoriteArray;
 
@@ -208,7 +204,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Future <KmaNowDomain> _getKmaNowWeatherApi(rect_id, index) async {
     final resultObj = await ApiCall.getNowKmaWeather(rect_id);
     final getDomain = KmaNowDomain.fromJson(resultObj);
-    print('resultObj Now ${rect_id} ${resultObj}  ');
     var temp = getKmaNowWeatherList;
 
     if(temp.asMap()[index] == null ){
@@ -225,7 +220,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
    * */
   Future <DustDomain> _getKmaNowDustApi(rect_id, longitude, latitude, index) async {
     final resultObj = await ApiCall.getNowDust(rect_id, longitude, latitude);
-    print('resultObj ${resultObj}');
     final getDomain = DustDomain.fromJson(resultObj);
 
     if(getKmaNowDustList.asMap()[index] == null ){
@@ -322,7 +316,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                * 페이지 변경시 index 저장
                * */
               onPageChanged: (index, reason) {
-                print('index ${index}');
                 _changedCarouSel(index);
                 setState(() {
                   _current = index;
@@ -398,7 +391,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                         ),
                         onTap: (position) {
-                          print('position ${position}');
                           setState(() =>
                           _current = position.toInt()
                           );

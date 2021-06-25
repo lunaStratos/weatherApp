@@ -57,7 +57,6 @@ class _ShortForecastState extends State<ShortForecast> {
   Widget build(BuildContext context) {
 
     buildGraphDangiList();
-    print('getdataList2 => ${getdataList}');
 
     if(getdataList.isNotEmpty){
       return SingleChildScrollView(
@@ -116,6 +115,9 @@ class _ShortForecastState extends State<ShortForecast> {
 
     for(int k = 0 ; k < getdataList.length ; k++){
 
+      /**
+       * 시간과 날씨 이미지
+       * */
       var timeAndWeatherCell = DataCell(
           new Column(
               children: [
@@ -127,6 +129,9 @@ class _ShortForecastState extends State<ShortForecast> {
       );
       timeAndWeatherList.add(timeAndWeatherCell);
 
+      /**
+       * 습도
+       * */
       var humidityCell = DataCell(Text('${getdataList[k]["humidity"]} %'));
       humidityList.add(humidityCell);
 
@@ -147,6 +152,9 @@ class _ShortForecastState extends State<ShortForecast> {
       );
       windList.add(windCell);
 
+      /**
+       * 온도
+       * */
       var temperatureCell = DataCell(Text('${getdataList[k]["temperature"]}도'));
       temperatureList.add(temperatureCell);
 
@@ -338,6 +346,10 @@ class _ShortForecastState extends State<ShortForecast> {
     );
   }
 
+
+  /**
+   * 그래프
+   * */
   List<LineChartBarData> buildGraphDangiList(){
 
     final arr =  [

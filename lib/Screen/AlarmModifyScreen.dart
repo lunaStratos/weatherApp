@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
@@ -195,6 +194,9 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
           leading: new Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              /**
+               * 삭제 아이콘
+               * */
               IconButton(onPressed: () =>{
                 _deleteAlarmItem(index)
               }, icon: Icon(Icons.delete))

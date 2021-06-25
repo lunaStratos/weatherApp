@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 /**
  * 이미지 있는 alert
+ * desc: 현재는 위치권한만 사용,
  * */
-
 class AlertImage extends StatelessWidget{
 
   String title = "";

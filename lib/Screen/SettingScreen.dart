@@ -40,14 +40,12 @@ class _SettingScreenScreen extends State<SettingScreen>{
 
     if(getPermissionBool){
       if (statusPsermission.isDenied) {
-        print('oh my underAttack!');
         setState(() {
           locationFlag = false;
           prefs.setBool("locationPermission", false);
         });
       }
       if(statusPsermission.isGranted){
-        print('oh my isGranted!');
         setState(() {
           locationFlag = true;
           prefs.setBool("locationPermission", true);
@@ -138,7 +136,6 @@ class _SettingScreenScreen extends State<SettingScreen>{
                * 위치권한 활성화 TOGGLE
                * */
               onToggle: (bool flag) {
-                print('onToggle ${flag}');
                 _togglePermission(flag);
 
               },

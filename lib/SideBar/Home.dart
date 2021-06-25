@@ -31,7 +31,7 @@ class HomePage extends StatefulWidget {
     new DrawerItem("강우지도", Icons.umbrella),
     new DrawerItem("관심지역", Icons.star),
     new DrawerItem("설정", Icons.settings),
-    new DrawerItem("테스트", Icons.star),
+    //new DrawerItem("테스트", Icons.star),
   ];
 
   @override

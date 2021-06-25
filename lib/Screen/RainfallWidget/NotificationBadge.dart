@@ -9,7 +9,6 @@ class NotificationBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    print('set ${totalNotifications} ');
     return Container(
       width: 40.0,
       height: 40.0,

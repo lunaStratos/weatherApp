@@ -28,8 +28,6 @@ class AlarmScreen extends StatefulWidget {
 }
 class _AlarmScreenScreen extends State<AlarmScreen> {
 
-  // late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-
   late SharedPreferences prefs;
 
     bool locationPermission = false;
@@ -43,109 +41,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
     _loadPermission();
     _loadFavoriteLocationData();
 
-  //   _configureLocalTimeZone();
-  //
-  //   /**
-  //    * ANDROID SETTING
-  //    * */
-  //   final AndroidInitializationSettings initializationSettingsAndroid =
-  //   AndroidInitializationSettings('@mipmap/ic_launcher');
-  //
-  //   /**
-  //    * IOS SETTING
-  //    * */
-  //   final IOSInitializationSettings initializationSettingsIOS =
-  //   IOSInitializationSettings(
-  //     requestSoundPermission: false,
-  //     requestBadgePermission: false,
-  //     requestAlertPermission: false,
-  //   );
-  //
-  //   /**
-  //    * SETTING INSERT
-  //    * */
-  //   final InitializationSettings initializationSettings =
-  //   InitializationSettings(
-  //       android: initializationSettingsAndroid,
-  //       iOS: initializationSettingsIOS,
-  //       macOS: null);
-  //
-  //   /**
-  //    * ANDROID SETTING
-  //    * */
-  //   _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  //   _flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification:selectNotification );
-  //
-  // }
-  //
-  // Future<void> _configureLocalTimeZone() async {
-  //   tz.initializeTimeZones();
-  //   final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-  //   tz.setLocalLocation(tz.getLocation(timeZoneName!));
-  // }
-  //
-  //
-  // Future selectNotification(payload) async {
-  //   print('payload ${payload}');
-  //   String xx = await _loadWeather(payload.toString().split(",")[0], payload.toString().split(",")[1]);
-  //
-  //   WeatherScreen(x: xx,);
-  // }
-  //
-  //
-  //
-  // Future<String> _loadWeather(longitude, latitude) async{
-  //
-  //   final resultObj = await ApiCall.getNowKmaWeather(longitude, latitude);
-  //   final getDomain = KmaNowDomain.fromJson(resultObj);
-  //   print('resultObj Now ${longitude} ${latitude} ${resultObj}  ');
-  //
-  //     return getDomain.weather_conditions_keyword;
-  // }
-  //
-  //
-  //
-  // Future _showNotification(hour, minute, rect_id, longitude, latitude) async{
-  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-  //       'channel_ID', 'channel name', 'channel description',
-  //       importance: Importance.max,
-  //       playSound: true,
-  //       showProgress: true,
-  //       priority: Priority.high,
-  //       ticker: 'test ticker');
-  //
-  //   var iOSChannelSpecifics = IOSNotificationDetails();
-  //   var platformChannelSpecifics = NotificationDetails(
-  //       android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
-  //
-  //   // 알람
-  //   await _flutterLocalNotificationsPlugin.zonedSchedule(
-  //       0,
-  //       await _loadWeather(longitude, latitude),
-  //       'daily scheduled notification body',
-  //       _nextInstanceOfRepeat(hour, minute),
-  //       const NotificationDetails(
-  //         android: AndroidNotificationDetails(
-  //             'daily notification channel id',
-  //             'daily notification channel name',
-  //             'daily notification description'),
-  //       ),
-  //       androidAllowWhileIdle: true,
-  //       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-  //       matchDateTimeComponents: DateTimeComponents.time,
-  //       payload: "${longitude},${latitude}");
-  //
     }
-  //
-  // tz.TZDateTime _nextInstanceOfRepeat(hour, minute) {
-  //   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-  //   tz.TZDateTime scheduledDate =
-  //   tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-  //   if (scheduledDate.isBefore(now)) {
-  //     scheduledDate = scheduledDate.add(const Duration(days: 1));
-  //   }
-  //   return scheduledDate;
-  // }
 
     /**
      * 알람 받기
@@ -198,6 +94,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
     /**
      * FCM토큰과 알람 보내기
+     * desc: FCM 리스트 전체 삭제후 모두 저장보내기
      * */
     Future <void> sendFcm() async{
       String timezone = DateTime.now().timeZoneName;
@@ -250,7 +147,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
     }
 
   /**
-   * 알람정지시 사용
+   * 알람정지시 사용 - FCM 리스트 전체 삭제
    * */
   Future <void> sendAllDeleteFcm() async{
 
@@ -305,18 +202,6 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
       await sendFcm();
 
-
-      // if (toggle){
-      //   //알람켜짐
-      //   _showNotification(hour, minute, rect_id, longitude, latitude);
-      //   ToastWiget("매일 ${hour}시 ${minute}분 날씨알람이 켜졌습니다.");
-      //
-      // }else{
-      //   //알람꺼짐
-      //   ToastWiget("매일 ${hour}시 ${minute}분 날씨알람이 꺼졌습니다.");
-      // }
-
-
     }
 
   /**
@@ -350,93 +235,10 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       );
     }
 
+    /**
+     *
+     * */
     Widget buildSettingsList(context) {
-
-      // return new SettingsList(
-      //
-      //   sections: [
-      //     CustomSection(
-      //       child: Column(
-      //         children: [
-      //           new Container(
-      //             color: Colors.white60,
-      //             child: Padding(
-      //                 padding: const EdgeInsets.only(bottom: 4, top: 4, left: 9, right: 9),
-      //                 child: InkWell(
-      //                   child: new Row(
-      //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                     children: <Widget>[
-      //                       new Container(
-      //                         child: Text(
-      //                           '일일 알람 설정',
-      //                           textAlign: TextAlign.left,
-      //                           style: TextStyle(fontSize: 20,),
-      //                         ),
-      //                       ),
-      //                       new Container(
-      //
-      //                       ),
-      //
-      //                       new Container(
-      //                         child: Image.asset(
-      //                           'assets/images/gear_menu.png',
-      //                           height: 50,
-      //                           width: 50,
-      //                           alignment: Alignment.centerRight,
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                   onTap: () =>{
-      //                     Navigator.push(
-      //                       context,
-      //                       MaterialPageRoute(
-      //                           builder: (context) => AlarmModifyScreen()),
-      //                     )
-      //                   },
-      //                 )
-      //
-      //             ),
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //     SettingsSection(
-      //
-      //       tiles: [
-      //         SettingsTile.switchTile(
-      //           title: '알림 받기',
-      //           titleTextStyle: TextStyle(fontSize: 18),
-      //           subtitle: '매일 지정한 시각에 선택한 위치의 기상정보를 받아볼 수 있습니다.',
-      //           subtitleMaxLines: 2,
-      //           switchValue: alarmFlag,
-      //           //스위치
-      //           onToggle: (bool value) {
-      //             _alarmToggle(value);
-      //           },
-      //         ),
-      //       ],
-      //     ),
-      //     CustomSection(
-      //       child: Column(
-      //         children: [
-      //
-      //         ],
-      //       ),
-      //     ),
-      //
-      //
-      //     // SettingsSection(
-      //     //   title: '알람설정',
-      //     //   titleTextStyle: TextStyle(fontSize: 19),
-      //     //   titlePadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      //     //   tiles: generateAlarmToggleList()
-      //     //   ,
-      //     // ),
-      //
-      //   ],
-      // );
-
 
       return new Column(
         children: [
@@ -615,7 +417,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
               onTap: () =>
               /**
                * 알람 시간 설정
-               * 취소시 동작 없ㅇ음.
+               * 취소시 동작 없ㅇ음
                * */
               DatePicker.showTimePicker(context,
                   showTitleActions: true,
