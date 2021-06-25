@@ -22,6 +22,7 @@ import 'package:rainvow_mobile/Screen/RainfallWidget/WeatherMap.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/WeekForecast.dart';
 import 'package:rainvow_mobile/Screen/SettingScreen.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
+import 'package:rainvow_mobile/Util/Dependencys.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -432,7 +433,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
           child: SingleChildScrollView(
             child: new Container(
-                color: Colors.blueGrey[100],
+                color: Dependencys.AppBackGroundColor,
                 child: new Column(
                   children: [
                     new Padding(
@@ -456,7 +457,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               // ),
 
                               Container(
-                                height: 440,
+                                height: 490,
                                 child: FutureBuilder(
                                   future: _getKmaNowWeatherApi(favoriteArray[i].rect_id,i),
                                   builder: (context, snapshot1) {
@@ -479,10 +480,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
                                             return new Column(
                                               children: [
-                                                Text('${favoriteArray[i].address}'),
                                                 MainWeather(
                                                     rect_id : favoriteArray[i].rect_id,
-                                                    kmaNowWeatherObject: body
+                                                    kmaNowWeatherObject: body,
+                                                    dongName: favoriteArray[i].dongName,
                                                 ),
                                                 /**
                                                  * =======================[2.날씨바]=====================
@@ -505,8 +506,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               ),
 
 
-
-
                               SizedBox(
                                 height: 15,
                                 width: 1,
@@ -520,7 +519,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 width: 1,
                               ),
                               /**
-                               * =======================[4.강수예보 그래 ]=====================
+                               * =======================[4.강수예보 그래프 ]=====================
                                * */
                               RainfallForecast(rect_id: favoriteArray[i].rect_id),
 

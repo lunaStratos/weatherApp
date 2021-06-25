@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/LoadingWidget.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
+import 'package:rainvow_mobile/Util/Dependencys.dart';
 
 /**
  * 강우지도 - 7.일춞일몰
@@ -68,7 +69,7 @@ class _SunRiseWidget extends State<SunRiseWidget>{
     if(flag){
       return new Container(
         decoration: BoxDecoration(
-          color: Colors.white38,
+          color: Dependencys.SunRiseBackGroundColor,
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(10.0),
             topLeft: Radius.circular(10.0),

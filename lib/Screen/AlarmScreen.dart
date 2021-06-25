@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Screen/AlarmModifyScreen.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
+import 'package:rainvow_mobile/Util/Dependencys.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -475,7 +476,8 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                     )
                   },
                 )
-            )
+            ),
+            color: Dependencys.AppBackGroundColor,
           ),
           Container(
             child: Row(
@@ -607,7 +609,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                 onChanged: (value) {
                   _alarmToggleItem(value, index);
                 },
-                activeTrackColor: Colors.lightBlueAccent,
+                activeTrackColor: Dependencys.SwitchColor,
                 activeColor: Colors.blue,
               ),
               onTap: () =>

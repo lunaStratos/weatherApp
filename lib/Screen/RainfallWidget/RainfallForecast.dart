@@ -1,7 +1,4 @@
-
-
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/Kma3TimeDomain.dart';
@@ -9,6 +6,7 @@ import 'package:rainvow_mobile/Domain/RainvowKma1TimeDomain.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/LoadingWidget.dart';
 import 'package:rainvow_mobile/Screen/RainfallWidget/GraphBuild.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
+import 'package:rainvow_mobile/Util/Dependencys.dart';
 
 /**
  * 강우지도 - 5. 강수예보그래프
@@ -35,14 +33,21 @@ class _RainfallState extends State<RainfallForecast>{
   @override
   void initState() {
     super.initState();
-    _getKmaWeather3TimeApi().then((value){
-      _getRainvowInfoForecast().then((value){
+    // _getKmaWeather3TimeApi().then((value){
+    //   _getRainvowInfoForecast().then((value){
+    //
+    //     setState(() {
+    //       flag = true;
+    //     });
+    //   });
+    // });
 
-        setState(() {
-          flag = true;
-        });
+    _getRainvowKmaInfoForecast().then((value){
+      setState(() {
+        flag = true;
       });
     });
+
 
   }
 
@@ -74,27 +79,32 @@ class _RainfallState extends State<RainfallForecast>{
   }
 
   /**
-   * 레인보우 API
+   * 레인보우 API 통합본
    * */
   Future <void>  _getRainvowKmaInfoForecast() async {
     final resultArray = await ApiCall.getRainvowKmaInfoForecast(rect_id);
-    getRainvowKmaList = resultArray.map((item){
-      return RainvowKma1TimeDomain.fromJson(item);
+    print('getRainvowKmaList?? ${resultArray}');
+
+    getRainvowKmaList = resultArray.map((item) {
+      print('_getRainvowKmaInfoForecast ${item}');
+      return RainvowKma1TimeDomain.fromJson((item));
     }).toList();
+
+
   }
 
   @override
   Widget build(BuildContext context) {
     print('getKmaWeatherList ${getKmaWeatherList}');
     print('getRainvowList ${getRainvowList}');
-
+    print('getRainvowKmaList ${getRainvowKmaList}');
 
     if(flag){
       return new Container(
         width: 400,
         height: 280,
         decoration: BoxDecoration(
-          color: Color(0xff90c8d5),
+          color: Dependencys.GraphBackGroundColor,
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(10.0),
             topLeft: Radius.circular(10.0),
@@ -115,7 +125,7 @@ class _RainfallState extends State<RainfallForecast>{
             /**
              * =================== [그래프영역] ===================
              * */
-            GraphBuild(getKmaWeatherList: getKmaWeatherList, getRainvowList:getRainvowList),
+            GraphBuild(getKmaWeatherList: getKmaWeatherList, getRainvowList:getRainvowList, getRainvowKmaList: getRainvowKmaList,),
 
             /**
              * =================== [그래프영역] ===================

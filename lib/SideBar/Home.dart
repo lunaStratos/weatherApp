@@ -41,14 +41,15 @@ class HomePage extends StatefulWidget {
 }
 
 /**
- * 스크린 설정 
+ * 스크린 홈 설정
  * */
 class HomePageState extends State<HomePage> {
 
   String action = "real";
-  int index = 0;
+  int index = 0;          // favoriteArray index용, 선택시 변경
 
   int _selectedDrawerIndex = 0;
+
   late SharedPreferences prefs;
   List <FavoriteDomain> favoriteArray = [];
 
@@ -66,20 +67,23 @@ class HomePageState extends State<HomePage> {
     prefs = await SharedPreferences.getInstance();
     final getLocationPermission = prefs.getBool('locationPermission') ?? false;
     var getList = await prefs.getStringList('favoriteLocation') ?? [];
+    print('favoriteArray.length _loadFavoriteLocationData ${getList.length}');
 
     if( getList.isNotEmpty) {
       setState(() {
         favoriteArray = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
       });
       return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
-    }else
+    }else{
       return [];
+    }
+
   }
 
 
   _getDrawerFragment(int pos) {
     switch (pos) {
-      case 0: // 날
+      case 0: // 날씨
         return new WeatherScreen(idx: index, action: action);
       case 1: // 강우지도
         return new MapScreen();
@@ -94,8 +98,8 @@ class HomePageState extends State<HomePage> {
     }
   }
   //Let's update the selectedDrawerItemIndex the close the drawer
-  _onSelectItem(int index) {
-    setState(() => _selectedDrawerIndex = index);
+  _onSelectItem(int selectIndex) {
+    setState(() => _selectedDrawerIndex = selectIndex);
     //we close the drawer
     Navigator.of(context).pop();
   }
@@ -128,22 +132,25 @@ class HomePageState extends State<HomePage> {
           },
         )
     );
+    /**
+     * 동적 타이틀 - [날씨] 메뉴만
+     *
+     * */
+    print('favoriteArray.length ${favoriteArray.length}');
 
     String setTitleStr = widget.drawerItems[_selectedDrawerIndex].title;
-    // if (_selectedDrawerIndex == 0){
-    //   if(favoriteArray.length != 0){
-    //     setTitleStr = favoriteArray[index].address;
-    //   }
+    // if(_selectedDrawerIndex == 0){
+    //   setTitleStr = favoriteArray.length == 0 ? "현위치" : favoriteArray[index].dongName;
     // }
+
+
 
     return new Scaffold(
       appBar: new AppBar(
-        // We will dynamically display title of selected page
         title: new Text(setTitleStr),
         centerTitle: true, // 타이틀 중앙 정렬
 
       ),
-      // Let's register our Drawer to the Scaffold
       drawer: new Drawer(
         child: new Column(
           children: <Widget>[

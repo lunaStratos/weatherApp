@@ -12,11 +12,12 @@ class MainWeather extends StatefulWidget {
 
   String rect_id = "4102000004265";        // 날씨
   KmaNowDomain kmaNowWeatherObject;
+  String dongName = "현위치";
 
-  MainWeather({required this.rect_id, required this.kmaNowWeatherObject});
+  MainWeather({required this.rect_id, required this.kmaNowWeatherObject, required this.dongName});
 
   @override
-  _MainWeatherState createState() => _MainWeatherState(this.rect_id, this.kmaNowWeatherObject);
+  _MainWeatherState createState() => _MainWeatherState(this.rect_id, this.kmaNowWeatherObject, this.dongName);
 
 }
 
@@ -30,8 +31,10 @@ class _MainWeatherState extends State<MainWeather>{
   String rainfall_rate = "";
   String weatherDesc = "";
   String weatherPredictDesc = "맑음";
+  String dongName = "현위치";
 
-  _MainWeatherState(this.rect_id, this.kmaNowWeatherObject);
+
+  _MainWeatherState(this.rect_id, this.kmaNowWeatherObject, this.dongName);
 
   Future _callWeather3Hour()async{
     final resultArray = await ApiCall.getWeatherForecast(rect_id);
@@ -56,10 +59,11 @@ class _MainWeatherState extends State<MainWeather>{
   Widget build(BuildContext context) {
     _callWeather3Hour();
     kmaNowWeatherObject = widget.kmaNowWeatherObject;
-    print('kmaNowWeatherObject temperature  ${kmaNowWeatherObject.temperature}');
     temperature = "${kmaNowWeatherObject.temperature}";
     rainfall_rate = "${kmaNowWeatherObject.rainfallRate}";
     weatherDesc = "${kmaNowWeatherObject.weatherConditionsKeyword}";
+    String windStrengthCodeDescription = "${kmaNowWeatherObject.windStrengthCodeDescription}";
+    String rainfallRate = "${kmaNowWeatherObject.rainfallRate}";
 
     return new Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -68,6 +72,7 @@ class _MainWeatherState extends State<MainWeather>{
 
           new Column(
             children: [
+              Text('${dongName}', style: TextStyle(fontSize: 20),),
               /**
                * 14도, 구름많음
                * */
@@ -81,8 +86,8 @@ class _MainWeatherState extends State<MainWeather>{
                   new Column(
                     children: [
                       Text('${weatherDesc}', style: TextStyle(fontSize: 20) ),
-                      Text('어제보다 4도 높아요', style: TextStyle(fontSize: 12)),
-                      Text('체감온도 -4도', style: TextStyle(fontSize: 12)),
+                      Text('바람강도: ${windStrengthCodeDescription}', style: TextStyle(fontSize: 12)),
+                      Text('비올확률 ${rainfallRate}%', style: TextStyle(fontSize: 12)),
                     ],
                   )
                 ],
@@ -92,8 +97,8 @@ class _MainWeatherState extends State<MainWeather>{
                 width: 1,
               ),
               SizedBox(
-                height: 100,
-                width: 100,
+                height: 150,
+                width: 150,
                 child: AnimatedImage(weatherConditions: kmaNowWeatherObject.weatherConditions),
               ),
               SizedBox(

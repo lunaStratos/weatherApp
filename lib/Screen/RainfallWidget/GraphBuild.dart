@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:rainvow_mobile/Domain/Kma3TimeDomain.dart';
+import 'package:rainvow_mobile/Domain/RainvowKma1TimeDomain.dart';
+import 'package:rainvow_mobile/Util/Dependencys.dart';
 
 /**
  * 레인보우 - 기상청 그래프 빌드
@@ -12,11 +14,12 @@ class GraphBuild extends StatelessWidget{
   List <Kma3TimeDomain> getKmaWeatherList = [];
   List <dynamic> getRainvowList = [];
   List <Kma3TimeDomain> getKmaWeatherMakeList = [];
+  List <RainvowKma1TimeDomain> getRainvowKmaList = [];
 
   double tempTemperature = 28;
   double maxY = 0;
 
-  GraphBuild({required this.getKmaWeatherList, required this.getRainvowList});
+  GraphBuild({required this.getKmaWeatherList, required this.getRainvowList, required this.getRainvowKmaList});
 
 
   @override
@@ -24,22 +27,31 @@ class GraphBuild extends StatelessWidget{
 
     print('getRainvowList=> ${getRainvowList}');
     print('getKmaWeatherList=> ${getKmaWeatherList}');
+    print('getRainvowKmaList=> ${getRainvowKmaList}');
 
 
     //자르기
     getKmaWeatherList = (getKmaWeatherList.length != 0 ? getKmaWeatherList.sublist(0,4) : getKmaWeatherList);
 
+    /**
+     * 그래프 max 값 얻는 부분
+     * */
+    // for(int i = 0 ; i < getRainvowList.length ; i++){
+    //   tempTemperature > maxY ? maxY = tempTemperature : maxY; //임시
+    //   // int.parsegetRainvowList([i]['rainfall_rate']) > maxY ? maxY = int.parse(getRainvowList[i]['rainfall_rate']): "";
+    // }
 
+    for(int i = 0 ; i < getRainvowKmaList.length ; i++){
+      double rainvowMm = (getRainvowKmaList[i].rainfallAmountRainvow);
+      double kmaMm = (getRainvowKmaList[i].rainfallAmountKma);
 
-    for(int i = 0 ; i < getRainvowList.length ; i++){
-      tempTemperature > maxY ? maxY = tempTemperature : maxY; //임시
-      // int.parse(getRainvowList[i]['rainfall_rate']) > maxY ? maxY = int.parse(getRainvowList[i]['rainfall_rate']): "";
+      rainvowMm > maxY ? maxY = rainvowMm : 0.0;
+      kmaMm > maxY ? maxY = kmaMm : 0.0;
     }
-    for(int i = 0 ; i < getKmaWeatherList.length ; i++){
-      double.parse(getKmaWeatherList[i].temperature) > maxY ? maxY = double.parse(getKmaWeatherList[i].temperature): "" ;
-    }
 
-    print('maxY ${maxY}');
+    // for(int i = 0 ; i < getKmaWeatherList.length ; i++){
+    //   double.parse(getKmaWeatherList[i].temperature) > maxY ? maxY = double.parse(getKmaWeatherList[i].temperature): "" ;
+    // }
 
     return AspectRatio(
       aspectRatio: 2.5,
@@ -48,8 +60,8 @@ class GraphBuild extends StatelessWidget{
           borderRadius: BorderRadius.all(Radius.circular(18)),
           gradient: LinearGradient(
             colors: [
-              Color(0xffa3f0ff), // 바닥색
-              Color(0xffe9fffc), // 천장 색
+              Dependencys.GraphBackGroundColor, // 바닥색
+              Dependencys.GraphBackGroundColor, // 천장 색
             ],
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
@@ -149,8 +161,27 @@ class GraphBuild extends StatelessWidget{
           margin: 10,
           getTitles: (value) {
 
-            if(getRainvowList.isNotEmpty){
-              return getRainvowList[value.toInt()]['forecast_target_time'].substring(8, 10) + "시";
+            // if(getRainvowList.isNotEmpty){
+            //   return getRainvowList[value.toInt()]['forecast_target_time'].substring(8, 10) + "시";
+            // }else{
+            //   switch(value.toInt()){
+            //     case 0:
+            //       return "12시";
+            //     case 1:
+            //       return "13시";
+            //     case 2:
+            //       return "14시";
+            //     case 3:
+            //       return "15시";
+            //     case 4:
+            //       return "16시";
+            //     case 5:
+            //       return "17시";
+            //   }
+            // }
+
+            if(getRainvowKmaList.isNotEmpty){
+              return getRainvowKmaList[value.toInt()].target_time.substring(0, 2) + "시";
             }else{
               switch(value.toInt()){
                 case 0:
@@ -228,11 +259,18 @@ class GraphBuild extends StatelessWidget{
        * maxX → : 0부터 시작함 0일때는 0으로, 0이 아닐때는  length-1로
        * maxY ↑ : 0부터 시작
        * */
+      // minX: 0,
+      // maxX: (getRainvowList.length !=0 ? getRainvowList.length - 1 : getRainvowList.length) +0.0,
+      // maxY: (maxY+5.0),
+      // minY: 0,
+      // lineBarsData: linesBarData(),
+
       minX: 0,
-      maxX: (getRainvowList.length !=0 ? getRainvowList.length - 1 : getRainvowList.length) +0.0,
+      maxX: (getRainvowKmaList.length !=0 ? getRainvowKmaList.length - 1 : getRainvowKmaList.length) +0.0,
       maxY: (maxY+5.0),
       minY: 0,
       lineBarsData: linesBarData(),
+
     );
   }
 
@@ -245,59 +283,67 @@ class GraphBuild extends StatelessWidget{
 
     print('getKmaWeatherList /  ${getKmaWeatherList}');
     print('getRainvowList / ${getRainvowList}');
+    print('getRainvowKmaList / ${getRainvowKmaList}');
 
     List <Kma3TimeDomain> getKmaWeatherTempList = [];
     /**
      * 레인보우 리스트를 기준으로 만든다.
      * */
-    int beforeIndex = 0;
-    for(int i = 0 ; i< getRainvowList.length ; i++){
+    // int beforeIndex = 0;
+    // for(int i = 0 ; i< getRainvowList.length ; i++){
+    //
+    //   String forecast_target_time = getRainvowList[i]['forecast_target_time']; //yyyyMMddHHmmSS
+    //   String target_time = forecast_target_time.substring(8, 12);
+    //   num rainfall_rate = getRainvowList[i]['rainfall_rate'];
+    //   double rainfall_amount = getRainvowList[i]['rainfall_amount'];
+    //
+    //   double idx = (i == 0 ? 0.0 : i+0.0);
+    //   lineRainvowList.add(FlSpot(idx, tempTemperature - i));
+    //
+    //   bool isReal = false;
+    //   // addOn
+    //   if(getKmaWeatherList.isNotEmpty){
+    //     for(int j = 0 ; j< getKmaWeatherList.length ; j++){
+    //       print("count : ${target_time }  ${getKmaWeatherList[j].target_time } ${ target_time  == getKmaWeatherList[j].target_time }" );
+    //
+    //       if(target_time.toString() == getKmaWeatherList[j].target_time.toString()){
+    //         isReal = true;
+    //         break;
+    //       }
+    //
+    //     }
+    //     print('isreal ${isReal} ${beforeIndex}');
+    //     if(isReal){
+    //       getKmaWeatherTempList.add(getKmaWeatherList[beforeIndex]);
+    //       beforeIndex++;
+    //     }else{
+    //       getKmaWeatherTempList.add(getKmaWeatherList[beforeIndex]);
+    //     }
+    //
+    //   }
+    //
+    // }
+    //
+    // for(int i = 0 ; i< getKmaWeatherTempList.length ; i++){
+    //   print('getKmaWeatherTempList ${getKmaWeatherTempList[i].target_time} ${getKmaWeatherTempList[i].temperature} ${i}');
+    //
+    //   String target_time = getKmaWeatherTempList[i].target_time; //HHmm
+    //   String rainfall_amount = getKmaWeatherTempList[i].rainfall_mm;
+    //   String rainfall_rate = getKmaWeatherTempList[i].rainfall_rate;
+    //   String temperature = getKmaWeatherTempList[i].temperature;
+    //
+    //   double idx = (i == 0 ? 0.0 : i+0.0);
+    //
+    //   lineKmaWeatherList.add(FlSpot(idx, double.parse(temperature)));
+    // }
 
-      String forecast_target_time = getRainvowList[i]['forecast_target_time']; //yyyyMMddHHmmSS
-      String target_time = forecast_target_time.substring(8, 12);
-      num rainfall_rate = getRainvowList[i]['rainfall_rate'];
-      double rainfall_amount = getRainvowList[i]['rainfall_amount'];
-
+    for(int i = 0 ; i < getRainvowKmaList.length; i++){
       double idx = (i == 0 ? 0.0 : i+0.0);
-      lineRainvowList.add(FlSpot(idx, tempTemperature - i));
-
-      bool isReal = false;
-      // addOn
-      if(getKmaWeatherList.isNotEmpty){
-        for(int j = 0 ; j< getKmaWeatherList.length ; j++){
-          print("count : ${target_time }  ${getKmaWeatherList[j].target_time } ${ target_time  == getKmaWeatherList[j].target_time }" );
-
-          if(target_time.toString() == getKmaWeatherList[j].target_time.toString()){
-            isReal = true;
-            break;
-          }
-
-        }
-        print('isreal ${isReal} ${beforeIndex}');
-        if(isReal){
-          getKmaWeatherTempList.add(getKmaWeatherList[beforeIndex]);
-          beforeIndex++;
-        }else{
-          getKmaWeatherTempList.add(getKmaWeatherList[beforeIndex]);
-        }
-
-      }
-
+      lineRainvowList.add(FlSpot(idx+0.0, (getRainvowKmaList[i].rainfallAmountRainvow)));
+      lineKmaWeatherList.add(FlSpot(idx+0.0, ( getRainvowKmaList[i].rainfallAmountKma)));
     }
-
-    for(int i = 0 ; i< getKmaWeatherTempList.length ; i++){
-      print('getKmaWeatherTempList ${getKmaWeatherTempList[i].target_time} ${getKmaWeatherTempList[i].temperature} ${i}');
-
-      String target_time = getKmaWeatherTempList[i].target_time; //HHmm
-      String rainfall_amount = getKmaWeatherTempList[i].rainfall_mm;
-      String rainfall_rate = getKmaWeatherTempList[i].rainfall_rate;
-      String temperature = getKmaWeatherTempList[i].temperature;
-
-      double idx = (i == 0 ? 0.0 : i+0.0);
-
-      lineKmaWeatherList.add(FlSpot(idx, double.parse(temperature)));
-    }
-
+    print("graph result == > ${getRainvowKmaList.length} ");
+    print("graph result == > ${lineRainvowList.length} ${lineKmaWeatherList.length}");
 
     return [
       LineChartBarData(

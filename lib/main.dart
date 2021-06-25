@@ -152,7 +152,10 @@ class MyAppState extends State<MyApp> {
 
     return new MaterialApp(
       title: 'NavigationDrawer',
-
+      theme: ThemeData(
+          brightness: Brightness.light,
+          primaryColor: Colors.white
+      ),
       home: new FutureBuilder(
           future: _loadFavoriteLocationData(),
           builder: (context, snapshot) {

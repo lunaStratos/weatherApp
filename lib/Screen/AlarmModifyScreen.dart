@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
+import 'package:rainvow_mobile/Util/Dependencys.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -129,7 +130,7 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
             child: Column(
               children: [
                 new Container(
-                  color: Colors.white60,
+                  color: Dependencys.AppBackGroundColor,
                   child: Padding(
                       padding: const EdgeInsets.only(bottom: 4, top: 4, left: 9, right: 9),
                       child: InkWell(
