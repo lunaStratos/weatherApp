@@ -95,8 +95,12 @@ class MyAppState extends State<MyApp> {
 
     // 2. Instantiate Firebase Messaging
     _messaging = FirebaseMessaging.instance;
-    // Add the following line
+
+    /**
+     * onMessage - 앱이 켜져있을때 발동
+     * */
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     // 3. On iOS, this helps to take the user permissions
     NotificationSettings settings = await _messaging.requestPermission(
       alert: true,
@@ -108,6 +112,9 @@ class MyAppState extends State<MyApp> {
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
 
+      /**
+       * onMessage - 앱이 켜져있을때 발동
+       * */
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         PushNotification notification = PushNotification(
           title: message.notification?.title,
@@ -118,15 +125,17 @@ class MyAppState extends State<MyApp> {
           _totalNotifications++;
         });
 
+        print('case1 ');
         if (_notificationInfo != null) {
+          print('case2 ');
 
-          showSimpleNotification(
-            Text(_notificationInfo!.title!),
-            leading: NotificationBadge(totalNotifications: _totalNotifications),
-            subtitle: Text(_notificationInfo!.body!),
-            background: Colors.cyan.shade700,
-            duration: Duration(seconds: 2),
-          );
+          // showSimpleNotification(
+          //   Text(_notificationInfo!.title!),
+          //   leading: NotificationBadge(totalNotifications: _totalNotifications),
+          //   subtitle: Text(_notificationInfo!.body!),
+          //   background: Colors.cyan.shade700,
+          //   duration: Duration(seconds: 2),
+          // );
         }
       });
 
