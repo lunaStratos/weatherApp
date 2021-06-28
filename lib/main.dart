@@ -95,7 +95,7 @@ class MyAppState extends State<MyApp> {
 
     // 2. Instantiate Firebase Messaging
     _messaging = FirebaseMessaging.instance;
-// Add the following line
+    // Add the following line
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // 3. On iOS, this helps to take the user permissions
     NotificationSettings settings = await _messaging.requestPermission(
@@ -107,10 +107,8 @@ class MyAppState extends State<MyApp> {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-      // TODO: handle the received notifications
-      // For handling the received notifications
+
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        // Parse the message received
         PushNotification notification = PushNotification(
           title: message.notification?.title,
           body: message.notification?.body,
@@ -121,7 +119,6 @@ class MyAppState extends State<MyApp> {
         });
 
         if (_notificationInfo != null) {
-          // For displaying the notification as an overlay
 
           showSimpleNotification(
             Text(_notificationInfo!.title!),
@@ -151,7 +148,7 @@ class MyAppState extends State<MyApp> {
 
 
     return new MaterialApp(
-      title: 'NavigationDrawer',
+      title: 'RainvowApp',
       theme: ThemeData(
           brightness: Brightness.light,
           primaryColor: Colors.white

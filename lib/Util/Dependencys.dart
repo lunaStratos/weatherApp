@@ -14,7 +14,7 @@ class Dependencys {
   static const GraphBackGroundColor = Color(0xffebf6ff);    // 레인보우&기상청 그래프 배경색
   static const SunRiseBackGroundColor = Color(0xffebf6ff);  // 일출일몰 배경색
   static const SwitchColor = Color(0xff2790e);              // 스위치 on toggle 색상
-  static const GraphRainvowLineColor = Color(0x99aa4cfc);
-  static const GraphKmaLineColor = Color(0x4427b6fc);
+  static const GraphRainvowLineColor = Color(0x99aa4cfc);   // 레인보우 그래프 선 색상
+  static const GraphKmaLineColor = Color(0x4427b6fc);       // 기상청 그래프 선 색상
 
 }

@@ -54,9 +54,13 @@ class _MainWeatherState extends State<MainWeather>{
   }
 
 
+  /**
+   * widget. 으로 데이터 갱신 필요
+   * */
   @override
   Widget build(BuildContext context) {
     _callWeather3Hour();
+
     kmaNowWeatherObject = widget.kmaNowWeatherObject;
     temperature = "${kmaNowWeatherObject.temperature}";
     rainfall_rate = "${kmaNowWeatherObject.rainfallRate}";

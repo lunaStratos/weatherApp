@@ -337,7 +337,10 @@ class GraphBuild extends StatelessWidget{
     // }
 
     /**
-     * 데이터 구분
+     * 데이터 분리
+     * lineRainvowList : 레인보우
+     * lineKmaWeatherList: 기상청
+     * double로 입력해야 함.
      * */
     for(int i = 0 ; i < getRainvowKmaList.length; i++){
       double rainvowValue = double.parse(getRainvowKmaList[i].rainfallAmountRainvow.toStringAsFixed(1));

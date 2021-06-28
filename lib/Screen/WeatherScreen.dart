@@ -447,9 +447,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               // ),
 
                               Container(
-                                height: 490,
+                                height: 520,
                                 child: FutureBuilder(
-                                  future: _getKmaNowWeatherApi(favoriteArray[i].rect_id,i),
+                                  future: _getKmaNowWeatherApi(favoriteArray[i].rect_id, i),
                                   builder: (context, snapshot1) {
 
                                     if (snapshot1.hasData == false) {
@@ -544,11 +544,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                     color: Colors.black,
                                     height: 36,)
                               ),
+                              
                               SizedBox(
                                 height: 10,
                                 width: 1,
                               ),
+
                               Text('자료 기상청, 레인보우'),
+
                               Center(
                                 child: Column(
                                   children: [
