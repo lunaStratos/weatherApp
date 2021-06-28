@@ -82,7 +82,7 @@ class _SunRiseWidget extends State<SunRiseWidget>{
         ),
         child: new Column(
           children: [
-            new Padding(padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            new Padding(padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
               child: new Row(
                 children: [
                   Text('일출일몰', style: TextStyle(fontSize: 20),textAlign: TextAlign.left,),

@@ -67,8 +67,9 @@ class _MainWeatherState extends State<MainWeather>{
 
     return new Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: new Column(
-        children: [
+      child: new Container(
+
+        child:
 
           new Column(
             children: [
@@ -125,10 +126,6 @@ class _MainWeatherState extends State<MainWeather>{
           ),
 
 
-
-
-
-        ],
       ),
     );
 

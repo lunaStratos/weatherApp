@@ -108,7 +108,7 @@ class _RainfallState extends State<RainfallForecast>{
         child: new Column(
           children: [
             new Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

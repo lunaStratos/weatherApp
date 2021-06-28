@@ -56,6 +56,7 @@ class _WeatherBarState extends State<WeatherBar>{
 
     return new Container(
       decoration: BoxDecoration(
+
         color: Colors.white,
         borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(10.0),
@@ -64,80 +65,83 @@ class _WeatherBarState extends State<WeatherBar>{
           bottomLeft: Radius.circular(10.0),
         ),
       ),
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          /**
-           * 비올확률 
-           * */
-          new Padding(
-            padding: EdgeInsets.all(2),
-            child: new Column(
-              children: [
-                Text('비올확률'),
-                Image.asset('assets/images/umbrella.png', width: 40, height: 40,),
-                Text('${rainfall_rate}%'),
-              ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            /**
+             * 비올확률
+             * */
+            new Padding(
+              padding: EdgeInsets.all(3),
+              child: new Column(
+                children: [
+                  Text('비올확률'),
+                  Image.asset('assets/images/umbrella.png', width: 40, height: 40,),
+                  Text('${rainfall_rate}%'),
+                ],
+              ),
             ),
-          ),
-          /**
-           * 습도 
-           * */
-          new Padding(
-            padding: EdgeInsets.all(2),
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('습도'),
-                Image.asset('assets/images/humidity.png', width: 40, height: 40,),
-                Text('${humidity}%'),
-              ],
+            /**
+             * 습도
+             * */
+            new Padding(
+              padding: EdgeInsets.all(2),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('습도'),
+                  Image.asset('assets/images/humidity.png', width: 40, height: 40,),
+                  Text('${humidity}%'),
+                ],
+              ),
             ),
-          ),
-          /**
-           * 바람세기
-           * */
-          new Padding(
-            padding: EdgeInsets.all(2),
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('바람'),
-                Image.asset('assets/images/wind.png', width: 40, height: 40,),
-                Text('${windStrengthDesc}'),
-              ],
+            /**
+             * 바람세기
+             * */
+            new Padding(
+              padding: EdgeInsets.all(2),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('바람'),
+                  Image.asset('assets/images/wind.png', width: 40, height: 40,),
+                  Text('${windStrengthDesc}'),
+                ],
+              ),
             ),
-          ),
-          /**
-           * 미세먼지 그림
-           * */
-          new Padding(
-            padding: EdgeInsets.all(2),
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('미세먼지'),
-                Image.asset('${Util.airGradeImgAddress(pm25Desc)}', width: 40, height: 40,),
-                Text('${pm10Desc}'),
-              ],
+            /**
+             * 미세먼지 그림
+             * */
+            new Padding(
+              padding: EdgeInsets.all(2),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('미세먼지'),
+                  Image.asset('${Util.airGradeImgAddress(pm25Desc)}', width: 40, height: 40,),
+                  Text('${pm10Desc}'),
+                ],
+              ),
             ),
-          ),
-          /**
-           * 초미세먼지 그림
-           * */
-          new Padding(
-            padding: EdgeInsets.all(2),
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('초미세먼지'),
-                Image.asset('${Util.airGradeImgAddress(pm10Desc)}', width: 40, height: 40,),
-                Text('${pm25Desc}'),
-              ],
+            /**
+             * 초미세먼지 그림
+             * */
+            new Padding(
+              padding: EdgeInsets.all(2),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('초미세먼지'),
+                  Image.asset('${Util.airGradeImgAddress(pm10Desc)}', width: 40, height: 40,),
+                  Text('${pm25Desc}'),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+      )
     );
   }
 
