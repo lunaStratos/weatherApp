@@ -139,7 +139,6 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                 "useYn": "Y"
               }
           );
-          print(param.toString());
           await ApiCall.sendFCMToken(param);
         }
 
@@ -354,7 +353,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
                             final hour = Util.trans2Digit(date.hour);
                             final minute = Util.trans2Digit(date.minute);
-                            print( ' ${index} ===> ${hour}  ${minute}');
+                            debugPrint( ' ${index} ===> ${hour}  ${minute}');
                             _setAlarmTime(hour, minute, index);
 
                           },
@@ -427,7 +426,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                   onConfirm: (date) {
                     final hour = ((date.hour).toString().length == 1) ? '${"0"}${date.hour}' : '${date.hour}' ;
                     final minute =  ((date.minute).toString().length == 1) ? '${"0"}${date.minute}' : '${date.minute}' ;
-                    print( ' ${index} ===> ${hour}  ${minute}');
+                    debugPrint( ' ${index} ===> ${hour}  ${minute}');
                     _setAlarmTime(hour, minute, index);
 
                   },

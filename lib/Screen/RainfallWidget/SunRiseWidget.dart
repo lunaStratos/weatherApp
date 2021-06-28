@@ -28,6 +28,7 @@ class _SunRiseWidget extends State<SunRiseWidget>{
   String latitude = "37";
   _SunRiseWidget(this.longitude, this.latitude);
   bool flag = false;
+
   /**
    * Api 불러오기
    * */
@@ -50,6 +51,8 @@ class _SunRiseWidget extends State<SunRiseWidget>{
   @override
   Widget build(BuildContext context) {
 
+    if(flag){
+      
     final sunriseDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse(getDataList['sunrise']);
     final sunsetDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse(getDataList['sunset']);
     final now = DateTime.now();
@@ -66,7 +69,7 @@ class _SunRiseWidget extends State<SunRiseWidget>{
     // 현재시각이 아닌경우 0도로 변환
     (sunNow  < sunriseNum || sunNow > sunsetNum) ? sunNowDegree = 0 : "";
 
-    if(flag){
+    
       return new Container(
         decoration: BoxDecoration(
           color: Dependencys.SunRiseBackGroundColor,

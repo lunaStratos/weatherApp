@@ -110,8 +110,36 @@ class _RainfallState extends State<RainfallForecast>{
             new Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('강수예보', style: TextStyle(fontSize: 20),textAlign: TextAlign.left,),
+                  /**
+                   * 데이터 라인 색상 설명
+                   * */
+                  Row(
+                   children: [
+                     SizedBox(
+                       width: 20.0,
+                       height: 20.0,
+                       child: const DecoratedBox(
+                         decoration: const BoxDecoration(
+                             color: Dependencys.GraphRainvowLineColor
+                         ),
+                       ),
+                     ),
+                     Text(' 레인보우'),
+                     SizedBox(
+                       width: 20.0,
+                       height: 20.0,
+                       child: const DecoratedBox(
+                         decoration: const BoxDecoration(
+                             color: Dependencys.GraphKmaLineColor
+                         ),
+                       ),
+                     ),
+                     Text(' 기상청')
+                   ],
+                  )
                 ],
               ),
             ),
@@ -119,7 +147,6 @@ class _RainfallState extends State<RainfallForecast>{
              * =================== [그래프영역] ===================
              * */
             GraphBuild(getKmaWeatherList: getKmaWeatherList, getRainvowList:getRainvowList, getRainvowKmaList: getRainvowKmaList,),
-
             /**
              * =================== [그래프영역] ===================
              * */

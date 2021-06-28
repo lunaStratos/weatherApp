@@ -102,7 +102,10 @@ class _SettingScreenScreen extends State<SettingScreen>{
             SettingsTile(
               title: '일일 알람설정',
               titleTextStyle: TextStyle(fontSize: 18),
-              subtitle: '매일 지정한 시각에 선택한 위치의 기상정보를 받아올수 있습니다',
+              subtitle: '매일 지정한 시각에 선택한 위치의\n 기상정보를 받아올 수 있습니다',
+              subtitleTextStyle: TextStyle(
+                  fontSize: 10.0
+              ),
               subtitleMaxLines: 2,
               leading: Icon(Icons.alarm),
               /**

@@ -34,7 +34,9 @@ class WeatherMapState extends State<WeatherMap>{
       children: [
         Expanded(child:
         Container(
-
+          /**
+           * 사각 둥글게 radious
+           * */
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -44,7 +46,10 @@ class WeatherMapState extends State<WeatherMap>{
               bottomLeft: Radius.circular(10.0),
             ),
           ),
-
+          /**
+           * 웹뷰 설정
+           * gestureNavigationEnabled
+           * */
           child: new WebView(
             initialUrl: 'http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}',
             javascriptMode: JavascriptMode.unrestricted,

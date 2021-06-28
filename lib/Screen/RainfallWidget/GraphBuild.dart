@@ -111,7 +111,9 @@ class GraphBuild extends StatelessWidget{
 
             getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
               int idx = 0 ;
+
               return touchedBarSpots.map((barSpot) {
+
                 idx++;
                 String desc = "레인보우: ";
 
@@ -123,12 +125,11 @@ class GraphBuild extends StatelessWidget{
                     desc = "기상청: ";
                     break;
                 }
-
                 return LineTooltipItem(
-                  '${desc} ${barSpot.x} 시: ${barSpot.y}',
+                  '${desc} ${barSpot.y}mm',
                   TextStyle(
                       fontSize: 15,
-                      color: (idx == 1) ? Colors.blueGrey : Colors.amber
+                      color: (idx == 1) ? Colors.cyan : Colors.amber
                   ),
                 );
 
@@ -335,18 +336,27 @@ class GraphBuild extends StatelessWidget{
     //   lineKmaWeatherList.add(FlSpot(idx, double.parse(temperature)));
     // }
 
+    /**
+     * 데이터 구분
+     * */
     for(int i = 0 ; i < getRainvowKmaList.length; i++){
+      double rainvowValue = double.parse(getRainvowKmaList[i].rainfallAmountRainvow.toStringAsFixed(1));
+      double kmaValue = double.parse(getRainvowKmaList[i].rainfallAmountKma.toStringAsFixed(1));
+
       double idx = (i == 0 ? 0.0 : i+0.0);
-      lineRainvowList.add(FlSpot(idx+0.0, (getRainvowKmaList[i].rainfallAmountRainvow)));
-      lineKmaWeatherList.add(FlSpot(idx+0.0, ( getRainvowKmaList[i].rainfallAmountKma)));
+      lineRainvowList.add(FlSpot(idx+0.0, rainvowValue));
+      lineKmaWeatherList.add(FlSpot(idx+0.0, kmaValue));
     }
 
     return [
+      /**
+       * Rainvow 데이터 표시
+       * */
       LineChartBarData(
         spots: lineRainvowList,
         isCurved: true,
         colors: const [
-          Color(0x99aa4cfc),
+          Dependencys.GraphRainvowLineColor
         ],
         barWidth: 4,
         isStrokeCapRound: true,
@@ -357,11 +367,14 @@ class GraphBuild extends StatelessWidget{
           const Color(0x33aa4cfc),
         ]),
       ),
+      /**
+       * KMA 기상청 데이터 표시
+       * */
       LineChartBarData(
         spots: lineKmaWeatherList,
         isCurved: true,
         colors: const [
-          Color(0x4427b6fc),
+          Dependencys.GraphKmaLineColor
         ],
         barWidth: 4,
         isStrokeCapRound: true,

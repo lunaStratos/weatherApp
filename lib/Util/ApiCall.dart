@@ -128,6 +128,7 @@ class ApiCall {
    * 일출일몰 api
    * 일출 일몰 시간 표시
    * 기상청 api 아님, 오류없음
+   * desc: 외부 api
    * */
   static Future<Map<String, dynamic>> getNowSunSet(longitude, latitude) async{
     DateTime now = new DateTime.now();
@@ -143,6 +144,7 @@ class ApiCall {
     var sunrise = DateTime.parse(sunriseStr);
     var sunset = DateTime.parse(sunsetStr);
 
+    // KST
     sunrise = sunrise.add(const Duration(hours: 9));
     sunset = sunset.add(const Duration(hours: 9));
 

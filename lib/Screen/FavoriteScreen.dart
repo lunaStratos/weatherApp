@@ -339,8 +339,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
   Widget _getItemUI(BuildContext context, int index) {
 
-    print('favoriteArray[index].weatherConditions ${favoriteArray[index].weatherConditions}');
-
     return new Column(
           children: <Widget>[
             new ListTile(

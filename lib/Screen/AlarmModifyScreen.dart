@@ -60,6 +60,7 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
 
   /**
    * FCM토큰과 알람 보내기
+   * desc: 삭제 -> 전체 보내기
    * */
   Future <void> sendFcm() async{
 
@@ -79,6 +80,7 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
           "useYn": "Y",
         }
     ));
+
 
     for(int i = 0 ; i < alarmList.length ; i++){
 
