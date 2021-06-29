@@ -1,16 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Domain/PushNotification.dart';
-import 'package:rainvow_mobile/Screen/RainfallWidget/NotificationBadge.dart';
 import 'package:rainvow_mobile/SideBar/Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+/**
+ * FCM - 백그라운드 모드시 동작
+ * */
 Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
