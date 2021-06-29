@@ -120,17 +120,10 @@ class MyAppState extends State<MyApp> {
           _notificationInfo = notification;
         });
 
-        print('case1 ');
         if (_notificationInfo != null) {
-          print('case2 ');
+          print('_notificationInfo is not null  ');
 
-          // showSimpleNotification(
-          //   Text(_notificationInfo!.title!),
-          //   leading: NotificationBadge(totalNotifications: _totalNotifications),
-          //   subtitle: Text(_notificationInfo!.body!),
-          //   background: Colors.cyan.shade700,
-          //   duration: Duration(seconds: 2),
-          // );
+
         }
       });
 
