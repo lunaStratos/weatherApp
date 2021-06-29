@@ -45,11 +45,9 @@ class MyAppState extends State<MyApp> {
   }
 
   late final FirebaseMessaging _messaging;
-  late int _totalNotifications;
   PushNotification? _notificationInfo;
 
   void initState() {
-    _totalNotifications = 0;
     registerNotification();
     checkForInitialMessage();
 
@@ -65,7 +63,6 @@ class MyAppState extends State<MyApp> {
 
       setState(() {
         _notificationInfo = notification;
-        _totalNotifications++;
       });
     });
 
@@ -84,7 +81,6 @@ class MyAppState extends State<MyApp> {
       );
       setState(() {
         _notificationInfo = notification;
-        _totalNotifications++;
       });
     }
   }
@@ -122,7 +118,6 @@ class MyAppState extends State<MyApp> {
         );
         setState(() {
           _notificationInfo = notification;
-          _totalNotifications++;
         });
 
         print('case1 ');
