@@ -7,12 +7,20 @@ import 'package:rainvow_mobile/SideBar/Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vibration/vibration.dart';
 
 /**
  * FCM - 백그라운드 모드시 동작
  * */
 Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
+  if (await Vibration.hasCustomVibrationsSupport()) {
+    Vibration.vibrate(pattern: [500, 1000, 500, 2000]);
+  } else {
+    Vibration.vibrate();
+    await Future.delayed(Duration(milliseconds: 500));
+    Vibration.vibrate();
+  }
 }
 
 
@@ -110,6 +118,7 @@ class MyAppState extends State<MyApp> {
 
       /**
        * onMessage - 앱이 켜져있을때 발동
+       * 앱이 포그라운드 상태일 때 푸시 알림이 도착한 경우에 호출됨. 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않는다.
        * */
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         PushNotification notification = PushNotification(
@@ -122,11 +131,25 @@ class MyAppState extends State<MyApp> {
 
         if (_notificationInfo != null) {
           print('_notificationInfo is not null  ');
-
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(_notificationInfo!.title.toString()),
+                  content: Text(_notificationInfo!.body.toString()),
+                  actions: [
+                    TextButton(
+                      child: Text("Ok"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                );
+              });
 
         }
       });
-
 
       _messaging.getToken().then((token){
         print('token : ${token} /');
