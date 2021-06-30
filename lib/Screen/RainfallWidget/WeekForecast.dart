@@ -51,9 +51,7 @@ class _WeekForecastState extends State<WeekForecast>{
    * */
   Future<String> _getKmaWeekWeatherApi() async {
     final resultArray = await ApiCall.getKmaMidTermForecast(rect_id);
-    print('resultObj _getKmaWeekWeatherApi ${resultArray}');
     final resultArray2 = await ApiCall.getKmaMidTermForecastTemperature(rect_id);
-    print('resultObj _getKmaWeekTempWeatherApi ${resultArray}');
 
       getMidtermTempList = resultArray2;
       getMidtermList = resultArray;
@@ -65,11 +63,11 @@ class _WeekForecastState extends State<WeekForecast>{
   @override
   Widget build(BuildContext context) {
 
-    print('getMidterm getMidtermList.length ${getMidtermList.length}');
-    print('getMidterm getMidtermTempList.length ${getMidtermTempList.length}');
-    print('getMidterm getMidtermList ${getMidtermList}');
-    print('getMidterm getMidtermTempList ${getMidtermTempList}');
-    print('getMidterm flag ${flag}');
+    // print('getMidterm getMidtermList.length ${getMidtermList.length}');
+    // print('getMidterm getMidtermTempList.length ${getMidtermTempList.length}');
+    // print('getMidterm getMidtermList ${getMidtermList}');
+    // print('getMidterm getMidtermTempList ${getMidtermTempList}');
+    // print('getMidterm flag ${flag}');
 
     if(flag){
       if(getMidtermTempList.isNotEmpty && getMidtermList.isNotEmpty){

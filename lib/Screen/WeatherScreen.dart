@@ -257,12 +257,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('idx => ${idx}');
-    print('init start flag ${flag}');
-    print('favoriteArray.length ==?> ${favoriteArray.length} ');
-    print('getKmaNowWeatherList ==?> ${getKmaNowWeatherList.length} ');
-    print('getKmaNowDustList ==?> ${getKmaNowDustList.length} ');
-    print("last _current  ${_current} ${favoriteArray.length} ${mylocationFlag} ${locationPermission}");
+    // print('idx => ${idx}');
+    // print('init start flag ${flag}');
+    // print('favoriteArray.length ==?> ${favoriteArray.length} ');
+    // print('getKmaNowWeatherList ==?> ${getKmaNowWeatherList.length} ');
+    // print('getKmaNowDustList ==?> ${getKmaNowDustList.length} ');
+    // print("last _current  ${_current} ${favoriteArray.length} ${mylocationFlag} ${locationPermission}");
 
 
     /**

@@ -67,12 +67,12 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
     for(int i = 0 ; i < favoriteArray.length ; i++){
       final getItem = await ApiCall.getNowKmaWeather(favoriteArray[i].rect_id);
-      print('getItem ${getItem}');
+
       favoriteArray[i].celsius = getItem['temperature'];
       favoriteArray[i].weatherConditions = getItem['weatherConditions'];
       favoriteArray[i].weatherDescription = getItem['weatherConditionsKeyword'];
       favoriteArray[i].rainfallAmount = getItem['rainfallAmount'].toString();
-      print("${favoriteArray[i].celsius} ${getItem['temperature']}");
+
     }
 
     setState(() {
@@ -93,7 +93,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     prefs = await SharedPreferences.getInstance();
 
     final getItem = await ApiCall.getNowKmaWeather(item.rect_id);
-    print('_saveFavoriteLocationData ${item.rect_id}');
+
     favoriteArray.add(
         FavoriteDomain(
             address:"${item.address}",
@@ -157,7 +157,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           kmaY: kmaY
       );
 
-      print('fDomain : ${fDomain.kmaX}');
       //저장소 저장
       await prefs.setString("favoriteNowLocation", jsonEncode(fDomain));
 
@@ -209,7 +208,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                         });
                   },
                   onSubmitted: (value) {
-                    print('value ${value}');
+
                   },
               ),
               /**
@@ -291,7 +290,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                      * 3. lat lng 주소 가져옴
                      * 4. 팝업 리스트 띄움
                      * */
-                  print("현위치 클릭 ${locationPermission}");
+
                     if(locationPermission){
                       _getPosition();
                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext
@@ -411,7 +410,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                * desc: 클릭하면 위치의 날씨 정보 보기 이동
                */
               onTap: () {
-                print('press ${index}');
+
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext
                 context) => HomePage(index: index,action:"clickFavorite")
                 ));

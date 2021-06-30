@@ -67,7 +67,6 @@ class HomePageState extends State<HomePage> {
     prefs = await SharedPreferences.getInstance();
     final getLocationPermission = prefs.getBool('locationPermission') ?? false;
     var getList = await prefs.getStringList('favoriteLocation') ?? [];
-    print('favoriteArray.length _loadFavoriteLocationData ${getList.length}');
 
     if( getList.isNotEmpty) {
       setState(() {

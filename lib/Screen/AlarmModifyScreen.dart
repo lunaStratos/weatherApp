@@ -37,7 +37,7 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
     prefs = await SharedPreferences.getInstance();
     final getList = prefs.getStringList('favoriteLocation') ?? [];
     final getFcmToken = prefs.getString("fcmToken") ?? "";
-    print(getList[0]);
+
 
     setState(() {
       alarmList = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
@@ -188,7 +188,7 @@ class _AlarmModifyScreen extends State<AlarmModifyScreen> {
       final address = alarmList[index].address;
       final alarmTime = alarmList[index].alarmTime;
       var use = alarmList[index].use;
-      print('use ${alarmList[index].use}');
+
       ass.add(
         SettingsTile(
           title: address,
