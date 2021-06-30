@@ -181,6 +181,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
 
     return Scaffold(
+
      body: new Column(
        children: [
          /**
@@ -189,6 +190,9 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
          new Container(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+            /**
+             * 추천 검색어 표시 기능 입력창
+             * */
             child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                   autofocus: true,
@@ -208,8 +212,13 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                         });
                   },
                   onSubmitted: (value) {
-
+                    print('onSubmitted edit ${value}');
                   },
+
+                  onEditingComplete:() {
+                    print('done edit ');
+                  },
+
               ),
               /**
                * 관심지역 제안 검색어 가져오기
@@ -261,9 +270,14 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
               },
               /**
-               * no items found! 표시방지
+               * no items found! 표시변경
+               * hideOnEmpty = empty일때 감추기
                * */
-              hideOnEmpty : true,
+              hideOnEmpty : false,
+              noItemsFoundBuilder: (context) {
+                var localizedMessage = "검색결과 없습니다";
+                return Text(localizedMessage);
+              },
               hideOnLoading: true,
             ),
 
