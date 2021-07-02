@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 
 /**
@@ -43,66 +45,42 @@ class TestScreen2 extends StatefulWidget {
 
 class _HomePageState extends State<TestScreen2> {
 
-  double height = 200.0; // starting height value
-  var iconArrow = Icons.arrow_downward;
-  bool openFlag = false;
-
-
   @override
   Widget build(BuildContext context) {
-
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('test'),
-          brightness: Brightness.light,
-        ),
-          body: Container(
-
-            child:
-
-            Container(
-                height: height,
-                decoration: BoxDecoration(
-                    border:
-                    Border(top: BorderSide(color: Theme.of(context).dividerColor))),
-                child: Row(children: [
-                  Expanded(
-                      child:  Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text('Some text here!'),
+    return Scaffold(
+        body: Center(
+            child: Container(
+                child: SfCartesianChart(
+                    primaryXAxis: CategoryAxis(),
+                    series: <ChartSeries>[
+                      LineSeries<SalesData, String>(
+                          dataLabelSettings: DataLabelSettings(isVisible : true),
+                          dataSource: [
+                            SalesData('Jan', 35, Colors.red),
+                            SalesData('Feb', 28, Colors.green),
+                            SalesData('Mar', 34, Colors.blue),
+                            SalesData('Apr', 32, Colors.pink),
+                            SalesData('May', 40, Colors.black)
+                          ],
+                          // Bind the color for all the data points from the data source
+                          pointColorMapper: (SalesData sales, _) =>
+                          sales.segmentColor,
+                          xValueMapper: (SalesData sales, _) => sales.year,
+                          yValueMapper: (SalesData sales, _) => sales.sales
                       )
-                  ),
-                  Expanded(
-                    child: IconButton(
-                        icon: Icon(iconArrow),
-                        // color: themeData.primaryColor,
-                        onPressed: () => _onPressed(context)
-                    ),
-                  ),
-                ]))
-
-
-
-
-        ),
+                    ]
+                )
+            )
+        )
     );
   }
 
-  _onPressed(BuildContext context) {
-    var x = context.widget;
-    if(openFlag){
-      setState(() {
-        height = 200.0; // new height value
-        iconArrow = Icons.arrow_downward;
-        openFlag = false;
-      });
-    }else{
-      setState(() {
-        height = 400.0; // new height value
-        iconArrow = Icons.arrow_upward;
-        openFlag = true;
-      });
-    }
 
-  }
+}
+
+class SalesData {
+  SalesData(this.year, this.sales, this.segmentColor);
+  final String year;
+  final double sales;
+  final Color segmentColor;
 }

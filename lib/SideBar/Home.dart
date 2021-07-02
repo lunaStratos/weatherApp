@@ -31,7 +31,8 @@ class HomePage extends StatefulWidget {
     new DrawerItem("강우지도", Icons.umbrella),
     new DrawerItem("관심지역", Icons.star),
     new DrawerItem("설정", Icons.settings),
-    //new DrawerItem("테스트", Icons.star),
+    new DrawerItem("테스트", Icons.star),
+    new DrawerItem("테스트", Icons.star),
   ];
 
   @override
@@ -90,7 +91,7 @@ class HomePageState extends State<HomePage> {
         return new FavoriteScreen();
       case 3: // 설정
         return new SettingScreen();
-      case 4: // 테스트
+      case 5: // 테스트
         return new TestScreen();
       default:
         return new Text("Error");

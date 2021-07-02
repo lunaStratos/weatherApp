@@ -41,7 +41,8 @@ class Util {
   }
 
   /**
-   * int 요일 => str요일 
+   * int요일 => str요일
+   * 주간예보 에서 사용
    * */
   static String dayStr(week){
 
@@ -50,39 +51,32 @@ class Util {
     switch(week){
       case 1: {
         str = "월";
-      }
-      break;
+      } break;
       case 2: {
         str = "화";
-      }
-      break;
+      } break;
       case 3: {
         str = "수";
-      }
-      break;
+      } break;
       case 4: {
         str = "목";
-      }
-      break;
+      } break;
       case 5: {
         str = "금";
-      }
-      break;
+      } break;
       case 6: {
         str = "토";
-      }
-      break;
+      } break;
       case 7: {
         str = "일";
-      }
-      break;
-
+      } break;
     }
     return str;
   }
 
   /**
    * 중기예보 => 이미지 주소
+   * 중기예보 날씨상황 그림에서 사용
    * */
   static String weekImageAddress(weekStr){
 
@@ -136,15 +130,15 @@ class Util {
 
   /**
    * 메인날씨 => 이미지 주소
+   * 메인날씨 그림 표시
    * */
   static String kmaNowImgAddress(weather_conditions) {
   String result = "";
   print("weather_conditions ${weather_conditions}");
   switch (weather_conditions){
-  case "0":{
+  case "0":{  // 맑음
     result = "assets/images/weather_sun.png";
-  }   // 맑음
-  break;
+  }   break;
   case "1":   // 비
     {
       result = "assets/images/weather_rain.png";
@@ -176,9 +170,8 @@ class Util {
   default:
     {
     result = "";
-    }  }
-
-
+    }
+  }
   return result;
 }
 
@@ -193,8 +186,7 @@ class Util {
   case "좋음" :
     {
       result = "assets/images/dust_good.png";
-    }
-  break;
+    }    break;
   case "보통" :
     {
       result = "assets/images/dust_normal.png";
@@ -214,7 +206,7 @@ class Util {
 
   /**
    * 예보 => 이미지 주소
-   * 단기예보에 사용
+   * 단기예보에 사용, 기상청 1시간, 3시간(동네예보)에 적용가능
    * */
   static String kmaForecastImg(weatherType, rainfallType){
   String result = "";
@@ -225,8 +217,7 @@ class Util {
       case "1": // 맑음
         {
           result = "assets/images/weather_sun.png";
-        }
-      break;
+        }  break;
       case "3": // 구름많음
         {
           result = "assets/images/weather_suncloud.png";
@@ -278,6 +269,7 @@ class Util {
   /**
    * 현재시각 불러오기
    * 형태 : yyyyMMddHHmmSS
+   * 기상청 1시간, 레인보우-기상청 그래프 API 에서 사용
    * */
   static String dateNowStr(){
       String str = "";
@@ -295,6 +287,7 @@ class Util {
   /**
    * 현재시각 불러오기
    * 형태 : yyyyMMdd
+   * 기상청 3시간(동네예보), 레인보우-기상청 그래프 API 에서 사용
    * */
   static String dateNowyyyyMMddStr(){
     String str = "";
@@ -312,6 +305,7 @@ class Util {
   /**
    * 현재시각 불러오기
    * 형태 : HHmmSS
+   * 기상청 3시간(동네예보), 레인보우-기상청 그래프 API 에서 사용
    * */
   static String dateNowHHmmSSStr(){
     String str = "";
@@ -340,6 +334,7 @@ class Util {
 
   /**
    * 시 분의 1자리를 2자리로 바꾸는 기능
+   * 많은곳에서 사용하니 수정하지 말것!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    * */
   static String trans2Digit(int hm){
     String str = hm.toString().length == 1? "0${hm}" : hm.toString();
