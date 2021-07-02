@@ -89,7 +89,7 @@ class _WeekForecastState extends State<WeekForecast>{
 
               DataTable(
                   dividerThickness: 0,
-                  
+
                   horizontalMargin: 30,
                   columnSpacing: 30,    // 컬럼사이즈
                   columns: [

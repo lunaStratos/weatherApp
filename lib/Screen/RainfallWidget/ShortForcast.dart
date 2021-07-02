@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/LoadingWidget.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
@@ -116,6 +117,9 @@ class _ShortForecastState extends State<ShortForecast> {
   }
 
   List<DataRow> _buildDataRow(BuildContext context){
+    final now = DateTime.now();
+    int nowMonth = getData1HourList.isNotEmpty ? int.parse(getData1HourList[0]["targetDate"].toString().substring(4,6))  : now.month;
+    int nowDay = getData1HourList.isNotEmpty ? int.parse(getData1HourList[0]["targetDate"].toString().substring(6,8)) : now.day;
 
     /**
      * 3개의 DataRow 생성해야 함.
@@ -131,8 +135,7 @@ class _ShortForecastState extends State<ShortForecast> {
         new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('1.16일', style: TextStyle(fontSize: 14)),
-            Text('오늘', style: TextStyle(fontSize: 14)),
+            Text('${nowMonth}.${nowDay}일', style: TextStyle(fontSize: 16)),
           ],
         ) // 오전
       )
