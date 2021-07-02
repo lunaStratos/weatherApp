@@ -34,21 +34,35 @@ class _ShortForecastState extends State<ShortForecast> {
 
   final List<int> showIndexes = [0,1,2,3,4,5,6];
   List<LineChartBarData> tooltipsOnBar = [];
-  List <dynamic> getdataList = [];
+  List <dynamic> getData1HourList = [];
+  List <dynamic> getData3HourList = [];
 
   @override
   void initState() {
     super.initState();
-    _getKmaNowWeatherApi();
+    _getKmaNowWeatherApi1Hour();
+    _getKmaNowWeatherApi3Hour();
+
   }
 
   /**
-   * 현재날씨 API 불러오기
+   * 현재날씨 API 불러오기 - 1시간
    * */
-  Future <void> _getKmaNowWeatherApi() async {
-    final resultArray = await ApiCall.getWeatherUltraForecast(rect_id);
+  Future <void> _getKmaNowWeatherApi1Hour() async {
+    final resultArray = await ApiCall.getKmaWeather1Hour(rect_id);
     setState(() {
-      getdataList = resultArray;
+      getData1HourList = resultArray;
+    });
+
+  }
+
+  /**
+   * 현재날씨 API 불러오기간 - 3시간 
+   * */
+  Future <void> _getKmaNowWeatherApi3Hour() async {
+    final resultArray = await ApiCall.getKmaWeather3Hour(rect_id);
+    setState(() {
+      getData3HourList = resultArray;
     });
 
   }
@@ -58,7 +72,7 @@ class _ShortForecastState extends State<ShortForecast> {
 
     buildGraphDangiList();
 
-    if(getdataList.isNotEmpty){
+    if(getData1HourList.isNotEmpty){
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: new Container(
@@ -113,7 +127,32 @@ class _ShortForecastState extends State<ShortForecast> {
     List <DataCell> temperatureList = [];
     List <DataCell> windList = [];
 
-    for(int k = 0 ; k < getdataList.length ; k++){
+    timeAndWeatherList.add(DataCell(
+        new Column(
+          children: [
+            Text('1.16일'),
+            Text('오늘'),
+          ],
+        ) // 오전
+      )
+    );
+
+    humidityList.add(
+        DataCell(Text('습도'))
+    );
+
+    windList.add(
+        DataCell(new Column(
+          children: [
+            Text('풍향'),
+            Text('풍속')
+          ],
+        ))
+    );
+
+    temperatureList.add(DataCell(Text('온도')));
+
+    for(int k = 0 ; k < getData1HourList.length ; k++){
 
       /**
        * 시간과 날씨 이미지
@@ -121,8 +160,8 @@ class _ShortForecastState extends State<ShortForecast> {
       var timeAndWeatherCell = DataCell(
           new Column(
               children: [
-                Text('${ (getdataList[k]["targetTime"]).toString().substring(0,2) }시'),
-                Image.asset('${Util.kmaForecastImg(getdataList[k]["weatherType"], getdataList[k]["rainfallType"])}', width: 30, height: 30 ,),
+                Text('${ (getData1HourList[k]["targetTime"]).toString().substring(0,2) }시'),
+                Image.asset('${Util.kmaForecastImg(getData1HourList[k]["weatherType"], getData1HourList[k]["rainfallType"])}', width: 30, height: 30 ,),
               ],
           ) // 오전
 
@@ -132,7 +171,7 @@ class _ShortForecastState extends State<ShortForecast> {
       /**
        * 습도
        * */
-      var humidityCell = DataCell(Text('${getdataList[k]["humidity"]} %'));
+      var humidityCell = DataCell(Text('${getData1HourList[k]["humidity"]} %'));
       humidityList.add(humidityCell);
 
       /**
@@ -141,10 +180,10 @@ class _ShortForecastState extends State<ShortForecast> {
       var windCell = DataCell(
             new Column(
                 children: [
-                    Text('${getdataList[k]["windStrength"]} m/s'),
+                    Text('${getData1HourList[k]["windStrength"]} m/s'),
 
                     new RotationTransition(
-                    turns: new AlwaysStoppedAnimation( int.parse(getdataList[k]["windDirection"]) / 360),
+                    turns: new AlwaysStoppedAnimation( int.parse(getData1HourList[k]["windDirection"]) / 360),
                     child: Image.asset('assets/images/windforce.png', width: 30, height: 30 ,),
                     )
               ],
@@ -155,7 +194,7 @@ class _ShortForecastState extends State<ShortForecast> {
       /**
        * 온도
        * */
-      var temperatureCell = DataCell(Text('${getdataList[k]["temperature"]}도'));
+      var temperatureCell = DataCell(Text('${getData1HourList[k]["temperature"]}도'));
       temperatureList.add(temperatureCell);
 
     }
@@ -171,11 +210,11 @@ class _ShortForecastState extends State<ShortForecast> {
   List<DataColumn> _buildColumn(BuildContext context) {
     List <DataColumn> arr = [];
 
-    for(int i = 0 ; i < getdataList.length ; i++){
+    for(int i = 0 ; i < getData1HourList.length+1 ; i++){
       arr.add(DataColumn(label: Text('')));
     }
 
-    if(getdataList.length == 0){
+    if(getData1HourList.length == 0){
       arr.add(DataColumn(label: Text('')));
     }
 

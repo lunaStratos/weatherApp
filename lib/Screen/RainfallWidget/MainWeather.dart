@@ -37,7 +37,7 @@ class _MainWeatherState extends State<MainWeather>{
   _MainWeatherState(this.rect_id, this.kmaNowWeatherObject, this.dongName);
 
   Future _callWeather3Hour()async{
-    final resultArray = await ApiCall.getWeatherForecast(rect_id);
+    final resultArray = await ApiCall.getKmaWeather3Hour(rect_id);
 
     if(resultArray.isNotEmpty){
       weatherPredictDesc = resultArray[0]['weatherTypeDescription'];

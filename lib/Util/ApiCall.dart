@@ -59,11 +59,12 @@ class ApiCall {
    * 3시간 단위 예보 - rect_id, targetdate, targettime
    * 강수예보 그래프 사용
    * */
-  static Future<List> getWeatherForecast(rect_id) async{
+  static Future<List> getKmaWeather3Hour(rect_id) async{
     String address = '${appapiAddress}/kma-weather-3hour?rect_id=${rect_id}&targetdate=${Util.dateNowyyyyMMddStr()}&targettime=${Util.dateNowHHmmSSStr()}';
     final jsonArray = await Api.callapi(address);
     return jsonArray;
   }
+
 
   /**
    * 레인보우 예보 - rect_id, nowtime(yyyyMMddHHmmSS)
@@ -91,7 +92,7 @@ class ApiCall {
    * 1시간 단위 예보 - rect_id
    * 단기예보 표시
    * */
-  static Future<List> getWeatherUltraForecast(rect_id) async{
+  static Future<List> getKmaWeather1Hour(rect_id) async{
     String address = '${appapiAddress}/kma-weather-1hour?rect_id=${rect_id}';
     final jsonArray = await Api.callapi(address);
     return jsonArray;
