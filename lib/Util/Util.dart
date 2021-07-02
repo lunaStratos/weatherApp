@@ -185,6 +185,7 @@ class Util {
 
   /**
    * 미세먼지 => 이미지 주소
+   * 날씨바 미세먼지, 초미세먼지에 사용
    * */
   static String airGradeImgAddress(str){
   String result = "";
@@ -213,6 +214,7 @@ class Util {
 
   /**
    * 예보 => 이미지 주소
+   * 단기예보에 사용
    * */
   static String kmaForecastImg(weatherType, rainfallType){
   String result = "";

@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/LoadingWidget.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
@@ -73,7 +72,7 @@ class _ShortForecastState extends State<ShortForecast> {
 
     buildGraphDangiList();
 
-    if(getData1HourList.isNotEmpty){
+    if(getData3HourList.isNotEmpty){
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: new Container(
@@ -116,10 +115,13 @@ class _ShortForecastState extends State<ShortForecast> {
 
   }
 
+  /**
+   * 행 정보 표시 - 시간, 날씨, 습도, 온도, 풍향풍속
+   * */
   List<DataRow> _buildDataRow(BuildContext context){
     final now = DateTime.now();
-    int nowMonth = getData1HourList.isNotEmpty ? int.parse(getData1HourList[0]["targetDate"].toString().substring(4,6))  : now.month;
-    int nowDay = getData1HourList.isNotEmpty ? int.parse(getData1HourList[0]["targetDate"].toString().substring(6,8)) : now.day;
+    int nowMonth = getData3HourList.isNotEmpty ? int.parse(getData3HourList[0]["targetDate"].toString().substring(4,6))  : now.month;
+    int nowDay = getData3HourList.isNotEmpty ? int.parse(getData3HourList[0]["targetDate"].toString().substring(6,8)) : now.day;
 
     /**
      * 3개의 DataRow 생성해야 함.
@@ -170,16 +172,20 @@ class _ShortForecastState extends State<ShortForecast> {
       ))
     );
 
-    for(int k = 0 ; k < getData1HourList.length ; k++){
+    for(int k = 0 ; k < getData3HourList.length ; k++){
+
 
       /**
        * 시간과 날씨 이미지
        * */
+      String weatherType = getData3HourList[k]["weatherType"];
+      String rainfallType = getData3HourList[k]["rainfallType"];
+
       var timeAndWeatherCell = DataCell(
           new Column(
               children: [
-                Text('${ (getData1HourList[k]["targetTime"]).toString().substring(0,2) }시'),
-                Image.asset('${Util.kmaForecastImg(getData1HourList[k]["weatherType"], getData1HourList[k]["rainfallType"])}', width: 30, height: 30 ,),
+                Text('${ (getData3HourList[k]["targetTime"]).toString().substring(0,2) }시'),
+                Image.asset('${Util.kmaForecastImg(weatherType, rainfallType)}', width: 30, height: 30 ,),
               ],
           ) // 오전
 
@@ -189,7 +195,7 @@ class _ShortForecastState extends State<ShortForecast> {
       /**
        * 습도
        * */
-      var humidityCell = DataCell(Text('${getData1HourList[k]["humidity"]} %'));
+      var humidityCell = DataCell(Text('${getData3HourList[k]["humidity"]} %'));
       humidityList.add(humidityCell);
 
       /**
@@ -198,10 +204,10 @@ class _ShortForecastState extends State<ShortForecast> {
       var windCell = DataCell(
             new Column(
                 children: [
-                    Text('${getData1HourList[k]["windStrength"]} m/s'),
+                    Text('${getData3HourList[k]["windStrength"]}m/s', style: TextStyle(fontSize: 12),),
 
                     new RotationTransition(
-                    turns: new AlwaysStoppedAnimation( int.parse(getData1HourList[k]["windDirection"]) / 360),
+                    turns: new AlwaysStoppedAnimation( getData3HourList[k]["windDirection"] / 360),
                     child: Image.asset('assets/images/windforce.png', width: 30, height: 30 ,),
                     )
               ],
@@ -212,7 +218,7 @@ class _ShortForecastState extends State<ShortForecast> {
       /**
        * 온도
        * */
-      var temperatureCell = DataCell(Text('${getData1HourList[k]["temperature"]}도'));
+      var temperatureCell = DataCell(Text('${getData3HourList[k]["temperature"]}도'));
       temperatureList.add(temperatureCell);
 
     }
@@ -228,11 +234,11 @@ class _ShortForecastState extends State<ShortForecast> {
   List<DataColumn> _buildColumn(BuildContext context) {
     List <DataColumn> arr = [];
 
-    for(int i = 0 ; i < getData1HourList.length+1 ; i++){
+    for(int i = 0 ; i < getData3HourList.length+1 ; i++){
       arr.add(DataColumn(label: Text('')));
     }
 
-    if(getData1HourList.length == 0){
+    if(getData3HourList.length == 0){
       arr.add(DataColumn(label: Text('')));
     }
 
