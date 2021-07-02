@@ -39,7 +39,6 @@ class ApiCall {
    * 현재날씨
    * */
   static Future<dynamic> getNowKmaWeather(rectid) async{
-    print('rectid ${rectid}');
     String address = '${appapiAddress}/kma-weather-now?rect_id=${rectid}';
     final jsonObject = await Api.callapiObject(address);
     return jsonObject;

@@ -50,7 +50,7 @@ class _AnimatedImageState extends State<AnimatedImage>
   void initState() {
     super.initState();
     Timer(Duration(milliseconds: 200), () {
-      print("Yeah, this line is printed after 1 seconds");
+
       setState(() {
         opacityDouble = 1.0;
       });

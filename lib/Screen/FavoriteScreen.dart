@@ -67,12 +67,12 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
     for(int i = 0 ; i < favoriteArray.length ; i++){
       final getItem = await ApiCall.getNowKmaWeather(favoriteArray[i].rect_id);
-      print('getItem ${getItem}');
+
       favoriteArray[i].celsius = getItem['temperature'];
       favoriteArray[i].weatherConditions = getItem['weatherConditions'];
       favoriteArray[i].weatherDescription = getItem['weatherConditionsKeyword'];
       favoriteArray[i].rainfallAmount = getItem['rainfallAmount'].toString();
-      print("${favoriteArray[i].celsius} ${getItem['temperature']}");
+
     }
 
     setState(() {
@@ -93,7 +93,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     prefs = await SharedPreferences.getInstance();
 
     final getItem = await ApiCall.getNowKmaWeather(item.rect_id);
-    print('_saveFavoriteLocationData ${item.rect_id}');
+
     favoriteArray.add(
         FavoriteDomain(
             address:"${item.address}",
@@ -157,7 +157,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           kmaY: kmaY
       );
 
-      print('fDomain : ${fDomain.kmaX}');
       //저장소 저장
       await prefs.setString("favoriteNowLocation", jsonEncode(fDomain));
 
@@ -182,6 +181,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
 
     return Scaffold(
+
      body: new Column(
        children: [
          /**
@@ -190,6 +190,9 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
          new Container(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+            /**
+             * 추천 검색어 표시 기능 입력창
+             * */
             child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                   autofocus: true,
@@ -209,8 +212,13 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                         });
                   },
                   onSubmitted: (value) {
-                    print('value ${value}');
+                    print('onSubmitted edit ${value}');
                   },
+
+                  onEditingComplete:() {
+                    print('done edit ');
+                  },
+
               ),
               /**
                * 관심지역 제안 검색어 가져오기
@@ -262,9 +270,14 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
               },
               /**
-               * no items found! 표시방지
+               * no items found! 표시변경
+               * hideOnEmpty = empty일때 감추기
                * */
-              hideOnEmpty : true,
+              hideOnEmpty : false,
+              noItemsFoundBuilder: (context) {
+                var localizedMessage = "검색결과 없습니다";
+                return Text(localizedMessage);
+              },
               hideOnLoading: true,
             ),
 
@@ -291,7 +304,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                      * 3. lat lng 주소 가져옴
                      * 4. 팝업 리스트 띄움
                      * */
-                  print("현위치 클릭 ${locationPermission}");
+
                     if(locationPermission){
                       _getPosition();
                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext
@@ -411,7 +424,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                * desc: 클릭하면 위치의 날씨 정보 보기 이동
                */
               onTap: () {
-                print('press ${index}');
+
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext
                 context) => HomePage(index: index,action:"clickFavorite")
                 ));

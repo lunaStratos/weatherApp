@@ -272,8 +272,7 @@ class _ShortForecastState extends State<ShortForecast> {
     return LineChartData(
 
       showingTooltipIndicators: showIndexes.map((index) {
-        print('index ${index} ');
-        print('tooltipsOnBar ${tooltipsOnBar[0].spots}');
+
         return ShowingTooltipIndicators([
           LineBarSpot(
               tooltipsOnBar[0], tooltipsOnBar.indexOf(tooltipsOnBar[0]), tooltipsOnBar[0].spots[index]),

@@ -25,9 +25,9 @@ class GraphBuild extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    print('getRainvowList=> ${getRainvowList}');
-    print('getKmaWeatherList=> ${getKmaWeatherList}');
-    print('getRainvowKmaList=> ${getRainvowKmaList}');
+    // print('getRainvowList=> ${getRainvowList}');
+    // print('getKmaWeatherList=> ${getKmaWeatherList}');
+    // print('getRainvowKmaList=> ${getRainvowKmaList}');
 
 
     //자르기
@@ -280,9 +280,9 @@ class GraphBuild extends StatelessWidget{
     // 기상청 데이터
     List<FlSpot> lineKmaWeatherList = [];
 
-    print('getKmaWeatherList /  ${getKmaWeatherList}');
-    print('getRainvowList / ${getRainvowList}');
-    print('getRainvowKmaList / ${getRainvowKmaList}');
+    // print('getKmaWeatherList /  ${getKmaWeatherList}');
+    // print('getRainvowList / ${getRainvowList}');
+    // print('getRainvowKmaList / ${getRainvowKmaList}');
 
     List <Kma3TimeDomain> getKmaWeatherTempList = [];
     /**
