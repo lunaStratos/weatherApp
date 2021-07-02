@@ -129,28 +129,43 @@ class _ShortForecastState extends State<ShortForecast> {
 
     timeAndWeatherList.add(DataCell(
         new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('1.16일'),
-            Text('오늘'),
+            Text('1.16일', style: TextStyle(fontSize: 14)),
+            Text('오늘', style: TextStyle(fontSize: 14)),
           ],
         ) // 오전
       )
     );
 
     humidityList.add(
-        DataCell(Text('습도'))
+        DataCell(
+            new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [ Text('습도', style: TextStyle(fontSize: 16))
+                 ]
+           )
+        )
     );
 
     windList.add(
         DataCell(new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('풍향'),
-            Text('풍속')
+            Text('풍향', style: TextStyle(fontSize: 14)),
+            Text('풍속', style: TextStyle(fontSize: 14))
           ],
         ))
     );
 
-    temperatureList.add(DataCell(Text('온도')));
+    temperatureList.add(DataCell(
+      new Column(
+         mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('온도', style: TextStyle(fontSize: 16),)
+           ],
+      ))
+    );
 
     for(int k = 0 ; k < getData1HourList.length ; k++){
 

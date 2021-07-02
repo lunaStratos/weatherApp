@@ -86,6 +86,11 @@ class _WeatherBarState extends State<WeatherBar>{
             /**
              * 습도
              * */
+            Container(
+              width: 1,
+              height: 45,
+              color: Colors.grey,
+            ),
             new Padding(
               padding: EdgeInsets.all(2),
               child: new Column(
@@ -100,6 +105,11 @@ class _WeatherBarState extends State<WeatherBar>{
             /**
              * 바람세기
              * */
+            Container(
+              width: 1,
+              height: 45,
+              color: Colors.grey,
+            ),
             new Padding(
               padding: EdgeInsets.all(2),
               child: new Column(
@@ -114,6 +124,11 @@ class _WeatherBarState extends State<WeatherBar>{
             /**
              * 미세먼지 그림
              * */
+            Container(
+              width: 1,
+              height: 45,
+              color: Colors.grey,
+            ),
             new Padding(
               padding: EdgeInsets.all(2),
               child: new Column(
@@ -128,6 +143,11 @@ class _WeatherBarState extends State<WeatherBar>{
             /**
              * 초미세먼지 그림
              * */
+            Container(
+              width: 1,
+              height: 45,
+              color: Colors.grey,
+            ),
             new Padding(
               padding: EdgeInsets.all(2),
               child: new Column(
