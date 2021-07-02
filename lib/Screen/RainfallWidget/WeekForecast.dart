@@ -62,13 +62,14 @@ class _WeekForecastState extends State<WeekForecast>{
 
   @override
   Widget build(BuildContext context) {
-
+    final double width = MediaQuery.of(context).size.width;
     // print('getMidterm getMidtermList.length ${getMidtermList.length}');
     // print('getMidterm getMidtermTempList.length ${getMidtermTempList.length}');
     // print('getMidterm getMidtermList ${getMidtermList}');
     // print('getMidterm getMidtermTempList ${getMidtermTempList}');
-    // print('getMidterm flag ${flag}');
+    // print('getMidterm flag ${flag}')
 
+    print("width ${width}");
     if(flag){
       if(getMidtermTempList.isNotEmpty && getMidtermList.isNotEmpty){
         return new Container(
@@ -87,13 +88,36 @@ class _WeekForecastState extends State<WeekForecast>{
             children: [
 
               DataTable(
+                  dividerThickness: 0,
+                  
                   horizontalMargin: 30,
-                  columnSpacing: 40,    // 컬럼사이즈
+                  columnSpacing: 30,    // 컬럼사이즈
                   columns: [
-                    DataColumn(label: Text('')),
-                    DataColumn(label: Text('오전')),
-                    DataColumn(label: Text('오후')),
-                    DataColumn(label: Text('눈/비\n확률')),
+                    DataColumn(label: Container(
+                      alignment: Alignment.center,
+                      width: width *.05 ,
+                      child: Text(''),
+                    )),
+                    DataColumn(label: Container(
+                      alignment: Alignment.center,
+                      width: width *.1 ,
+                      child: Text('오전'),
+                    )),
+                    DataColumn(label: Container(
+                      alignment: Alignment.center,
+                      width: width *.02 ,
+                      child: Text(''),
+                    )),
+                    DataColumn(label: Container(
+                      alignment: Alignment.center,
+                      width: width *.1 ,
+                      child: Text('오후'),
+                    )),
+                    DataColumn(label: Container(
+                      alignment: Alignment.center,
+                      width: width *.1 ,
+                      child: Text('눈/비\n확률'),
+                    )),
                   ],
                   /**
                    * 데이터 부분 
@@ -151,14 +175,34 @@ class _WeekForecastState extends State<WeekForecast>{
       int percentage = (percentageDouble.round());
       var datetemp = date.add(Duration(days: startindex));
       var xScreen = DataRow(cells: [
+        /**
+         * 날짜
+         * */
         DataCell(Text('${datetemp.month}.${datetemp.day} \n ${Util.dayStr(datetemp.weekday)}')),
+        /**
+         * 오전
+         * */
         DataCell(new Row(
-          children: [
-            Image.asset('${Util.weekImageAddress(getMidtermList[i]["weatherDescAm"])}', width: 30, height: 30 ,),
-            Text('${getMidtermTempList[i]["temperatureMin"]}°C'),
-          ],
-        )
+            children: [
+              Image.asset('${Util.weekImageAddress(getMidtermList[i]["weatherDescAm"])}', width: 30, height: 30 ,),
+              Text('${getMidtermTempList[i]["temperatureMin"]}°C'),
+            ],
+          )
         ),
+        DataCell(
+          new Row(
+            children: [
+              Container(
+                width: 1,
+                height: 25,
+                color: Colors.grey[400],
+              ),
+            ],
+          )
+        ),
+        /**
+         * 오후
+         * */
         DataCell(new Row(
           children: [
             Image.asset('${Util.weekImageAddress(getMidtermList[i]["weatherDescPm"])}', width: 30, height: 30 ,),
@@ -166,6 +210,9 @@ class _WeekForecastState extends State<WeekForecast>{
           ],
         ) // 오후
         ),
+        /**
+         * 눈/비 확률
+         * */
         DataCell(
             Text('${percentage}%')
         ),
