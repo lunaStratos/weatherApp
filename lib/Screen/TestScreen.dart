@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:rainvow_mobile/Domain/WeatherGraphData.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 
@@ -45,42 +46,67 @@ class TestScreen2 extends StatefulWidget {
 
 class _HomePageState extends State<TestScreen2> {
 
+  List<WeatherGraphData> datas = [
+    WeatherGraphData('06시', 35, Colors.red),
+    WeatherGraphData('07시', 28, Colors.green),
+    WeatherGraphData('08시', 34, Colors.blue),
+    WeatherGraphData('09시', 32, Colors.pink),
+    WeatherGraphData('10시', 40, Colors.black),
+    WeatherGraphData('11시', 40, Colors.black),
+    WeatherGraphData('12시', 40, Colors.black),
+
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
             child: Container(
+              height: 100,
                 child: SfCartesianChart(
-                    primaryXAxis: CategoryAxis(),
+
+                    /**
+                     * X축 ←→ max-min
+                     * */
+                    primaryXAxis: CategoryAxis(
+                      majorGridLines: MajorGridLines(width: 0),
+                      axisLine: AxisLine(width: 0),
+                      isVisible: false
+                    ),
+                    /**
+                     * Y축 ↑↓ max-min
+                     * */
+                    primaryYAxis: CategoryAxis(
+                      minimum: 20,
+                      maximum: 50,
+                      majorGridLines: MajorGridLines(width: 0),
+                      axisLine: AxisLine(width: 0),
+                      isVisible: false
+                    ),
+
                     series: <ChartSeries>[
-                      LineSeries<SalesData, String>(
+                      LineSeries<WeatherGraphData, String>(
+                          /**
+                           * 툴팁 언제나 보이기
+                           * */
                           dataLabelSettings: DataLabelSettings(isVisible : true),
-                          dataSource: [
-                            SalesData('Jan', 35, Colors.red),
-                            SalesData('Feb', 28, Colors.green),
-                            SalesData('Mar', 34, Colors.blue),
-                            SalesData('Apr', 32, Colors.pink),
-                            SalesData('May', 40, Colors.black)
-                          ],
-                          // Bind the color for all the data points from the data source
-                          pointColorMapper: (SalesData sales, _) =>
-                          sales.segmentColor,
-                          xValueMapper: (SalesData sales, _) => sales.year,
-                          yValueMapper: (SalesData sales, _) => sales.sales
+                          /**
+                           * 데이터 영역
+                           * */
+                          dataSource: datas,
+                          pointColorMapper: (WeatherGraphData item, _) => item.segmentColor,
+                          xValueMapper: (WeatherGraphData item, _) => item.timeStr,
+                          yValueMapper: (WeatherGraphData item, _) => item.temperature,
+
                       )
                     ]
                 )
             )
+
+
         )
     );
   }
 
 
-}
-
-class SalesData {
-  SalesData(this.year, this.sales, this.segmentColor);
-  final String year;
-  final double sales;
-  final Color segmentColor;
 }
