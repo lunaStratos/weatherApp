@@ -49,10 +49,10 @@ class _ShortForecastState extends State<ShortForecast> {
    * 현재날씨 API 불러오기 - 1시간
    * */
   Future <void> _getKmaNowWeatherApi1Hour() async {
-    final resultArray = await ApiCall.getKmaWeather1Hour(rect_id);
-    setState(() {
-      getData1HourList = resultArray;
-    });
+    // final resultArray = await ApiCall.getKmaWeather1Hour(rect_id);
+    // setState(() {
+    //   getData1HourList = resultArray;
+    // });
 
   }
 
@@ -71,6 +71,11 @@ class _ShortForecastState extends State<ShortForecast> {
   Widget build(BuildContext context) {
 
     if(getData3HourList.isNotEmpty){
+
+      // for(int i = 0; i< getData3HourList.length; i++){
+      //   temperatureGraphList.add(WeatherGraphData('${(getData3HourList[i]["targetTime"]).toString().substring(0,2) }시', int.parse(getData3HourList[i]["temperature"].toString()), Colors.black38));
+      // }
+
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: new Container(
@@ -213,15 +218,19 @@ class _ShortForecastState extends State<ShortForecast> {
 
         var temperatureCell = SizedBox(
             width: widthSize,child: Center(child: Text('${getData3HourList[k]["temperature"]}도')));
-        maxmin.add(int.parse(getData3HourList[k]["temperature"].toString()));
-        temperatureGraphList.add(WeatherGraphData('${ (getData3HourList[k]["targetTime"]).toString().substring(0,2) }시', int.parse(getData3HourList[k]["temperature"].toString()), Colors.black38));
         temperatureList.add(temperatureCell);
+
+        maxmin.add(int.parse(getData3HourList[k]["temperature"].toString()));
+
+        temperatureGraphList.add(WeatherGraphData('${ (getData3HourList[k]["targetTime"]).toString().substring(0,2) }시', int.parse(getData3HourList[k]["temperature"].toString()), Colors.black38));
+
 
       }
       maxmin.sort(); //←작은수, →큰수
 
       }
 
+    print("temperatureGraphList ${temperatureGraphList.length}");
 
     arr.add(Row(children: timeAndWeatherList));
     arr.add(Row(children: humidityList));
