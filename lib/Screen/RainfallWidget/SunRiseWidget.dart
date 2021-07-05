@@ -122,7 +122,7 @@ class _SunRiseWidget extends State<SunRiseWidget>{
                                * 태양 표시
                                * */
                               Positioned(
-                                top: -10,
+                                top: -20,
                                 right: 0,
                                 width: 250,
                                 child: sunNowDegree != 0 ? (new RotationTransition(

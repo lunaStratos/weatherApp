@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import 'package:flutter/services.dart';
 
 /**
  * FCM - 백그라운드 모드시 동작
@@ -36,7 +37,6 @@ Future<void> main() async {
 
 
 class MyApp extends StatefulWidget {
-
   MyAppState createState() => MyAppState();
 
 }
@@ -56,6 +56,10 @@ class MyAppState extends State<MyApp> {
   PushNotification? _notificationInfo;
 
   void initState() {
+    /**
+     * 화면 세로로 고정
+     * */
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     registerNotification();
     checkForInitialMessage();
 

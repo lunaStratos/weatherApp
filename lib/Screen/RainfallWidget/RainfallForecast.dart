@@ -155,10 +155,13 @@ class _RainfallState extends State<RainfallForecast>{
             ),
 
             Text('* 레인보우 데이터 측정 기준: 500m/ 10분전',
-              style: TextStyle(color: Color(
-                  0xff767676)),textAlign: TextAlign.left,
+              style: TextStyle(
+                  color: Color(0xff767676), fontSize: 10,
+
+              ),
+              textAlign: TextAlign.left,
             ),
-            Text('* 기상청 데이터 측정 기준: 00시 00분', style: TextStyle(color: Color(0xff767676)),),
+            Text('* 기상청 데이터 측정 기준: 00시 00분', style: TextStyle(color: Color(0xff767676), fontSize: 10,),),
           ],
         ),
       );

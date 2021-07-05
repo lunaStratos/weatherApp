@@ -22,12 +22,23 @@ class ApiCall {
       return jsonArray;
   }
 
+
   /**
    * 현위치의 rect_id, kma_point_id, kmaX, kmaY
    * 현위치 검색시 rect_id 사용
    * */
   static Future<dynamic> getMylocationInfo(longitude, latitude) async{
     String address = '${appapiAddress}/rainvow-rectid-search?longitude=${longitude}&latitude=${latitude}';
+    final jsonObj = await Api.callapiObject(address);
+    return jsonObj;
+  }
+
+  /**
+   * 현위치의 rect_id, kma_point_id, kmaX, kmaY
+   * 현위치 검색시 rect_id 사용
+   * */
+  static Future<dynamic> getMylocationInfoForScreen(longitude, latitude) async{
+    String address = '${appapiAddress}/rainvow-rectid-search-for-screen?longitude=${longitude}&latitude=${latitude}';
     final jsonObj = await Api.callapiObject(address);
     return jsonObj;
   }

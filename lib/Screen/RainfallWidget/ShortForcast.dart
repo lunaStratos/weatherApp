@@ -40,20 +40,18 @@ class _ShortForecastState extends State<ShortForecast> {
   @override
   void initState() {
     super.initState();
-    _getKmaNowWeatherApi1Hour();
     _getKmaNowWeatherApi3Hour();
 
   }
 
   /**
-   * 현재날씨 API 불러오기 - 1시간
+   * 현재날씨 API 불러오기 - 1시간 (사용안함)
    * */
   Future <void> _getKmaNowWeatherApi1Hour() async {
     // final resultArray = await ApiCall.getKmaWeather1Hour(rect_id);
     // setState(() {
     //   getData1HourList = resultArray;
     // });
-
   }
 
   /**
@@ -135,6 +133,8 @@ class _ShortForecastState extends State<ShortForecast> {
     List <Widget> temperatureList = [];
     List <Widget> windList = [];
 
+    //비우기 (안하면 선이 여러개 그려지는 문제 발생 함 )
+    temperatureGraphList = [];
 
     for(int k = -1 ; k < getData3HourList.length ; k++){
 

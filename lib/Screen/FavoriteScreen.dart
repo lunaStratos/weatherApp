@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteJsonDomain.dart';
@@ -36,6 +38,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
   late SharedPreferences prefs;
 
+  bool _saving = false;                             // 저장하기 시 사용
   String searchLocationText = "";                   // 검색어
   bool locationPermission = false;                  // 현위치 권한
   List<FavoriteJsonDomain> suggestionListReal = []; // 검색어 추천단어
@@ -111,7 +114,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             imgSrc:"",
             alarmTime: "08:00",
             utcAlarmTime: "23:00",
-            use: false)
+            use: false
+        )
     );
 
     List<String> tempSaveList = [];
@@ -133,9 +137,9 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   }
 
   /**
-   * 현위치 클릭
+   * 현위치 클릭 = 화면보기
    * */
-  _getPosition () async{
+  _getPositionViewScreen () async{
       var result = await Util().determinePosition() as Position;
       String latitude = result.latitude.toString();
       String longitude = result.longitude.toString();
@@ -162,6 +166,74 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
   }
 
+
+  /**
+   * 현위치 클릭 === 저장하기
+   * */
+  _getPosition () async{
+
+
+    var result = await Util().determinePosition() as Position;
+
+    String latitude = result.latitude.toString();
+    String longitude = result.longitude.toString();
+    var resultMylocaion = await ApiCall.getMylocationInfo(longitude, latitude);
+    var result2 = (resultMylocaion);
+    String kma_point_id = result2['kma_point_id'];
+    String rect_id = result2['rect_id'];
+    String kmaX  = result2['kmaX'];
+    String kmaY = result2['kmaY'];
+    String temperature = result2['temperature'];
+    String weatherConditionsKeyword = result2['weatherConditionsKeyword'];
+    String weatherConditions = result2['weatherConditions'];
+    String rainfallAmount = result2['rainfallAmount'];
+    String address = result2['address'];
+    String dongName = result2['dongName'];
+
+
+    favoriteArray.add(FavoriteDomain(
+      address: address,
+      dongName: dongName,
+      longitude: longitude ,
+      latitude: latitude,
+      kmaX: kmaX,
+      kmaY: kmaY,
+      kma_point_id: kma_point_id,
+      rect_id: rect_id,
+      weatherDescription: weatherConditionsKeyword,
+      weatherConditions: weatherConditions,
+      rainfallAmount: rainfallAmount,
+      celsius: temperature,
+      imgSrc:"",
+      alarmTime: "08:00",
+      utcAlarmTime: "23:00",
+      use: false,
+
+    )
+    );
+
+    List<String> tempSaveList = [];
+
+    favoriteArray.map((it) => {
+      tempSaveList.add(jsonEncode(it))
+    });
+
+    List<String> strList = favoriteArray.map((item) => jsonEncode(item)).toList();
+    await prefs.setStringList('favoriteLocation', strList );
+    /**
+     * 도로명주소가 저장되었음을 알림
+     * */
+    Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('${dongName}을 저장했습니다.')
+    ));
+
+    setState( () {
+      favoriteArray = favoriteArray;
+    } );
+
+
+  }
+
   /**
    * 아이템 제거
    * */
@@ -179,110 +251,109 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   @override
   Widget build(BuildContext context) {
 
-
     return Scaffold(
 
-     body: new Column(
+     body: ProgressHUD(child: new Column(
        children: [
          /**
           * 검색창
           * */
          new Container(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-            /**
-             * 추천 검색어 표시 기능 입력창
-             * */
-            child: TypeAheadField(
-              textFieldConfiguration: TextFieldConfiguration(
-                  autofocus: true,
-                  style: DefaultTextStyle.of(context).style.copyWith(
-                      fontStyle: FontStyle.italic
-                  ),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder()
-                  ),
-                  /**
-                   * 관심지역 검색 텍스트 변경
-                   * desc: 변경시 텍스트 값을 setState로 변조
-                   * */
-                  onChanged: (inputText) async {
-                        setState(() {
-                          searchLocationText = inputText;
-                        });
-                  },
-                  onSubmitted: (value) {
-                    print('onSubmitted edit ${value}');
-                  },
+           child: Padding(
+             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+             /**
+              * 추천 검색어 표시 기능 입력창
+              * */
+             child: TypeAheadField(
+               textFieldConfiguration: TextFieldConfiguration(
+                 autofocus: true,
+                 style: DefaultTextStyle.of(context).style.copyWith(
+                     fontStyle: FontStyle.italic
+                 ),
+                 decoration: InputDecoration(
+                     border: OutlineInputBorder()
+                 ),
+                 /**
+                  * 관심지역 검색 텍스트 변경
+                  * desc: 변경시 텍스트 값을 setState로 변조
+                  * */
+                 onChanged: (inputText) async {
+                   setState(() {
+                     searchLocationText = inputText;
+                   });
+                 },
+                 onSubmitted: (value) {
+                   print('onSubmitted edit ${value}');
+                 },
 
-                  onEditingComplete:() {
-                    print('done edit ');
-                  },
+                 onEditingComplete:() {
+                   print('done edit ');
+                 },
 
-              ),
-              /**
-               * 관심지역 제안 검색어 가져오기
-               * desc: 제안 검색어를 리스트로 가져와 뿌려줌
-               * */
-              suggestionsCallback: (pattern) async {
+               ),
+               /**
+                * 관심지역 제안 검색어 가져오기
+                * desc: 제안 검색어를 리스트로 가져와 뿌려줌
+                * */
+               suggestionsCallback: (pattern) async {
 
-                final jsonArray = await ApiCall.getFavoriteSearchList(searchLocationText);
-                setState(() {
-                  suggestionListReal = jsonArray.map((item) => FavoriteJsonDomain.fromJson(item)).toList();
-                });
-                return await suggestionListReal;
-              },
-              itemBuilder: (context, item ) {
-                var itemDomain = item as FavoriteJsonDomain;
-                return new Column(
-                  children: [
-                    ListTile(
-                    title: Text(' ${itemDomain.dongName}'),
-                    subtitle: Text('${itemDomain.address}'),
-                    ),
-                  ],
-                );
-              },
-              /**
-               * 제안 검색어중 하나 클릭
-               * desc: 클릭한 제안 검색어를 저장한다.
-               * 중복이면 중복 알림후 return
-               * */
-              onSuggestionSelected: (item) {
-                item as FavoriteJsonDomain;
-                bool flag = true;
+                 final jsonArray = await ApiCall.getFavoriteSearchList(searchLocationText);
+                 setState(() {
+                   suggestionListReal = jsonArray.map((item) => FavoriteJsonDomain.fromJson(item)).toList();
+                 });
+                 return await suggestionListReal;
+               },
+               itemBuilder: (context, item ) {
+                 var itemDomain = item as FavoriteJsonDomain;
+                 return new Column(
+                   children: [
+                     ListTile(
+                       title: Text(' ${itemDomain.dongName}'),
+                       subtitle: Text('${itemDomain.address}'),
+                     ),
+                   ],
+                 );
+               },
+               /**
+                * 제안 검색어중 하나 클릭
+                * desc: 클릭한 제안 검색어를 저장한다.
+                * 중복이면 중복 알림후 return
+                * */
+               onSuggestionSelected: (item) {
+                 item as FavoriteJsonDomain;
+                 bool flag = true;
 
-                // 기존 등록 리스트의 중복체크
-                favoriteArray.forEach((element) {
-                 if(element.dongName == item.dongName){
-                   showDialog(context: context, builder:
-                       (BuildContext context) {
-                         return AlertNormal(title: '중복된 장소입니다.', contents: '기존에 저장된 장소와 중복입니다.');
-                       }
-                   );
-                   flag = false;
-                 }
-                });
+                 // 기존 등록 리스트의 중복체크
+                 favoriteArray.forEach((element) {
+                   if(element.dongName == item.dongName){
+                     showDialog(context: context, builder:
+                         (BuildContext context) {
+                       return AlertNormal(title: '중복된 장소입니다.', contents: '기존에 저장된 장소와 중복입니다.');
+                     }
+                     );
+                     flag = false;
+                   }
+                 });
 
-                item as FavoriteJsonDomain;
-                flag ? _saveFavoriteLocationData(item) : "";
-
-
-              },
-              /**
-               * no items found! 표시변경
-               * hideOnEmpty = empty일때 감추기
-               * */
-              hideOnEmpty : false,
-              noItemsFoundBuilder: (context) {
-                var localizedMessage = "검색결과 없습니다";
-                return Text(localizedMessage);
-              },
-              hideOnLoading: true,
-            ),
+                 item as FavoriteJsonDomain;
+                 flag ? _saveFavoriteLocationData(item) : "";
 
 
-          ),
+               },
+               /**
+                * no items found! 표시변경
+                * hideOnEmpty = empty일때 감추기
+                * */
+               hideOnEmpty : false,
+               noItemsFoundBuilder: (context) {
+                 var localizedMessage = "검색결과 없습니다";
+                 return Text(localizedMessage);
+               },
+               hideOnLoading: true,
+             ),
+
+
+           ),
          ),
 
 
@@ -295,58 +366,56 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
              padding: const EdgeInsets.only(left: 10),
              child: new Row(
                children: [
-                  new GestureDetector(
-                  onTap: (){
-                    /**
-                     * 현위치 클릭
-                     * 1. 로딩화면 띄움
-                     * 2. api접속
-                     * 3. lat lng 주소 가져옴
-                     * 4. 팝업 리스트 띄움
-                     * */
+                 new GestureDetector(
+                     onTap: (){
+                       /**
+                        * 현위치 추가하기
+                        * 위치권한 체크 후 시작하기
+                        * */
+                       if(locationPermission){
+                         progress!.showWithText("text");
+                         _getPosition();
+                         progress!.dismiss();
+                             // Navigator.push(context, MaterialPageRoute(builder: (BuildContextcontext) => WeatherScreen(idx: -2, action: "click")));
+                       }else{
+                         //권한 없음 => 주의 메시지 띄우고 끝.
+                         showDialog(context: context, builder:
+                             (BuildContext context) {
+                           return AlertImage(title: "권한이 없습니다.", contents:  "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
+                         }
+                         );
+                       }
 
-                    if(locationPermission){
-                      _getPosition();
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext
-                      context) => WeatherScreen(idx: -2, action: "click")));
-                    }else{
-                      showDialog(context: context, builder:
-                          (BuildContext context) {
-                        return AlertImage(title: "권한이 없습니다.", contents:  "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
-                      }
-                      );
-                    }
-
-                  },
-                  child: new Container(
-                    child: new Row(
-                    children: [
-                      Icon(Icons.gps_fixed),
-                      new Container(
-                      child: Text(' 현위치', style: TextStyle(fontSize: 20)),
-                      )
-                    ]
-                  ),
-                  )
-                  )
+                     },
+                     child: new Container(
+                       child: new Row(
+                           children: [
+                             Icon(Icons.gps_fixed),
+                             new Container(
+                               child: Text(' 현위치 추가하기', style: TextStyle(fontSize: 20)),
+                             )
+                           ]
+                       ),
+                     )
+                 )
                ],
              )
          ),
          /**
           * 알람 리스트
           * */
-           Expanded(
-             child:ListView.separated(
-               padding: const EdgeInsets.all(8),
-               itemCount: favoriteArray.length,
-               itemBuilder: _getItemUI,
-               separatorBuilder: (BuildContext context, int index) => const Divider(),
-             ),
-           )
+         Expanded(
+           child:ListView.separated(
+             padding: const EdgeInsets.all(8),
+             itemCount: favoriteArray.length,
+             itemBuilder: _getItemUI,
+             separatorBuilder: (BuildContext context, int index) => const Divider(),
+           ),
+         )
 
        ],
-
      )
+     ),
     );
   }
 
@@ -413,7 +482,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                     new Text('${favoriteArray[index].weatherDescription}',
                         style: new TextStyle(
                             fontSize: 13.0, fontWeight: FontWeight.normal)),
-                    new Text('비 오는양: ${favoriteArray[index].rainfallAmount}',
+                    new Text('강수량: ${favoriteArray[index].rainfallAmount}',
                         style: new TextStyle(
                             fontSize: 11.0, fontWeight: FontWeight.normal)),
 

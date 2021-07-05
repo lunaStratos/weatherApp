@@ -54,7 +54,7 @@ class GraphBuild extends StatelessWidget{
     // }
 
     return AspectRatio(
-      aspectRatio: 2.5,
+      aspectRatio: 2.3,
       child: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(18)),
