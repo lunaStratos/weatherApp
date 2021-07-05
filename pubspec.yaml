@@ -51,7 +51,7 @@ dependencies:
   vibration: ^1.4.0               # 진동
   overlay_support: ^1.2.1
   flutter_native_splash: ^1.2.0   # 스플래시
-  syncfusion_flutter_charts: ^19.2.44+1
+  syncfusion_flutter_charts: ^19.2.44+1 # 그래프 기능2 (단기예보 그래프)
 
 # FCM의 경우 버전 주의
 # 동기화 버전 :  firebase_messaging: ^10.0.0 === firebase_core: ^1.2.0

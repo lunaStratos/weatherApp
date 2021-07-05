@@ -338,7 +338,7 @@ class _ShortForecastState extends State<ShortForecast> {
 
       var temperatureCell = DataCell(Text('${getData3HourList[k]["temperature"]}도'));
       maxmin.add(int.parse(getData3HourList[k]["temperature"].toString()));
-      temperatureGraphList.add(WeatherGraphData('${ (getData3HourList[k]["targetTime"]).toString().substring(0,2) }시', int.parse(getData3HourList[k]["temperature"].toString()), Colors.black38));
+      temperatureGraphList.add(WeatherGraphData('${ (getData3HourList[k]["targetTime"]).toString().substring(0,2) }시', int.parse(getData3HourList[k]["temperature"].toString()), Colors.white10));
       temperatureList.add(temperatureCell);
 
     }
@@ -385,9 +385,12 @@ class _ShortForecastState extends State<ShortForecast> {
                     Container(
                       width: getData3HourList.length * widthSize,
                       child: SfCartesianChart(
+                        /**
+                         * 사각형 선 지우기
+                         * */
                           plotAreaBorderWidth: 0,
                         /**
-                         * X축 ←→ max-min
+                         * X축 ←→ max-min 설정
                          * */
                           primaryXAxis: CategoryAxis(
                               majorGridLines: MajorGridLines(width: 0),
@@ -395,7 +398,7 @@ class _ShortForecastState extends State<ShortForecast> {
                               isVisible: false
                           ),
                           /**
-                           * Y축 ↑↓ max-min
+                           * Y축 ↑↓ max-min 설정
                            * */
                           primaryYAxis: CategoryAxis(
                               minimum: maxmin[0]-5.0,
@@ -423,8 +426,15 @@ class _ShortForecastState extends State<ShortForecast> {
                               pointColorMapper: (WeatherGraphData item, _) => item.segmentColor,
                               xValueMapper: (WeatherGraphData item, _) => item.timeStr,
                               yValueMapper: (WeatherGraphData item, _) => item.temperature,
+
+                                /**
+                                 * 점 색상 모양 설정
+                                 * */
                               markerSettings: MarkerSettings(
-                                  isVisible: true
+                                  isVisible: true,
+                                  shape: DataMarkerType.circle,
+                                color: Colors.red,
+                                borderWidth: 0.0
                               )
                             )
                           ]
