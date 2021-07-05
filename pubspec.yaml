@@ -52,8 +52,7 @@ dependencies:
   overlay_support: ^1.2.1
   flutter_native_splash: ^1.2.0   # 스플래시
   syncfusion_flutter_charts: ^19.2.44+1 # 그래프 기능2 (단기예보 그래프)
-  modal_progress_hud: ^0.1.3      # 전체화면로딩
-  flutter_progress_hud: ^2.0.0
+  flutter_progress_hud: ^2.0.0    # HUD 전체화면로딩
 
 
 # FCM의 경우 버전 주의

@@ -8,13 +8,10 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteJsonDomain.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertImage.dart';
 import 'package:rainvow_mobile/Screen/AlertWidget/AlertNormal.dart';
-import 'package:rainvow_mobile/Screen/WeatherScreen.dart';
 import 'package:rainvow_mobile/SideBar/Home.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
@@ -170,8 +167,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   /**
    * 현위치 클릭 === 저장하기
    * */
-  _getPosition () async{
-
+  Future<void> _getPosition (progress) async{
 
     var result = await Util().determinePosition() as Position;
 
@@ -226,7 +222,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('${dongName}을 저장했습니다.')
     ));
-
+    progress.dismiss();
     setState( () {
       favoriteArray = favoriteArray;
     } );
@@ -253,7 +249,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
     return Scaffold(
 
-     body: ProgressHUD(child: new Column(
+     body: ProgressHUD(child: Builder(
+        builder: (context) => new Column(
        children: [
          /**
           * 검색창
@@ -373,9 +370,14 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                         * 위치권한 체크 후 시작하기
                         * */
                        if(locationPermission){
-                         progress!.showWithText("text");
-                         _getPosition();
-                         progress!.dismiss();
+                         final progress = ProgressHUD.of(context);
+                         progress!.showWithText("현위치를 가져오는 중입니다");
+                         // Future.delayed(Duration(seconds: 1), () {
+                         //
+                         //   progress.dismiss();
+                         // });
+                         _getPosition(progress);
+
                              // Navigator.push(context, MaterialPageRoute(builder: (BuildContextcontext) => WeatherScreen(idx: -2, action: "click")));
                        }else{
                          //권한 없음 => 주의 메시지 띄우고 끝.
@@ -414,8 +416,9 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
          )
 
        ],
+      )
+      )
      )
-     ),
     );
   }
 

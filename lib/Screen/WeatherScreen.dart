@@ -175,7 +175,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     var result = await Util().determinePosition() as Position;
     String latitude = result.latitude.toString();
     String longitude = "127"; //result.longitude.toString();
-    var resultMylocaion = await ApiCall.getMylocationInfo(longitude, latitude);
+    var resultMylocaion = await ApiCall.getMylocationInfoForScreen(longitude, latitude);
 
     var result2 = resultMylocaion;
     String kma_point_id = result2['kma_point_id'];
