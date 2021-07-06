@@ -49,9 +49,10 @@ class WeatherMapState extends State<WeatherMap>{
           /**
            * 웹뷰 설정
            * gestureNavigationEnabled
+           * isApp에 값 있을때 App 모드의 웹으로 작동
            * */
           child: new WebView(
-            initialUrl: 'http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}',
+            initialUrl: 'http://rainvow.net/demo?longitude=${longitude}&latitude=${latitude}&isApp=true',
             javascriptMode: JavascriptMode.unrestricted,
             gestureNavigationEnabled: true,
           ),
