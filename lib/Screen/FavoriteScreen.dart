@@ -171,10 +171,20 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
     var result = await Util().determinePosition() as Position;
 
+
     String latitude = result.latitude.toString();
     String longitude = result.longitude.toString();
-    var resultMylocaion = await ApiCall.getMylocationInfo(longitude, latitude);
-    var result2 = (resultMylocaion);
+    var result2 = await ApiCall.getMylocationInfo(longitude, latitude);
+
+    // 현위치 불가 지역인 경우
+    if(result2["isReal"] != true){
+      progress.dismiss();
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('지원하지 않는 지역입니다.')
+      ));
+      return;
+    }
+
     String kma_point_id = result2['kma_point_id'];
     String rect_id = result2['rect_id'];
     String kmaX  = result2['kmaX'];
@@ -226,7 +236,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     setState( () {
       favoriteArray = favoriteArray;
     } );
-
 
   }
 
@@ -372,11 +381,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                        if(locationPermission){
                          final progress = ProgressHUD.of(context);
                          progress!.showWithText("현위치를 가져오는 중입니다");
-                         // Future.delayed(Duration(seconds: 1), () {
-                         //
-                         //   progress.dismiss();
-                         // });
-                         _getPosition(progress);
+                         _getPosition(progress); // 안에서 dismiss 실행
 
                              // Navigator.push(context, MaterialPageRoute(builder: (BuildContextcontext) => WeatherScreen(idx: -2, action: "click")));
                        }else{
