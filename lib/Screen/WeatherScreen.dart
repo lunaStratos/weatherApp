@@ -174,14 +174,21 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Future<List<FavoriteDomain>> _getPosition() async{
     var result = await Util().determinePosition() as Position;
     String latitude = result.latitude.toString();
-    String longitude = "127"; //result.longitude.toString();
-    var resultMylocaion = await ApiCall.getMylocationInfoForScreen(longitude, latitude);
+    String longitude = result.longitude.toString();
+    var resultMylocaion = await ApiCall.getMylocationInfoForScreen("99", "99");
 
-    var result2 = resultMylocaion;
-    String kma_point_id = result2['kma_point_id'];
-    String rect_id = result2['rect_id'];
-    String kmaX  = result2['kmaX'];
-    String kmaY = result2['kmaY'];
+    /**
+     * 빈값체크
+     * */
+    if(resultMylocaion['kma_point_id'] == null){
+
+      return favoriteArray;
+    }
+
+    String kma_point_id = resultMylocaion['kma_point_id'];
+    String rect_id = resultMylocaion['rect_id'];
+    String kmaX  = resultMylocaion['kmaX'];
+    String kmaY = resultMylocaion['kmaY'];
 
     //이름 현위치 고정
     favoriteArray.add(
@@ -350,7 +357,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/no_permission_test.jpg'),
+                    Image.asset('assets/images/no_contents.gif'),
                     Container(
                       child: Text(
                         '관심지역 → 도로명을 검색하여 위치를 추가해 주십시오',
