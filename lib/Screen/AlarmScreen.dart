@@ -43,7 +43,20 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
     }
 
-    /**
+  _deleteAlarmItem(int index)async{
+    alarmList.removeAt(index);
+    setState(() {
+      alarmList = alarmList;
+    });
+
+    List<String> strList = alarmList.map((item) => jsonEncode(item)).toList();
+    await sendFcm();
+    await prefs.setStringList('favoriteLocation', strList );
+
+  }
+
+
+  /**
      * 알람 받기
      * */
     void _loadPermission() async{
@@ -143,6 +156,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
         }
 
       }
+      print('send Fcm all');
     }
 
   /**
@@ -241,79 +255,84 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
       return new Column(
         children: [
-          new Container(
-            child: Padding(
-                padding: const EdgeInsets.only(bottom: 4, top: 4, left: 9, right: 9),
-                child: InkWell(
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      new Container(
-                        child: Text(
-                          '일일 알람 설정',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 20,),
-                        ),
-                      ),
-                      new Container(
+          // new Container(
+          //   child: Padding(
+          //       padding: const EdgeInsets.only(bottom: 4, top: 4, left: 9, right: 9),
+          //       child: InkWell(
+          //         child: new Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: <Widget>[
+          //             new Container(
+          //               child: Text(
+          //                 '일일 알람 설정',
+          //                 textAlign: TextAlign.left,
+          //                 style: TextStyle(fontSize: 20,),
+          //               ),
+          //             ),
+          //             new Container(
+          //
+          //             ),
+          //
+          //             new Container(
+          //               child: Image.asset(
+          //                 'assets/images/gear_menu.png',
+          //                 height: 50,
+          //                 width: 50,
+          //                 alignment: Alignment.centerRight,
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         onTap: () =>{
+          //           Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) => AlarmModifyScreen()),
+          //           )
+          //         },
+          //       )
+          //   ),
+          //   color: Dependencys.AppBackGroundColor,
+          // ),
 
-                      ),
-
-                      new Container(
-                        child: Image.asset(
-                          'assets/images/gear_menu.png',
-                          height: 50,
-                          width: 50,
-                          alignment: Alignment.centerRight,
-                        ),
-                      ),
-                    ],
-                  ),
-                  onTap: () =>{
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AlarmModifyScreen()),
-                    )
-                  },
-                )
-            ),
-            color: Dependencys.AppBackGroundColor,
-          ),
           Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  width: 300,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('알림 받기', style: TextStyle(fontSize: 18),),
-                      Text('매일 지정한 시각에 선택한 위치의 기상정보를 받아볼 수 있습니다.', maxLines: 2,
-                        overflow: TextOverflow.ellipsis,)
-                    ],
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    width: 300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('알림 받기', style: TextStyle(fontSize: 18),),
+                        Text('매일 지정한 시각에 선택한 위치의 기상정보를 받아볼 수 있습니다.', maxLines: 2,
+                          overflow: TextOverflow.ellipsis,)
+                      ],
+                    ),
                   ),
-                ),
-                Switch(
-                  value: alarmFlag,
-                  onChanged: (value) {
-                    _alarmToggle(value);
-                  },
-                  activeTrackColor: Colors.lightBlueAccent,
-                  activeColor: Colors.blue,
-                ),
-              ],
+                  Switch(
+                    value: alarmFlag,
+                    onChanged: (value) {
+                      _alarmToggle(value);
+                    },
+                    activeTrackColor: Colors.lightBlueAccent,
+                    activeColor: Colors.blue,
+                  ),
+                ],
 
-            ),
+              ),
+            )
           ),
           Expanded(
-            child:ListView.separated(
+            child: alarmList.isEmpty ? Center(child: Text('현재 저장된 지역이 없습니다.', style: TextStyle(color:Colors.black12),)) : ListView.separated(
               padding: const EdgeInsets.all(8),
               itemCount: alarmList.length,
               itemBuilder: _getItemUI,
               separatorBuilder: (BuildContext context, int index) => const Divider(),
+
             ),
           )
         ],
@@ -333,7 +352,6 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
         toggleList.add(
             SettingsTile.switchTile(
-
               leading: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -391,7 +409,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
 
   /**
-   * 알람설정 리스트 만드는 기능
+   * 알람설정 리스트 만드는 기능 - 이거 사용중
    * */
   Widget _getItemUI(BuildContext context, int index)  {
 
@@ -399,45 +417,56 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
     final alarmTime = alarmList[index].alarmTime;
     var use = alarmList[index].use;
 
-    return new Container(
-      child: new Column(
-          children: [
-            new ListTile(
-              title: Text("${address}"),
-              subtitle: Text('${alarmTime}'),
-              trailing: Switch(
-                value: use,
-                onChanged: (value) {
-                  _alarmToggleItem(value, index);
-                },
-                activeTrackColor: Dependencys.SwitchColor,
-                activeColor: Colors.blue,
-              ),
-              onTap: () =>
-              /**
-               * 알람 시간 설정
-               * 취소시 동작 없ㅇ음
-               * */
-              DatePicker.showTimePicker(context,
-                  showTitleActions: true,
-                  showSecondsColumn: false,
-                  onChanged: (date) {},
 
-                  onConfirm: (date) {
-                    final hour = ((date.hour).toString().length == 1) ? '${"0"}${date.hour}' : '${date.hour}' ;
-                    final minute =  ((date.minute).toString().length == 1) ? '${"0"}${date.minute}' : '${date.minute}' ;
-
-                    _setAlarmTime(hour, minute, index);
-
+    return new Column(
+            children: [
+              new ListTile(
+                leading: InkWell(
+                  child: SizedBox(
+                      child: Icon(Icons.delete),
+                    width: 50,
+                    height: 50,
+                  ),
+                  onTap: () {
+                    print('delete $index');
+                    _deleteAlarmItem(index);
                   },
-                  currentTime: DateTime.now(), locale: LocaleType.ko    // 한국어
+                ),
+                title: Text("${address}"),
+                subtitle: Text('${alarmTime}'),
+                trailing: Switch(
+                  value: use,
+                  onChanged: (value) {
+                    _alarmToggleItem(value, index);
+                  },
+                  activeTrackColor: Dependencys.SwitchColor,
+                  activeColor: Colors.blue,
+                ),
+                onTap: () =>
+                /**
+                 * 알람 시간 설정
+                 * 취소시 동작 없ㅇ음
+                 * */
+                DatePicker.showTimePicker(context,
+                    showTitleActions: true,
+                    showSecondsColumn: false,
+                    onChanged: (date) {},
+
+                    onConfirm: (date) {
+                      final hour = ((date.hour).toString().length == 1) ? '${"0"}${date.hour}' : '${date.hour}' ;
+                      final minute =  ((date.minute).toString().length == 1) ? '${"0"}${date.minute}' : '${date.minute}' ;
+
+                      _setAlarmTime(hour, minute, index);
+
+                    },
+                    currentTime: DateTime.now(), locale: LocaleType.ko    // 한국어
+                ),
+
               ),
 
-            ),
+            ]
+        );
 
-          ]
-      ),
-    );
   }
 
 
