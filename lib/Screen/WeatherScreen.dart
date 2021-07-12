@@ -138,7 +138,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         if(getLocationPermission){
           favoriteArray = await _getPosition();
           setState(() {
-            favoriteArray;
+            favoriteArray = favoriteArray;
             mylocationFlag = true;
             locationPermission = true;
           });
@@ -181,7 +181,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
      * 빈값체크
      * */
     if(resultMylocaion['kma_point_id'] == null){
-
       return favoriteArray;
     }
 
@@ -190,14 +189,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
     String kmaX  = resultMylocaion['kmaX'];
     String kmaY = resultMylocaion['kmaY'];
 
-    //이름 현위치 고정
+    // 클리어
+    favoriteArray.clear();
+
+    // 이름 현위치 고정
     favoriteArray.add(
         FavoriteDomain(address: "현위치", dongName: "", longitude: longitude,
             latitude: latitude, kmaX: kmaX, kmaY: kmaY, rect_id: rect_id,
             kma_point_id: kma_point_id, weatherDescription: "", weatherConditions: "",
             rainfallAmount: "", celsius: "20", imgSrc: "", alarmTime: "0800",utcAlarmTime: "2300", use: true)
     );
-
 
     return favoriteArray;
 
