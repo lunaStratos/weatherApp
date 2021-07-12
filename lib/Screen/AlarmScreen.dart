@@ -43,6 +43,10 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
 
     }
 
+    /**
+     * 삭제 시퀸스
+     * 로컬에서 삭제후 FCM 삭제
+     * */
   _deleteAlarmItem(int index)async{
     alarmList.removeAt(index);
     setState(() {
@@ -421,6 +425,9 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
     return new Column(
             children: [
               new ListTile(
+                /**
+                 * 삭제 아이콘
+                 * */
                 leading: InkWell(
                   child: SizedBox(
                       child: Icon(Icons.delete),
@@ -432,8 +439,17 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                     _deleteAlarmItem(index);
                   },
                 ),
+                /**
+                 * 주소 텍스트
+                 * */
                 title: Text("${address}"),
+                /**
+                 * 알람 시간 텍스트
+                 * */
                 subtitle: Text('${alarmTime}'),
+                /**
+                 * on off 여부
+                 * */
                 trailing: Switch(
                   value: use,
                   onChanged: (value) {
