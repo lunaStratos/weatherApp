@@ -87,12 +87,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
       flag = true;
       });
 
+    print('idx ${idx} ${action}');
+
     if(idx < 0 ){
       setState(() {
         _current = 0;
       });
     }else{
-
+      /**
+       * 특정 지역 조회시 사용
+       * */
       if(action == "clickFavorite"){
         setState(() {
           _current = idx;
@@ -127,16 +131,27 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
     }else{
       // 리스트가 있을 경우 리스트로 띄워줌
-      if( getList.isNotEmpty) {
+
+      print('getList ${getList.length}');
+      if(getList.isNotEmpty) {
+        favoriteArray = await _getPosition();
+        var templist = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+        for(int i = 0 ; i < templist.length ; i++){
+          favoriteArray.add(templist[i]);
+        }
+
         setState(() {
-          favoriteArray = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
+          favoriteArray = favoriteArray;
         });
         return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
 
       }else{
-        //리스트가 없을 경우 현위치 띄어줌
+        // 권한이 있으면
+
+
         if(getLocationPermission){
           favoriteArray = await _getPosition();
+          print('no length ${favoriteArray.length}');
           setState(() {
             favoriteArray = favoriteArray;
             mylocationFlag = true;
@@ -144,6 +159,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           });
           return favoriteArray;
         }else{
+          // 권한이 없으면
           showDialog(context: context, builder:
               (BuildContext context) {
             return AlertImage(title: "권한이 없습니다.", contents: "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
@@ -175,7 +191,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     var result = await Util().determinePosition() as Position;
     String latitude = result.latitude.toString();
     String longitude = result.longitude.toString();
-    var resultMylocaion = await ApiCall.getMylocationInfoForScreen("99", "99");
+    var resultMylocaion = await ApiCall.getMylocationInfoForScreen("${longitude}", "${latitude}");
 
     /**
      * 빈값체크
@@ -194,7 +210,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
     // 이름 현위치 고정
     favoriteArray.add(
-        FavoriteDomain(address: "현위치", dongName: "", longitude: longitude,
+        FavoriteDomain(address: "현위치", dongName: "현위치", longitude: longitude,
             latitude: latitude, kmaX: kmaX, kmaY: kmaY, rect_id: rect_id,
             kma_point_id: kma_point_id, weatherDescription: "", weatherConditions: "",
             rainfallAmount: "", celsius: "20", imgSrc: "", alarmTime: "0800",utcAlarmTime: "2300", use: true)
@@ -344,7 +360,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget _buildDots(BuildContext context){
 
     var xScreen;
-
+    print('favoriteArray ${favoriteArray.length}');
     if(flag){
       if(favoriteArray.length == 0 ){
 
