@@ -63,13 +63,7 @@ class _WeekForecastState extends State<WeekForecast>{
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    // print('getMidterm getMidtermList.length ${getMidtermList.length}');
-    // print('getMidterm getMidtermTempList.length ${getMidtermTempList.length}');
-    // print('getMidterm getMidtermList ${getMidtermList}');
-    // print('getMidterm getMidtermTempList ${getMidtermTempList}');
-    // print('getMidterm flag ${flag}')
 
-    print("width ${width}");
     if(flag){
       if(getMidtermTempList.isNotEmpty && getMidtermList.isNotEmpty){
         return new Container(
@@ -159,7 +153,7 @@ class _WeekForecastState extends State<WeekForecast>{
 
   /**
    * for문 날짜 표현
-   * 접으면 3개, 펼치면 10개
+   * 접으면 3개, 펼치면 7개
    * */
   List<DataRow> _DataRowList(BuildContext context){
     List <DataRow> arr = [];
@@ -238,7 +232,7 @@ class _WeekForecastState extends State<WeekForecast>{
     }else{
       //열기 눌렀을 때
       setState(() {
-        heightResized = 580.0;
+        heightResized = 420.0;
         iconArrow = Icons.arrow_circle_up;
         openFlag = true;
       });
