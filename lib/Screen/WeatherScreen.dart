@@ -118,8 +118,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
    * */
   Future<List<FavoriteDomain>> _loadFavoriteLocationData() async{
     prefs = await SharedPreferences.getInstance();
-    final getLocationPermission = prefs.getBool('locationPermission') ?? false;
-    var getList = await prefs.getStringList('favoriteLocation') ?? [];
+    final getLocationPermission = prefs.getBool('locationPermission') ?? false; // 권한
+    var getList = await prefs.getStringList('favoriteLocation') ?? [];          // 저장된 지역 리스트 불러오기(String List)
 
     if(idx == -2){
       favoriteArray = await _getPosition();
@@ -130,9 +130,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
       return favoriteArray;
 
     }else{
-      // 리스트가 있을 경우 리스트로 띄워줌
 
       print('getList ${getList.length}');
+      print('getLocationPermission ${getLocationPermission}');
+      // 리스트가 있을 경우 리스트로 띄워줌
       if(getList.isNotEmpty) {
         favoriteArray = await _getPosition();
         var templist = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
@@ -146,8 +147,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
         return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
 
       }else{
-        // 권한이 있으면
-
 
         if(getLocationPermission){
           favoriteArray = await _getPosition();
