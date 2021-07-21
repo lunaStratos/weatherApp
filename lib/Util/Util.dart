@@ -206,7 +206,7 @@ class Util {
 
   /**
    * 예보 => 이미지 주소
-   * 단기예보에 사용, 기상청 1시간, 3시간(동네예보)에 적용가능
+   * 단기예보에 사용, 기상청 1시간, 동네예보에 적용가능
    * */
   static String kmaForecastImg(weatherType, rainfallType){
   String result = "";
@@ -287,7 +287,7 @@ class Util {
   /**
    * 현재시각 불러오기
    * 형태 : yyyyMMdd
-   * 기상청 3시간(동네예보), 레인보우-기상청 그래프 API 에서 사용
+   * 기상청 1시간(동네예보), 레인보우-기상청 그래프 API 에서 사용
    * */
   static String dateNowyyyyMMddStr(){
     String str = "";
@@ -305,7 +305,7 @@ class Util {
   /**
    * 현재시각 불러오기
    * 형태 : HHmmSS
-   * 기상청 3시간(동네예보), 레인보우-기상청 그래프 API 에서 사용
+   * 기상청 1시간(동네예보), 레인보우-기상청 그래프 API 에서 사용
    * */
   static String dateNowHHmmSSStr(){
     String str = "";

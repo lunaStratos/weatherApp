@@ -58,7 +58,7 @@ class _RainfallState extends State<RainfallForecast>{
 
 
   /**
-   * KMA 기상청 API - 동네예보(3시간)
+   * KMA 기상청 API - 동네예보(1시간)
    * */
   Future <void>  _getKmaWeather3TimeApi() async {
     final resultArray = await ApiCall.getKmaWeather3Hour(rect_id);

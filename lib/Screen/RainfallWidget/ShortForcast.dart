@@ -55,7 +55,7 @@ class _ShortForecastState extends State<ShortForecast> {
   }
 
   /**
-   * 현재날씨 API 불러오기간 - 3시간 
+   * 현재날씨 API 불러오기간 - 1시간
    * */
   Future <void> _getKmaNowWeatherApi3Hour() async {
     final resultArray = await ApiCall.getKmaWeather3Hour(rect_id);

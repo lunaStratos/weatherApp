@@ -66,7 +66,7 @@ class ApiCall {
   }
 
   /**
-   * 3시간 단위 예보 - rect_id, targetdate, targettime
+   * 1시간 단위 동네예보 예보 - rect_id, targetdate, targettime
    * 강수예보 그래프 사용
    * */
   static Future<List> getKmaWeather3Hour(rect_id) async{

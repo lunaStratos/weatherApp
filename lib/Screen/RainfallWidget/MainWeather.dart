@@ -118,9 +118,9 @@ class _MainWeatherState extends State<MainWeather>{
                 width: 1,
               ),
               /**
-               * 3시간 후 예정
+               * 1시간 후 예정
                * */
-              Text('약 3시간 후 ${weatherPredictDesc} 예정', style: TextStyle(fontSize: 25) ),
+              Text('약 1시간 후 ${weatherPredictDesc} 예정', style: TextStyle(fontSize: 25) ),
               SizedBox(
                 height: 30,
                 width: 1,
