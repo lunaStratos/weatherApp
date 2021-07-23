@@ -111,7 +111,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             imgSrc:"",
             alarmTime: "08:00",
             utcAlarmTime: "23:00",
-            use: false
+            use: false,
+            isTrue : true
         )
     );
 
@@ -214,7 +215,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
       alarmTime: "08:00",
       utcAlarmTime: "23:00",
       use: false,
-
+      isTrue: true,
     )
     );
 
@@ -388,8 +389,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                          //권한 없음 => 주의 메시지 띄우고 끝.
                          showDialog(context: context, builder:
                              (BuildContext context) {
-                           return AlertImage(title: "권한이 없습니다.", contents:  "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
-                         }
+                           return AlertImage(title: "권한이 없습니다.", contents:  "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "locationPermission");
+                          }
                          );
                        }
 
@@ -499,11 +500,12 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
               /***
                * 기능 - 아이템 클릭
                * desc: 클릭하면 위치의 날씨 정보 보기 이동
+               * index + 1 이유는 현위치가 0으로 있기 때문.
                */
               onTap: () {
-
+                int locationIndex = index + 1;
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext
-                context) => HomePage(index: index,action:"clickFavorite")
+                context) => HomePage(index: locationIndex, action:"clickFavorite")
                 ));
 
 

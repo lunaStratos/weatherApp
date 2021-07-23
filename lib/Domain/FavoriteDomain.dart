@@ -19,6 +19,7 @@ class FavoriteDomain{
   String alarmTime;
   String utcAlarmTime;
   bool use;
+  bool isTrue;
 
   FavoriteDomain({
     required this.address,
@@ -37,7 +38,7 @@ class FavoriteDomain{
     required this.alarmTime,
     required this.utcAlarmTime,
     required this.use,
-
+    required this.isTrue,
   });
 
   factory FavoriteDomain.fromJson(Map<String, dynamic> json){
@@ -58,6 +59,7 @@ class FavoriteDomain{
         alarmTime : json['alarmTime'] ?? "",
         utcAlarmTime : json['utcAlarmTime'] ?? "",
         use : json['use'] ?? false,
+        isTrue: json['isTrue'] ?? true,
     );
   }
 
@@ -80,6 +82,7 @@ class FavoriteDomain{
       'alarmTime' : this.alarmTime,
       'utcAlarmTime' :this.utcAlarmTime,
       'use' : this.use,
+      'isTrue' : this.isTrue,
     };
   }
 

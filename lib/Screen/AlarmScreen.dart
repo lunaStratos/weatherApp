@@ -6,6 +6,8 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
 import 'package:rainvow_mobile/Screen/AlarmModifyScreen.dart';
+import 'package:rainvow_mobile/Screen/AlertWidget/AlertImage.dart';
+import 'package:rainvow_mobile/Screen/AlertWidget/AlertNormal.dart';
 import 'package:rainvow_mobile/Util/ApiCall.dart';
 import 'package:rainvow_mobile/Util/Dependencys.dart';
 import 'package:rainvow_mobile/Util/Util.dart';
@@ -70,6 +72,7 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
         alarmFlag = getAlarmPermission;
       });
     }
+
     /**
    * 알림지역 불러오기
    * */
@@ -202,6 +205,14 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
    * 알람 아이템당 켜고 끄기
    * */
     _alarmToggleItem(bool toggle, index) async{
+
+      if(alarmFlag == false){
+        showDialog(context: context, builder:
+            (BuildContext context) {
+          return AlertImage(title: "알림받기 권한", contents: "알림받기 권한 없습니다. 알림받기를 활성화 시켜 주십시오.", switchStr: "alarmPermission");
+        });
+        return;
+      }
       prefs = await SharedPreferences.getInstance();
       alarmList[index].use = toggle;
 
@@ -350,9 +361,10 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
       List<SettingsTile> toggleList = [];
 
       for (var index = 0; index < alarmList.length; index++) {
-        final address = alarmList[index].address;
-        final alarmTime = alarmList[index].alarmTime;
-        var use = alarmList[index].use;
+
+        final address = alarmList[index].address;     // 주소
+        final alarmTime = alarmList[index].alarmTime; // 알람시간
+        var use = alarmList[index].use;               // 개별 사용여부
 
         toggleList.add(
             SettingsTile.switchTile(
@@ -398,7 +410,8 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                * 알람설정 - 개별 토글
                * */
               onToggle: (bool toggle) {
-                _alarmToggleItem(toggle, index);
+                print("onToggle switch ${toggle}");
+                  _alarmToggleItem(toggle, index);
 
               },
 

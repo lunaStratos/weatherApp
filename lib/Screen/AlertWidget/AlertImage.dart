@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 /**
  * 이미지 있는 alert
- * desc: 현재는 위치권한만 사용,
  * */
 class AlertImage extends StatelessWidget{
 
@@ -19,10 +18,13 @@ class AlertImage extends StatelessWidget{
   }
 
   String switchImageStr(switchStr){
-    String imageStr = "assets/images/toggle_on.png";
+    String imageStr = "assets/images/toggle_on_location.png";
     switch(switchStr){
-      case "location" :
-      imageStr = "assets/images/toggle_on.png";
+      case "locationPermission" :
+        imageStr = "assets/images/toggle_on_location.png";
+      break;
+      case "alarmPermission" :
+        imageStr = "assets/images/toggle_on_alarm.png";
       break;
     }
 

@@ -50,7 +50,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   _WeatherScreenState({required this.idx, required this.action});
 
-  bool flag = false;
+  bool flag = false; // _loadFavoriteLocationData 모두 로드되었을 때 true
   bool mylocationFlag = false;
   bool locationPermission = false;
 
@@ -120,6 +120,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     prefs = await SharedPreferences.getInstance();
     final getLocationPermission = prefs.getBool('locationPermission') ?? false; // 권한
     var getList = await prefs.getStringList('favoriteLocation') ?? [];          // 저장된 지역 리스트 불러오기(String List)
+    locationPermission = getLocationPermission;
 
     if(idx == -2){
       favoriteArray = await _getPosition();
@@ -136,6 +137,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       // 리스트가 있을 경우 리스트로 띄워줌
       if(getList.isNotEmpty) {
         favoriteArray = await _getPosition();
+
         var templist = getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
         for(int i = 0 ; i < templist.length ; i++){
           favoriteArray.add(templist[i]);
@@ -144,6 +146,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         setState(() {
           favoriteArray = favoriteArray;
         });
+
         return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
 
       }else{
@@ -161,7 +164,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           // 권한이 없으면
           showDialog(context: context, builder:
               (BuildContext context) {
-            return AlertImage(title: "권한이 없습니다.", contents: "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "location");
+            return AlertImage(title: "권한이 없습니다.", contents: "위치권한이 없습니다. 설정 -> 위치권한을 활성화 시켜 주십시오.", switchStr: "locationPermission");
           });
 
           return getList.map((item) => FavoriteDomain.fromJson(jsonDecode(item))).toList();
@@ -184,20 +187,32 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
 
   /**
-   * 현위치 클릭
+   * 현위치 좌표얻기
+   * 현위치가 외국인 경우 favoriteArray을 반환
    * */
   Future<List<FavoriteDomain>> _getPosition() async{
     var result = await Util().determinePosition() as Position;
-    String latitude = result.latitude.toString();
-    String longitude = result.longitude.toString();
+
+    String latitude = "";
+    String longitude = "";
+    //권한 없으면 가짜 위치 보냄
+    if(locationPermission == false){
+      latitude = "12.0";
+      latitude = "12.0";
+    }else{
+      latitude = result.latitude.toString();
+      longitude = result.longitude.toString();
+    }
+
     var resultMylocaion = await ApiCall.getMylocationInfoForScreen("${longitude}", "${latitude}");
 
+
+    bool isTrue = true;
     /**
      * 빈값체크
      * */
-    if(resultMylocaion['kma_point_id'] == null){
-      return favoriteArray;
-    }
+    if(resultMylocaion['kma_point_id'] == null) isTrue = false;
+
 
     String kma_point_id = resultMylocaion['kma_point_id'];
     String rect_id = resultMylocaion['rect_id'];
@@ -212,7 +227,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         FavoriteDomain(address: "현위치", dongName: "현위치", longitude: longitude,
             latitude: latitude, kmaX: kmaX, kmaY: kmaY, rect_id: rect_id,
             kma_point_id: kma_point_id, weatherDescription: "", weatherConditions: "",
-            rainfallAmount: "", celsius: "20", imgSrc: "", alarmTime: "0800",utcAlarmTime: "2300", use: true)
+            rainfallAmount: "", celsius: "20", imgSrc: "", alarmTime: "0800",utcAlarmTime: "2300", use: true, isTrue : isTrue)
     );
 
     return favoriteArray;
@@ -359,7 +374,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget _buildDots(BuildContext context){
 
     var xScreen;
-    print('favoriteArray ${favoriteArray.length}');
     if(flag){
       if(favoriteArray.length == 0 ){
 
@@ -376,7 +390,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     Image.asset('assets/images/no_contents.gif'),
                     Container(
                       child: Text(
-                        '관심지역 → 도로명을 검색하여 위치를 추가해 주십시오',
+                        '위치궈한이 없어 현위치의 날씨를 표시할 수 없습니다.',
                         style: TextStyle(fontSize: 20, ),
                       ),
 
@@ -397,6 +411,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
         }else{
           getPosition = _current.toDouble();
         }
+
+        print("getPosition ${getPosition} ${mylocationFlag}" );
 
         xScreen = new Center(
           child:  new Column(
@@ -442,174 +458,208 @@ class _WeatherScreenState extends State<WeatherScreen> {
     List<Widget> screenList = [];
 
       for(int i = 0 ; i< favoriteArray.length; i++){
-        var screenX = RefreshIndicator(child: new Container(
+        var screenX = null;
 
-          child: SingleChildScrollView(
-            child: new Container(
-                color: Dependencys.AppBackGroundColor,
-                child: new Column(
-                  children: [
-                    new Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // horizontal : 왼쪽 오른쪽띄우기, vertical: 위아래 띄우기
-                        child: new Container(
-                          child: new Column(
-                            children: [
-                              /**
-                               * =======================[1. 메인날씨 ]=====================
-                               * */
+        print("favoriteArray[i].isTrue ${i} ${favoriteArray[i].latitude} ${favoriteArray[i].longitude}");
 
-                              // Container(
-                              //   height: 440,
-                              //   child: MainWeather(rect_id: favoriteArray[i].rect_id, kmaNowWeatherObject: getKmaNowWeatherList[i],)
-                              //
-                              // ),
-                              // Container(
-                              //     height: 100,
-                              //     child: WeatherBar(rect_id: favoriteArray[i].rect_id, kmaNowWeatherObject: getKmaNowWeatherList[i], kmaNowDustObject: getKmaNowDustList[i],)
-                              //
-                              // ),
-
-                              Container(
-                                height: 520,
-                                child: FutureBuilder(
-                                  future: _getKmaNowWeatherApi(favoriteArray[i].rect_id, i),
-                                  builder: (context, snapshot1) {
-
-                                    if (snapshot1.hasData == false) {
-                                      return LoadingWidget();
-                                    }else{
-
-                                      final body = snapshot1.data as KmaNowDomain;
-
-                                      return FutureBuilder(
-                                        future: _getKmaNowDustApi(favoriteArray[i].rect_id, favoriteArray[i].longitude, favoriteArray[i].latitude, i),
-                                        builder: (context, snapshot2) {
-
-                                          if (snapshot2.hasData == false) {
-                                            return LoadingWidget();
-                                          }else{
-
-                                            final dustBody = (getKmaNowDustList.asMap()[i] == null) ? snapshot2.data as DustDomain: getKmaNowDustList[i];
-
-                                            return new Column(
-                                              children: [
-                                                MainWeather(
-                                                    rect_id : favoriteArray[i].rect_id,
-                                                    kmaNowWeatherObject: body,
-                                                    dongName: favoriteArray[i].dongName,
-                                                ),
-                                                /**
-                                                 * =======================[2.날씨바]=====================
-                                                 * */
-                                                WeatherBar(
-                                                    rect_id: favoriteArray[i].rect_id,
-                                                    kmaNowWeatherObject: body,
-                                                    kmaNowDustObject: dustBody
-                                                )
-                                              ],
-                                            );
-                                          }
-
-                                        },
-                                      );
-                                    }
-                                  },
-
-                                ),
-                              ),
+        if(favoriteArray[i].isTrue == false) {
+          screenX =
+              new Center(
+                child: new Container(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxHeight: 400.0,
+                        maxWidth: 300.0,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/images/no_contents.gif'),
+                          Container(
+                            child: Text(
+                              '위치궈한이 없어 현위치의 날씨를 표시할 수 없습니다.',
+                              style: TextStyle(fontSize: 20,),
+                            ),
 
 
-                              SizedBox(
-                                height: 15,
-                                width: 1,
-                              ),
-                              /**
-                               * =======================[3. 단기예보]=====================
-                               * */
-                              ShortForecast(rect_id:favoriteArray[i].rect_id),
-                              SizedBox(
-                                height: 15,
-                                width: 1,
-                              ),
-                              /**
-                               * =======================[4.강수예보 그래프 ]=====================
-                               * */
-                              RainfallForecast(rect_id: favoriteArray[i].rect_id),
-
-                              /**
-                               * =======================[5. 주간예보]=====================
-                               * */
-                              SizedBox(
-                                height: 15,
-                                width: 1,
-                              ),
-                              WeekForecast(rect_id: favoriteArray[i].rect_id,),
-
-
-                              SizedBox(
-                                height: 15,
-                                width: 1,
-                              ),
-                              /**
-                               * =======================[6. 일몰일출]=====================
-                               * */
-                              SizedBox(
-                                height: 15,
-                                width: 1,
-                              ),
-
-                              SunRiseWidget(longitude: favoriteArray[i].longitude, latitude:  favoriteArray[i].latitude),
-
-
-                              new Container(
-                                  margin: const EdgeInsets.only(left: 5.0, right: 5.0),
-                                  child: Divider(
-                                    color: Colors.black,
-                                    height: 36,)
-                              ),
-                              
-                              SizedBox(
-                                height: 10,
-                                width: 1,
-                              ),
-
-                              Text('자료 기상청, 레인보우'),
-
-                              Center(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        '미세먼지 자료 출처: 환경부/한국환경공단, \n 데이터 오류 가능성: 데이터는 실시간 관측된 자료이며 측정소 현지 사정이나 데이터의 수신상태에 따라 미수신 될 수 있음',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                                      ),
-                                      width: 300.0,
-                                      height: 100.0,
-                                    ),
-                                  ],
-                                )
-                              ),
-
-
-                            ],
                           ),
-                        )
 
-                    ),
+                        ],
+                      ),
+                    )
+                ),
+              );
 
-                  ],
-                )
-            ),
-          ),
-        )
-          , onRefresh: refreshList,
-        );
+        }else{
+
+          screenX = RefreshIndicator(child: new Container(
+            child: SingleChildScrollView(
+                child: new Container(
+                    color: Dependencys.AppBackGroundColor,
+                    child: new Column(
+                      children: [
+                        new Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // horizontal : 왼쪽 오른쪽띄우기, vertical: 위아래 띄우기
+                            child: new Container(
+                              child: new Column(
+                                children: [
+                                  /**
+                                   * =======================[1. 메인날씨 ]=====================
+                                   * */
+
+                                  // Container(
+                                  //   height: 440,
+                                  //   child: MainWeather(rect_id: favoriteArray[i].rect_id, kmaNowWeatherObject: getKmaNowWeatherList[i],)
+                                  //
+                                  // ),
+                                  // Container(
+                                  //     height: 100,
+                                  //     child: WeatherBar(rect_id: favoriteArray[i].rect_id, kmaNowWeatherObject: getKmaNowWeatherList[i], kmaNowDustObject: getKmaNowDustList[i],)
+                                  //
+                                  // ),
+
+                                  Container(
+                                    height: 520,
+                                    child: FutureBuilder(
+                                      future: _getKmaNowWeatherApi(favoriteArray[i].rect_id, i),
+                                      builder: (context, snapshot1) {
+
+                                        if (snapshot1.hasData == false) {
+                                          return LoadingWidget();
+                                        }else{
+
+                                          final body = snapshot1.data as KmaNowDomain;
+
+                                          return FutureBuilder(
+                                            future: _getKmaNowDustApi(favoriteArray[i].rect_id, favoriteArray[i].longitude, favoriteArray[i].latitude, i),
+                                            builder: (context, snapshot2) {
+
+                                              if (snapshot2.hasData == false) {
+                                                return LoadingWidget();
+                                              }else{
+
+                                                final dustBody = (getKmaNowDustList.asMap()[i] == null) ? snapshot2.data as DustDomain: getKmaNowDustList[i];
+
+                                                return new Column(
+                                                  children: [
+                                                    MainWeather(
+                                                      rect_id : favoriteArray[i].rect_id,
+                                                      kmaNowWeatherObject: body,
+                                                      dongName: favoriteArray[i].dongName,
+                                                    ),
+                                                    /**
+                                                     * =======================[2.날씨바]=====================
+                                                     * */
+                                                    WeatherBar(
+                                                        rect_id: favoriteArray[i].rect_id,
+                                                        kmaNowWeatherObject: body,
+                                                        kmaNowDustObject: dustBody
+                                                    )
+                                                  ],
+                                                );
+                                              }
+
+                                            },
+                                          );
+                                        }
+                                      },
+
+                                    ),
+                                  ),
+
+
+                                  SizedBox(
+                                    height: 15,
+                                    width: 1,
+                                  ),
+                                  /**
+                                   * =======================[3. 단기예보]=====================
+                                   * */
+                                  ShortForecast(rect_id:favoriteArray[i].rect_id),
+                                  SizedBox(
+                                    height: 15,
+                                    width: 1,
+                                  ),
+                                  /**
+                                   * =======================[4.강수예보 그래프 ]=====================
+                                   * */
+                                  RainfallForecast(rect_id: favoriteArray[i].rect_id),
+
+                                  /**
+                                   * =======================[5. 주간예보]=====================
+                                   * */
+                                  SizedBox(
+                                    height: 15,
+                                    width: 1,
+                                  ),
+                                  WeekForecast(rect_id: favoriteArray[i].rect_id,),
+
+
+                                  SizedBox(
+                                    height: 15,
+                                    width: 1,
+                                  ),
+                                  /**
+                                   * =======================[6. 일몰일출]=====================
+                                   * */
+                                  SizedBox(
+                                    height: 15,
+                                    width: 1,
+                                  ),
+
+                                  SunRiseWidget(longitude: favoriteArray[i].longitude, latitude:  favoriteArray[i].latitude),
+
+
+                                  new Container(
+                                      margin: const EdgeInsets.only(left: 5.0, right: 5.0),
+                                      child: Divider(
+                                        color: Colors.black,
+                                        height: 36,)
+                                  ),
+
+                                  SizedBox(
+                                    height: 10,
+                                    width: 1,
+                                  ),
+
+                                  Text('자료 기상청, 레인보우'),
+
+                                  Center(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              '미세먼지 자료 출처: 환경부/한국환경공단, \n 데이터 오류 가능성: 데이터는 실시간 관측된 자료이며 측정소 현지 사정이나 데이터의 수신상태에 따라 미수신 될 수 있음',
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                            ),
+                                            width: 300.0,
+                                            height: 100.0,
+                                          ),
+                                        ],
+                                      )
+                                  ),
+
+
+                                ],
+                              ),
+                            )
+
+                        ),
+
+                      ],
+                    )
+                ),
+              ),
+            )
+              , onRefresh: refreshList,
+          );
+        }
 
         screenList.add(screenX);
       }
