@@ -390,7 +390,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     Image.asset('assets/images/no_contents.gif'),
                     Container(
                       child: Text(
-                        '위치궈한이 없어 현위치의 날씨를 표시할 수 없습니다.',
+                        '위치권한이 없어 현위치의 날씨를 표시할 수 없습니다.',
                         style: TextStyle(fontSize: 20, ),
                       ),
 
