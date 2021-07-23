@@ -330,11 +330,12 @@ class _AlarmScreenScreen extends State<AlarmScreen> {
                   ),
                   Switch(
                     value: alarmFlag,
-                    onChanged: (value) {
+                    onChanged: alarmList.isEmpty ? null : (value) {
                       _alarmToggle(value);
                     },
                     activeTrackColor: Colors.lightBlueAccent,
                     activeColor: Colors.blue,
+
                   ),
                 ],
 

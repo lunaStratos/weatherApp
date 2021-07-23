@@ -390,10 +390,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     Image.asset('assets/images/no_contents.gif'),
                     Container(
                       child: Text(
-                        '위치권한이 없어 현위치의 날씨를 표시할 수 없습니다.',
+                        '위치권한이 없어 현위치의 날씨를 표시할 수 없습니다. \n설정 -> 권한설정에서 위치권한을 활성화 시켜 주십시오',
                         style: TextStyle(fontSize: 20, ),
                       ),
-
 
                     ),
 
@@ -474,16 +473,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset('assets/images/no_contents.gif'),
+                          Image.asset('assets/images/toggle_on_location.png'),
                           Container(
+                            padding: EdgeInsets.only(top: 20),
                             child: Text(
-                              '위치궈한이 없어 현위치의 날씨를 표시할 수 없습니다.',
-                              style: TextStyle(fontSize: 20,),
+                              '위치권한이 없어 \n현위치의 날씨를 표시할 수 없습니다.',
+                              style: TextStyle(fontSize: 18,),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 20),
+                            child: Text(
+                              '설정-> 권한설정에서 \n위치 권한을 활성화 시켜 주십시오',
+                              style: TextStyle(fontSize: 18,),
                             ),
 
 
                           ),
-
                         ],
                       ),
                     )
