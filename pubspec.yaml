@@ -53,7 +53,7 @@ dependencies:
   flutter_native_splash: ^1.2.0   # 스플래시
   syncfusion_flutter_charts: ^19.2.44+1 # 그래프 기능2 (단기예보 그래프)
   flutter_progress_hud: ^2.0.0    # HUD 전체화면로딩
-
+  flutter_easyloading: ^3.0.0
 
 # FCM의 경우 버전 주의
 # 동기화 버전 :  firebase_messaging: ^10.0.0 === firebase_core: ^1.2.0

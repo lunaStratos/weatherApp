@@ -7,6 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rainvow_mobile/Domain/DustDomain.dart';
 import 'package:rainvow_mobile/Domain/FavoriteDomain.dart';
@@ -86,8 +87,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
     _loadFavoriteLocationData().then((value) async{
       flag = true;
       });
-
-    print('idx ${idx} ${action}');
 
     if(idx < 0 ){
       setState(() {
@@ -317,15 +316,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
       );
     }else{
 
-      if(flag){
-        return Scaffold(
+        return MaterialApp(
+          title: 'Flutter EasyLoading',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: Scaffold(
             body: _buildStack(context)
+          ),
+          builder: EasyLoading.init()
         );
-      }else{
-        return new Container(
-            child: LoadingWidget(),
-        );
-      }
 
     }
 
@@ -333,6 +333,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   Stack _buildStack(BuildContext context){
+
+    // 현위치 데이터 로딩 화면면
+    EasyLoading.instance
+    ..indicatorType = EasyLoadingIndicatorType.cubeGrid
+    ..dismissOnTap = false
+    ..maskType = EasyLoadingMaskType.black
+    ..maskColor = Colors.black38;
+    
+   if(flag){
+      EasyLoading.dismiss();
+    }else{
+      EasyLoading.show(status: '데이터 로딩중...');
+    }
 
 
     return new Stack(
@@ -372,7 +385,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
    * 점 찍기
    * */
   Widget _buildDots(BuildContext context){
-
     var xScreen;
     if(flag){
       if(favoriteArray.length == 0 ){
@@ -442,8 +454,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
     }else{
       xScreen = Container();
     }
-
-
 
     return xScreen;
   }
@@ -545,7 +555,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                               }else{
 
                                                 final dustBody = (getKmaNowDustList.asMap()[i] == null) ? snapshot2.data as DustDomain: getKmaNowDustList[i];
-
                                                 return new Column(
                                                   children: [
                                                     MainWeather(
@@ -670,7 +679,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
         screenList.add(screenX);
       }
 
-      return screenList;
+
+    return screenList;
   }
 
 
