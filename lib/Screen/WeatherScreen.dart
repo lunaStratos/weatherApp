@@ -637,7 +637,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                     width: 1,
                                   ),
 
-                                  Text('자료 기상청, 레인보우'),
+                                  Text('자료 기상청'),
 
                                   Center(
                                       child: Column(
