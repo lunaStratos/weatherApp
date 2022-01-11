@@ -152,11 +152,12 @@ class GraphBuild extends StatelessWidget{
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-            color: Color(0xff72719b),
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+
+          // getTextStyles: (value) => const TextStyle(
+          //   color: Color(0xff72719b),
+          //   fontWeight: FontWeight.bold,
+          //   fontSize: 16,
+          // ),
           margin: 10,
           getTitles: (value) {
 
@@ -206,11 +207,11 @@ class GraphBuild extends StatelessWidget{
          * */
         leftTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            color: Color(0xff75729e),
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
+          // getTextStyles: (value) => const TextStyle(
+          //   color: Color(0xff75729e),
+          //   fontWeight: FontWeight.bold,
+          //   fontSize: 14,
+          // ),
           getTitles: (value) {
             //print('leftTitles2 $value');
             switch (value.toInt()) {

@@ -225,7 +225,7 @@ class _SettingScreenScreen extends State<SettingScreen>{
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset('assets/images/rainvow_logo.png'),
+            Image.asset('assets/images/weather.png', height: 100,), // 로고 이미지
             Text('현재 버전 : ${'1.0'}', style: TextStyle(fontSize: 13, color: Colors.blue),),
             Text('최신 버전: ${'1.0'}', style: TextStyle(fontSize: 13, color: Colors.black),),
             /**

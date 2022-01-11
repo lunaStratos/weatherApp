@@ -28,9 +28,9 @@ class HomePage extends StatefulWidget {
 
   final drawerItems = [
     new DrawerItem("날씨", Icons.wb_sunny),
-    new DrawerItem("강우지도", Icons.umbrella),
     new DrawerItem("관심지역", Icons.star),
     new DrawerItem("설정", Icons.settings),
+    //new DrawerItem("강우지도", Icons.umbrella),
     // new DrawerItem("테스트", Icons.star),
   ];
 
@@ -84,12 +84,12 @@ class HomePageState extends State<HomePage> {
     switch (pos) {
       case 0: // 날씨
         return new WeatherScreen(idx: index, action: action);
-      case 1: // 강우지도
-        return new MapScreen();
-      case 2: // 관심지역
+      case 1: // 관심지역
         return new FavoriteScreen();
-      case 3: // 설정
+      case 2: // 설정
         return new SettingScreen();
+      case 3: // 강우지도
+        return new MapScreen();
       default:
         return new Text("Error");
     }
@@ -159,7 +159,7 @@ class HomePageState extends State<HomePage> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset("assets/images/rainvow_logo.png")
+                  Image.asset("assets/images/weather.png") //로고이미지
                 ],
               ),
               decoration: BoxDecoration(
