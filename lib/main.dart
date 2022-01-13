@@ -161,7 +161,6 @@ class MyAppState extends State<MyApp> {
         prefs.setString("fcmToken", token.toString());
       });
 
-
     } else {
       print('User declined or has not accepted permission');
     }
@@ -170,7 +169,6 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
 
     return new MaterialApp(
       title: 'RainvowApp',
